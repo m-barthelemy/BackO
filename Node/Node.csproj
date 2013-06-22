@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F2A82E6B-1CC2-4FDF-932B-9E526B090921}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Node</RootNamespace>
+    <AssemblyName>Node</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>lib\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunWithWarnings>False</RunWithWarnings>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DefineConstants>DEBUG OS_UNIX OS_WIN</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>lib\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunWithWarnings>False</RunWithWarnings>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="BChunk.cs" />
+    <Compile Include="Backup.cs" />
+    <Compile Include="Snapshots\SnapshotProvider.cs" />
+    <Compile Include="Snapshots\ISnapshotProvider.cs" />
+    <Compile Include="Snapshots\ISnapshot.cs" />
+    <Compile Include="Snapshots\VSSProvider.cs" />
+    <Compile Include="Snapshots\VSSSnapshot.cs" />
+    <Compile Include="ObjectsBrowser.cs" />
+    <Compile Include="Snapshots\NullProvider.cs" />
+    <Compile Include="Snapshots\Snapshot.cs" />
+    <Compile Include="Snapshots\ZfsProvider.cs" />
+    <Compile Include="Virtualization\VirtualMachinesManager.cs" />
+    <Compile Include="Virtualization\VMDrive.cs" />
+    <Compile Include="Snapshots\LVMProvider.cs" />
+    <Compile Include="Snapshots\BtrfsProvider.cs" />
+    <Compile Include="FileAbstractionLayer\UnixFile.cs" />
+    <Compile Include="FileAbstractionLayer\FreeBSDFile.cs" />
+    <Compile Include="FileAbstractionLayer\NTBackupFile.cs" />
+    <Compile Include="FileAbstractionLayer\LinuxStream.cs" />
+    <Compile Include="DataProcessing\Utils\DedupIndex.cs" />
+    <Compile Include="DataProcessing\Utils\QuickLZ.cs" />
+    <Compile Include="DataProcessing\Utils\DedupedBlock.cs" />
+    <Compile Include="ChangesMonitor.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\IIncrementalProvider.cs" />
+    <Compile Include="DataProcessing\BenchmarkStats.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\UsnJournalProvider.cs" />
+    <Compile Include="BackupRootDrive.cs" />
+    <Compile Include="BackupRootDriveHandler.cs" />
+    <Compile Include="BChunkHeader.cs" />
+    <Compile Include="FileAbstractionLayer\IFileProvider.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\UsnJournal\NTFS.cs" />
+    <Compile Include="FileAbstractionLayer\FileBlockMetadata.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\BtrfsProvider.cs" />
+    <Compile Include="FileAbstractionLayer\PosixFile.cs" />
+    <Compile Include="Misc\NativeMethods.cs" />
+    <Compile Include="Snapshots\SpecialObjects\VSS.cs" />
+    <Compile Include="Snapshots\SpecialObjects\SPOProvider.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\BlockChecksummerStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\ChunkHasherStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\ClientDeduplicatorStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\DecompressorStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\DummyStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\EncryptorStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\GZCompressorStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\IDataProcessorStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\NullSinkStream.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\StorageDeduplicatorStream.cs" />
+    <Compile Include="FileAbstractionLayer\NTBackupFileXP.cs" />
+    <Compile Include="Misc\VSSObjectHandle.cs" />
+    <Compile Include="DataProcessing\Indexes\IndexHeader.cs" />
+    <Compile Include="DataProcessing\Indexes\Index.cs" />
+    <Compile Include="DataProcessing\Indexes\IndexManager.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\Misc\TTHash\Tiger.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\Misc\TTHash\Base32.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\Misc\TTHash\Thex.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\Misc\TTHash\ThexThreaded.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\Misc\TTHash\ThexOptimized.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\TigerTreeHasherStream.cs" />
+    <Compile Include="Virtualization\VMWareManager.cs" />
+    <Compile Include="DataProcessing\ChunkProcessor.cs" />
+    <Compile Include="DataProcessing\DataPipeline.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\IncrementalPluginProvider.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\IFSEnumerator.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\LinuxFSEnumerator.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\NTFSEnumerator.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\NtMftEnumerator.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\SearchPattern.cs" />
+    <Compile Include="FileAbstractionLayer\MinimalFSItem.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\UsnJournal\Win32Api.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\UsnJournal\NtfsUsnJournal.cs" />
+    <Compile Include="FileAbstractionLayer\IFSEntry.cs" />
+    <Compile Include="DataProcessing\Indexes\BackupIndex.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\IFSEnumeratorProvider.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\LzoCompressorStream_old.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\LzoCompressorStream.cs" />
+    <Compile Include="Snapshots\SpecialObjects\VolumeLayout.cs" />
+    <Compile Include="StorageLayer\StorageLayoutManager.cs" />
+    <Compile Include="StorageLayer\IPathBrowser.cs" />
+    <Compile Include="StorageLayer\LocalStorageDiscoverer.cs" />
+    <Compile Include="StorageLayer\LinuxStorageDiscoverer.cs" />
+    <Compile Include="StorageLayer\NTStorageDiscoverer.cs" />
+    <Compile Include="StorageLayer\Partitions\EBR.cs" />
+    <Compile Include="StorageLayer\Partitions\GPT.cs" />
+    <Compile Include="StorageLayer\Partitions\MBR.cs" />
+    <Compile Include="StorageLayer\Partitions\PartitionManager.cs" />
+    <Compile Include="StorageLayer\Utils\FilesystemManager.cs" />
+    <Compile Include="StorageLayer\Utils\LinuxLoopDeviceHelper.cs" />
+    <Compile Include="StorageLayer\Utils\BlockDevice.cs" />
+    <Compile Include="Snapshots\SpecialObjects\SpoSkeleton.cs" />
+    <Compile Include="DataProcessing\Utils\LightDedupedBlock.cs" />
+    <Compile Include="FileAbstractionLayer\NTStream_ol.cs" />
+    <Compile Include="FileAbstractionLayer\NTStream.cs" />
+    <Compile Include="StorageLayer\Partitions\LDM.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\UsnJournal\Win32Api_new.cs" />
+    <Compile Include="BackupManager.cs" />
+    <Compile Include="FileAbstractionLayer\FSEnumerators\PathExcluders.cs" />
+    <Compile Include="StorageLayer\FallbackDiscoverer.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Utilities\SystemLogger.cs" />
+    <Compile Include="IndexBrowser.cs" />
+    <Compile Include="UserProtocol.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\LZ4CompressorStream.cs" />
+    <Compile Include="DataProcessing\IncrementalProviders\FileComparer.cs" />
+    <Compile Include="Utilities\Pair.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\LZ4Decompressor.cs" />
+    <Compile Include="DataProcessing\DataProcessingStreams\LowPriority.cs" />
+    <Compile Include="StorageLayer\StorageLayoutFactory.cs" />
+    <Compile Include="FileAbstractionLayer\PlatformStreamFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Core" />
+    <Reference Include="ServiceStack.Text">
+      <HintPath>lib\ServiceStack.Text.3.9.43\lib\net35\ServiceStack.Text.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AlphaFS">
+      <HintPath>lib\AlphaFS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AlphaVSS.Common">
+      <HintPath>lib\AlphaVSS.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Community.CsharpSqlite">
+      <HintPath>lib\Community.CsharpSqlite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Community.CsharpSqlite.SQLiteClient">
+      <HintPath>lib\Community.CsharpSqlite.SQLiteClient.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Libvirt">
+      <HintPath>lib\Libvirt.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LZ4Stream">
+      <HintPath>lib\LZ4Stream.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>lib\Mono.Data.Sqlite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>lib\protobuf-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="README.txt" />
+    <None Include="DataProcessing\IncrementalProviders\UsnJournal\NtfsUsnJournal_new.cs" />
+    <None Include="Client.resx">
+      <DependentUpon>Client.cs</DependentUpon>
+    </None>
+    <None Include="SessionVerificator.cs" />
+    <None Include="DataProcessing\IncrementalProviders\DefaultProvider_old.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Snapshots\" />
+    <Folder Include="Virtualization\" />
+    <Folder Include="FileAbstractionLayer\" />
+    <Folder Include="DataProcessing\" />
+    <Folder Include="DataProcessing\Utils\" />
+    <Folder Include="DataProcessing\IncrementalProviders\" />
+    <Folder Include="DataProcessing\IncrementalProviders\UsnJournal\" />
+    <Folder Include="Snapshots\SpecialObjects\" />
+    <Folder Include="Misc\" />
+    <Folder Include="DataProcessing\DataProcessingStreams\" />
+    <Folder Include="DataProcessing\Indexes\" />
+    <Folder Include="DataProcessing\DataProcessingStreams\Misc\" />
+    <Folder Include="DataProcessing\DataProcessingStreams\Misc\TTHash\" />
+    <Folder Include="FileAbstractionLayer\FSEnumerators\" />
+    <Folder Include="StorageLayer\" />
+    <Folder Include="StorageLayer\Partitions\" />
+    <Folder Include="StorageLayer\Filesystems\" />
+    <Folder Include="StorageLayer\Utils\" />
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{7ED43F11-2934-4CE7-B8CB-B63479A927FE}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

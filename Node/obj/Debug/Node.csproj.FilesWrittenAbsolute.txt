@@ -1,0 +1,5 @@
+/home/matt/dev/SharpBackup/Node/obj/Debug/Node.Client.resources
+/home/matt/dev/SharpBackup/Node/bin/Debug/Node.exe.mdb
+/home/matt/dev/SharpBackup/Node/bin/Debug/Node.exe
+/home/matt/dev/SharpBackup/Node/obj/Debug/Node.exe
+/home/matt/dev/SharpBackup/Node/obj/Debug/Node.exe.mdb

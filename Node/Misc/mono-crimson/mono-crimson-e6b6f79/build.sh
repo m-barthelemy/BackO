@@ -1,0 +1,1 @@
+gmcs -unsafe -t:library -out:Mono.Crimson.dll -r:System.dll -r:System.Core.dll -r:System.Security.dll -r:Mono.Security.dll -keycontainer:class/crimson.snk -sdk:4 -recurse:./class/*.cs ./common/Locale.cs
