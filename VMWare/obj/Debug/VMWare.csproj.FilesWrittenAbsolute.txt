@@ -1,0 +1,4 @@
+/home/matt/dev/SharpBackup/VMWare/bin/Debug/VMWare.dll.mdb
+/home/matt/dev/SharpBackup/VMWare/bin/Debug/VMWare.dll
+/home/matt/dev/SharpBackup/VMWare/obj/Debug/VMWare.dll
+/home/matt/dev/SharpBackup/VMWare/obj/Debug/VMWare.dll.mdb

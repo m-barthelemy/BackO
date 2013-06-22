@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8B96D48-9A28-45EA-A59F-5AE130AAFD52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VMWare</RootNamespace>
+    <AssemblyName>VMWare</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG; OS_WIN</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="AlphaFS">
+      <HintPath>..\Node\lib\AlphaFS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{7ED43F11-2934-4CE7-B8CB-B63479A927FE}</Project>
+      <Name>Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\VimService\VimService.csproj">
+      <Project>{AAFB602D-3FB6-485D-A9FD-81AEC7F808A5}</Project>
+      <Name>VimService</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="VDDK\" />
+    <Folder Include="VMWare-WS\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="VDDK\Vddk.cs" />
+    <Compile Include="VDDK\VixDiskLib.cs" />
+    <Compile Include="VDDK\VixMntApi.cs" />
+    <Compile Include="VDDK\VmdkStream.cs" />
+    <Compile Include="VMWare-WS\CertPolicy.cs" />
+    <Compile Include="VMWare-WS\VMWare.cs" />
+    <Compile Include="VMConfigSPO.cs" />
+    <Compile Include="VMWareStorageDiscoverer.cs" />
+    <Compile Include="NTSystemRegistry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VDDK\vddk.conf" />
+  </ItemGroup>
+</Project>
