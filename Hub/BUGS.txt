@@ -1,0 +1,47 @@
+[done] Node : correctly split big file (wrong remaining size)
+[done] Node : ConnectToStorageNode : catch exception and ask ALT destination instead of crashing if we can't connect
+[done] Node : correctly get Directories items' parentID, and correctly store them into index. 
+[done] Node : also retrieve root paths and store them into index (to avoir top elements having empty parentId)
+[done] Node : re-apply conf parameters when receiving CFG (logger...)
+[done] Node : correctly close sessions
+[doing] Node : correctly reconnect to hub 
+[done] Hub : correctly close STORAGE sessions : when backup storage session is not used anymore, or backup is done, remove it from Node.StorageSessions
+[done] Hub : decrement remaing storage node space by really transferred data size
+[TODO] Node/Hub : when failing to save dedup db, throw error instead of warning
+[done] Node : sometimes we process index and get a new session without client dedup, while there are still chunks pending for transfer. correct that
+[TODO] node : windows : bug with parallelism > 1 and bigfiles opened more than once (?)
+[done] Node : windows trasnfers slooooooooow
+[done] Node : 1st basepath root dir is correctly processed, but subsequent are not, leaving child items with parentid=0
+[TODO] Node : when 2 clients connect to a storage node, dataSocket can accept the wrong node socket
+[done] Hub : disconnected nodes sometimes not removes from online nodes list: 
+	get onlinenodes 
+		Error : An element with the same key already exists in the dictionary.
+[TODO] Hub : when cancelling task from command line:
+		System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
+  at System.Collections.Generic.List`1+Enumerator[System.Tuple`4[System.DateTime,System.Int32,System.String,System.String]].VerifyState () [0x00047] in /usr/src/packages/BUILD/mono-2.10.9/mcs/class/corlib/System.Collections.Generic/List.cs:785 
+  at System.Collections.Generic.List`1+Enumerator[System.Tuple`4[System.DateTime,System.Int32,System.String,System.String]].MoveNext () [0x00000] in /usr/src/packages/BUILD/mono-2.10.9/mcs/class/corlib/System.Collections.Generic/List.cs:789 
+  at P2PBackupHub.DBHandle.CompleteBackupTracking (P2PBackup.Common.Task task) [0x0031a] in /home/matt/dev/SharpBackup/P2PBackupHub/Database/DBHandle.cs:1163 
+  at P2PBackupHub.RunTask.Complete (P2PBackup.Common.Task t) [0x00000] in /home/matt/dev/SharpBackup/P2PBackupHub/RunTask.cs:71 
+  at P2PBackupHub.TaskScheduler.Schedule () [0x0016d] in /home/matt/dev/SharpBackup/P2PBackupHub/TaskScheduler.cs:92 
+  at System.Threading.Thread.StartInternal () [0x00016] in /usr/src/packages/BUILD/mono-2.10.9/mcs/class/corlib/System.Threading/Thread.cs:703 
+[done] On NTBackupFile, gathering size when Open by name THROWS error (is not a valid win32 filetime)
+
+
+[TODO] node : when timeout for chunk sentEvent, ask for chunk deletion, to avoid space wastes
+[TODO] node : on mono, ssl connection with certificate not having a private key throws exception. report to mono project.
+[TODO] Hub : when node disconnects, node thread on hub side is not freed.
+[done] Node : Windows : Index stays open after being generated. So unable to re-open it for reading and sending.
+[done] Node : removing snapshot after backup is impossible when snap provider is not the automatic default one (rework provider mechanism). especially on unix (windows allows to set vss snap as non-persistent)
+[TODO] Node : if a disk/fs is added since reference backup, Index will have incorrect/conflicting rootdrive IDs 
+
+
+
+
+[MONO BUGS]
+-x509certificate2.Subject is not readonly on mono
+	cert= new X509Certificate2();
+	cert.Subject = "dummy"; // ok on mono, .Net throws error (Subject is readonly field)
+	
+-mono doesn't accept an empty client certificate for tls auth
+
+-in Session, controlSocketVerified & dataSocketVerified are volatile but value doesn't seem updated. Calling them in 'logger.appen' seem to print corrct values and refresh them properly

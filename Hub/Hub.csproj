@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{785EAFFA-C222-4279-A7C9-4CF54BD47CE9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>P2PBackupHub</RootNamespace>
+    <AssemblyName>Hub</AssemblyName>
+    <SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunWithWarnings>False</RunWithWarnings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunWithWarnings>False</RunWithWarnings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Hub.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="RemotingServer.cs" />
+    <Compile Include="RemoteOperations.cs" />
+    <Compile Include="NodeList.cs" />
+    <Compile Include="TaskScheduler.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="TaskPublisher.cs" />
+    <Compile Include="Notifiers\INotifier.cs" />
+    <Compile Include="Notifiers\NotifierFactory.cs" />
+    <Compile Include="Notifiers\MailNotifier.cs" />
+    <Compile Include="Notifiers\Archiver.cs" />
+    <Compile Include="Clustering\Utils.cs" />
+    <Compile Include="Clustering\Cluster.cs" />
+    <Compile Include="Clustering\ClusterNode.cs" />
+    <Compile Include="TasksMonitor.cs" />
+    <Compile Include="CertificateManager.cs" />
+    <Compile Include="NodeDelegation.cs" />
+    <Compile Include="Virtualization\Libvirt.cs" />
+    <Compile Include="PasswordManager.cs" />
+    <Compile Include="Virtualization\HypervisorManager.cs" />
+    <Compile Include="Virtualization\VMWare.cs" />
+    <Compile Include="DAL\DAO\NodeDAO.cs" />
+    <Compile Include="DAL\DAL.cs" />
+    <Compile Include="DAL\IdManager.cs" />
+    <Compile Include="DAL\DAO\IdDAO.cs" />
+    <Compile Include="DAL\DAO\BackupSetDAO.cs" />
+    <Compile Include="DAL\DAO\ScheduleDAO.cs" />
+    <Compile Include="DAL\DAO\TaskDAO.cs" />
+    <Compile Include="DAL\DAO\UserDAO.cs" />
+    <Compile Include="DAL\DAO\CertificateDAO.cs" />
+    <Compile Include="DAL\DAO\StorageGroupDAO.cs" />
+    <Compile Include="DAL\DAO\NodeGroupDAO.cs" />
+    <Compile Include="DAL\DAO\PasswordDAO.cs" />
+    <Compile Include="DAL\DAO\MailParametersDAO.cs" />
+    <Compile Include="DAL\DAO\HypervisorDAO.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="PeerNode.cs" />
+    <Compile Include="Collections\NodesList.cs" />
+    <Compile Include="Collections\SessionsList.cs" />
+    <Compile Include="Collections\TasksList.cs" />
+    <Compile Include="NodesMonitor.cs" />
+    <Compile Include="DAL\DAO\PluginDAO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Security">
+      <HintPath>..\..\shb\Hub\bin\Debug\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Npgsql">
+      <HintPath>..\..\shb\Hub\bin\Debug\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="VMware.Security.CredentialStore">
+      <HintPath>_binRefs\VMware.Security.CredentialStore.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="MySql.Data">
+      <HintPath>lib\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Libvirt">
+      <HintPath>lib\Libvirt.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>lib\ServiceStack.OrmLite.MySql.3.9.54\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.MySql">
+      <HintPath>lib\ServiceStack.OrmLite.MySql.3.9.54\lib\ServiceStack.OrmLite.MySql.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.PostgreSQL">
+      <HintPath>lib\ServiceStack.OrmLite.PostgreSQL.3.9.54\lib\ServiceStack.OrmLite.PostgreSQL.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer">
+      <HintPath>lib\ServiceStack.OrmLite.SqlServer.3.9.54\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>lib\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="changelog.txt" />
+    <None Include="BUGS.txt" />
+    <None Include="_binRefs\AppUtil.dll" />
+    <None Include="_binRefs\VimService.dll" />
+    <None Include="_binRefs\VimService.XmlSerializers.dll" />
+    <None Include="_binRefs\VimService25.dll" />
+    <None Include="_binRefs\VimService25.XmlSerializers.dll" />
+    <None Include="_binRefs\VMware.Security.CredentialStore.dll" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy NamespaceBraceStyle="EndOfLine" ClassBraceStyle="EndOfLine" InterfaceBraceStyle="EndOfLine" StructBraceStyle="EndOfLine" EnumBraceStyle="EndOfLine" MethodBraceStyle="EndOfLine" ConstructorBraceStyle="EndOfLine" DestructorBraceStyle="EndOfLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Notifiers\" />
+    <Folder Include="Clustering\" />
+    <Folder Include="Virtualization\" />
+    <Folder Include="_binRefs\" />
+    <Folder Include="DAL\" />
+    <Folder Include="DAL\DAO\" />
+    <Folder Include="Collections\" />
+  </ItemGroup>
+</Project>

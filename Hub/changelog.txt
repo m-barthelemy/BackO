@@ -1,0 +1,761 @@
+
+26/11/2010
+done - implemented QLZ compression
+done - made compression optional
+done - made encryption optional
+done - separate temp path and get them from config file
+done - added error 507 file not found
+done - GUI-less hub
+done - tests with 1 hub and 3 clients (1 backup and 2 storages), with separate ip for each client (ip addr add 192.168.0.X dev eth0)
+
+01/2011
+done - separe some methods according to OS : file are handled differently to allow attributes and types preservation
+done - make all receive async on client and hub
+done - made a receive parser to separate commands by newline 
+done - preserve file permissions on Unix (owner, group, other)
+done - correct bug not handling directories and subdirectories (nor backuped nor restored)
+done - make listen IP configurable for hub and client
+done - backup : save ownership permission on Unix 
+done - on unix, restore ownership, special permissions.
+done - on all platforms, restore last modified time of files.
+done - convert client to Logger.
+[done] hub : implement scheduler : hub asks client to run backupsets at defined times
+
+02/2011
+[done] allow storage groups : each node belongs to 1 group : preferred (fast and always available), unreliable ( slow or moving, eg notebook or desktop station))
+handle null string values when retrieving user from db
+[done] on client startup, send Version to hub, store it
+[done] display user Version on webui
+[doing] display nonregistered clients on webui
+[done]hub: Send SSS  Client: receive SSS, call saveshare
+todo - client status : free, busy, number of running tasks (backup, store...)
+todo - display this status on webui
+*backupsets :
+[done] - webui display running backupsets tasks (backup, restore) on dedicated page BackupSets.html . Display on a timeline?
+[done] handle on hub (store and retrieve from db)
+[done] receive bqckupsets on client
+[done] display on webui (done : timeline)
+[done] add backupset from webui, and store it
+[done] hub scheduler : manage and run backupsets
+
+03/2011
+[done] new backups implementation : backuped units are a concatenation of files (or no) up to x(configurable)MB. If a file to backup is bigger, divide it into chunks
+	this requires chunks management in indexfiles , and storing their content (files positions inside chunks) and order (in case of big files splited)
+
+
+05/2011
+[todo] compare and verify node key on login
+[done] test backup with 1 backup client and 3 storage nodes
+[todo] handle storagegroups with priorities (1,2,3) and class (fast, slow, spare)
+[done] build index serializing backup and chunks
+[partially done] hub - on backup done (DBU) save backup info to database (todo : really update on DBU, not on request for index destination)
+[todo] handle non-file items (links, directories, unix-isms) 
+
+
+06/2011
+[done] correct bug when sending or receiving files : bullet-proof transfers!
+[done] test backups with compression. Report compression ratio at DEBUG log level
+[done] node : create storage sub-directories if needed on startup
+[done] node : Session.cs : dead code cleanups
+[done] test backup encryption (not decryption, will be tested when recovery is refactored)
+[done] report original backup size (without compress/encrypt) and final size and store it on hub (backups history table) when DBU received.
+[done] hub : put backups table id into bslog table, to allow a real tracking of backups warnings and errors
+[done] node : rewritten chunk encryption to work with streams instead of 1-byte arrays (faster);
+[done] rewritten hub and client communication : make a message header indicating msg size for more precise processing. 
+	On client side, use async receive. This should make hub-node communications robust, especially on high-rate message exchanges.
+[done] Logger (hub and nodes) : rewrite logger to only log msg with severity > configured value
+[done] webUI : create Utilities class to get HUB RemoteObjects. Make hub ip and port configurable (web.config)
+[done] node : make hup port configurable
+[done] Hub-Node : make hub-node communications secure using SSL (basic infrastructure, no certs validity check yet)
+[done] make ALTernate destination (when a client can't connect to storage) really work, at least without retaining complete failed connections list
+[done] node.exe : pass hub ip:port and certificate as command-line parameters. 
+[done] make nodes gui-less. later we will redevelop a facultative and separate client GUI, with user-friendliness as primary goal
+[done] nodes : Use utilities.configmanager with conf received from hub. Suppress nodes config file.
+[done] use client cert validation by hub to recognize and authenticate client nodes  instead of user/pass. Delete (or keep for future use?) user/pass
+[done] on first client connection, hub receives and stores public key, ip, hostname, and puts client on "waitingforapproval" status (node.locked=True)
+[done] store chunk destination(s) in index file. 
+[done] node : created README to briefly explain how to quickly generate self-signed and self-trusted certificates for hub and nodes.                        
+[done] hub : make listen port configurable. Default is 52561
+[done] hub : cleanup DBhandle code, factorize connections and readers. Now there should'nt be unused connections accumulating anymore.
+[done] node : add --debug parameters, which sends all log messages to console.
+[done] use SSL certificate to do node-node auth (DS1 & DS2) instead of old method.
+[done] now we use only 1 certificate, for authentication, SSL and backups chunks encryption.
+[done] refactored Backup class to save more info (encrypt/compress, nodeUid, bsid node Version) in order to get more complete indexes (enough info to recover in case of hub crash).
+[done] hub : add Node Uid to SendNodeConfig()
+[done] define storage redundancy : allow a backup (chunks) to be replicated to 1,2 or X storage groups. Same for indexfiles. Hub stores storage locations for each backupset index.
+	PUT chunk_name size -->  DST current_redundancy/total_redundancy chunkname STORAGE_IP STORAGE_PORT
+	PUT A256EFB3B12 11900000 --> DST 1/2 A256EFB3B12 192.168.0.2 52563
+                                 DST 2/2 A256EFB3B12 88.191.135.16 52563
+     -Rewrite UsersList.CalculateDestination to CalculateStorageDestinations(bs,int[]);
+[done] hub : added storagegroups fields 'type' and 'onnodedown', to allow 'indexes' and 'chunks' types (later 'archive' for tapes/DVD) , and actions when a storage node is down : display (on webUI), notify (mail/syslog...)
+[done] webui : ported "client nodes" page to extjs 4.0
+
+
+07/2011
+[done] ported and tested client on Windows (2008) and Solaris
+[done] webUI : handle nodes conf from gui. handle lock/approval.
+[done] webUI : ported nodes display, conf, browse to Extjs4
+[done] webUI : ported storagenodes page to Extjs4
+[done] hub & webUI : basic implementation for Nodes groups, display groups in client nodes page
+[done] webUI: internationalization (FR & EN) for extjs4 pages.
+[done] Node : changed PathBrowser to separate class with IPathBrowser interface to return different object on *nix and windowd
+[done] Node: implemented browsing with volumes view for NT
+[done] node : send IsUnixClient or PlatformId with "VER", store into DB and display OS icon in WebUI Nodes page
+[done] When node configuration is updated from gui, send new conf to node for live updating
+[done] node: MakeStorageDirs now uses a storage formtat with 3 levels of subdirs
+[done] node : define and implement snapshots handling (Null, VSS and ZFS as first examples, later Btrfs and LVM)
+[done] node : every backup is made from a (real or fake/null) snapshot.
+[done] node : handle VSS volume snapshot
+[done] node : handle zfs snapshots
+[doing] port AddBackupSet to extjs4. Use calendar for backup scheduling to allow week or month recurrences. Use BoxSelect widget for backuppaths selection
+[doing] refactor Restore to handle chunks. make it really work on a basic form
+[done] node : implement specialobjects (VSS writers) listing and backup(open, read, put into BChunks)
+[done] webUI : on win NT, allow to select VSS writers as backup elements
+[done] node and webui : in browsewindow.js 'special objects" tab, display libvirt domains and volumes
+[todo] node : backup libvirt volumes. (Snapshot when supported?)
+[doing] webUI : handle Restore from web gui : restore complete BS option
+[done] webUi and Hub : corrected backups history date format for a correct display (yyyy-M-dd HH:mm:ss)<-->unixtime
+[doing] webUI & hub: users management
+[done] node : handle new DST format wich includes redundancy (actual/wished pair)
+[done] hub : handle and display nodes groups.
+
+08/2011
+[done] node : rewritten file handling for backups, splitted between 2 classes (nt & unix) to make backups work on NT. Todo : handle NTFS weird objects such as junctions & hardlinks
+[done] node : print only time (not date) in logs
+[done] node : add backup statistics line with INFO level (nb of items, size, final size) when chunks are built
+[done] node : use Libvirt C# bindings to list VMs running on the node, and retrieve VM drives.
+[done] webUI : display node VMs and drives, and allow to select drives for backup[done] backup.cs : when selecting paths, separately handle SPOs( VSS writers)
+[done] vssprovider : ensure we can add a complete component only by decomposing its path
+[done] vssprovider : when adding component, on error report it and continue snapshot with other components and volumes(better than giving up)
+[done] backup / vssprovider.createdrivesnapshot : retrieve drives required to snapshot from selected VSS components
+[done] backup : check VSS witers status before adding them to snapshot set. LOG incorrect status and advise hub.
+[done] abstracted snapshot type detection inside VolumeManager
+[done] implemented and tested ZFS snapshotting
+[done] Implemented ans tested LVM snapshot provider
+[done] Implemented ans tested BTRFS snapshot provider
+[done] detect zfs, btrfs and lvm volumes. Hackish : returned them as snapshottable without any check. 
+	But now we can use almost every snapshottable fs on the market, be it native, volume-manager(lvm). UFS2 is left as an exercise for future work.  
+[done] on client start, check OS and store it in Utilities.Platform.OS.Name and  Utilities.Platform.OS.Version
+[done] Node : bring real-world scenarios scalability : created IFile, UnixFile, NTFile/NTStream, LinuxFile/LinuxStream, FreeBSDFile and FileProvider to replace BFile, according to underlying OS. IFile has an OpenStream() method that
+	returns a Filestream an allow us to read file with optimized parameters 
+[done] Node : on linux, LinuxFile / LinuxStream use FADVISE_DONTNEED (don't pollute cache) and POSIX_FADV_SEQUENTIAL (double readahead).
+[canceled] Node : on Windows, use FILE_FLAG_NO_BUFFERING (don't pollute cache). CANCELED : use BackupRead/Write/Seek instead of regular files.
+[done] ported chunk build to IBFile.
+[done] port TransferChunk to IBFile, as OpenStream() is useful here too in order to quickly read file without polluting OS caches.
+[done] move iPathbrowser.GetVolumeProvider to Volumemanager (has nothing to do inside ipathbrowser...)
+[done] port GetIndexDestination to CalculateChunkDestination
+[done] resolve bug with storagelistener (launched twice??)
+[done] Node : Implemented NTBackupFile, mapping Kernel32 BackupRead()/BackupSeek() to a custom NTStream. Does this really work after only 2hrs of work?
+[done] Node : tested backup of files with various ADS, null files with several ADS etc
+[done] hub : define Task which can contain a Backup or Restore operation with a unique ID. Use tasks on scheduler queue onstead of backupsets
+		Tasks will allow live operations tracking and better reporting.
+[done] webUI : create Task page which lists scheduler Tasks Queue
+[done] webui : ported backup plan/timeline to ext4
+[done] webUI : ported HubLogs to ext4
+[done] Node : GetFilesToBackup : bring real-world scenarios scalability : use EnumerateFileSystemEntries() instead of GetEntries()
+[done] Node : GetFilesToBackup : directly use IFile, instead of FileInfo + IFile
+
+
+09/2011
+[done] Node : GetFilesToBackup :  use EnumerateFileSystemEntries() instead of GetEntries().
+[done] Rewrite scheduler to work with Tasks (encapsulates a backup/restore/check/xxx operation)
+[done] implement Producer/consumer way of pre-generating / building chunks
+[done] webui : view current task scheduling : status, size, ...
+[done] hub webUI : added tasks history : status, errors, real storage pools disk usage
+[done] webui : ported Backupplan to extjs4
+[done] allow Node to report task important log entries to hub, store them inside DB, and display them in webUI (current tasks or tasks history views)
+
+10/2011
+[done] webui : i18n for task log entries displaying (create i18n files with msgcode->text pairing)
+[done] node : rewrite backup to use a direct pipeline system instead of chunk building->stage to disk->sending
+		-pipeline of streams : file reading stream -> N processing streams(checksum, clientdedup, compress, encrypt) -> session socket with storage node
+[done] node : BackupManager sends PUT requests and receives a destination with a budget. It then starts a Consume() task which is 
+	in charge of processing data through the DataPipeline and sending it to storage node for n=budget chunks
+[done] hub : ported dbhandle to use ProviderFactory. db layer is now db-agnostic, has been tested on sqlite and postgres
+[done] hub : ported database and code to work with Postgres	
+[done] node : handle big files (split into multiple chunks). Reworked Backup.cs to have GetNextChunk to use IENumerable
+[done] heavily refactored session, backupmanager to have code more robust and cleaner
+
+
+11/2011
+[done] finish rewriting backup handling, chunk management through events and manualresetevents
+[done] rewrite index handling
+[done] save dedup db with index
+[done] node : implement STATS command to get progress about running task
+[done] node : clientdedup : replace array comparison using fast unsafe code
+[done] node : define incremental/differential providers
+[done] node : define a basic FileCompareProvider : compare file-by-file LastMetadataModifiedTime & LastModifiedTime
+[done] node : make GetFilesToBackup recursive. Maintain a depth which will be used to check if the mountpoint changes during backup
+	if so, use snapshotted mountpoint. Use mountpoints list to split backup (parallelism will try to operate on different moints
+	to maximize speed if by luck they are on different disks).
+	
+[todo] mono/bug : report bug with directory.enumeratefilesystementries missing (ro?) files
+[done] node : bug : bchunk.originalsize is wrng (calculated twice??). ensure originalsize is only changed when bchunk.Add() is called.
+[done] dedup : check, correct, tune array comparer. benchmark dedup when dedup DB is big. --> tuned, lokup time decreased by 15 (!!)
+[done] node: Use IFile and PlatformStreams to open chunk files for writing. 
+[done] node: define, implement and report completion percent in STATS
+[done] node: maintain dedup list current position to allow faster lookups (start lookup for next data block to index+1).
+	We assume that most of the time, we will check the same file in the same order than previous backups.
+[done] benchmark dedup, to see if it is realistic in real-world scenarios.
+		--> reworked implementation, dedup list lookup time divided by 15 (!!)
+[done] node : benchmark dedup index lookup time
+[done] node : created a Benchmarker class.
+[done] add Benchmarker counters at : compress, checksum building, checksum lookup
+[done] node : made counters compiled only on /DEBUG flag.
+[done] dedup : after cksum lookup, search next cksum at lookup pos+1
+[done] dedup : revert dedup list from ConcurrentBag to List. Only add new indexes every N iterations (or at Persist()), temporarily store them in a concurrentbag(in case multiple consume() are launched). 
+       This way no locking/concurrency is needed during lookup.
+[done] verify than sent index+dedupdb chunks are correctly generated .
+[done] node : Created a per-IFile FileBlockMetadata property that contains a list of BlockMetadata. BlockMetadata is a client deduped block, server-deduped block (future), sparse region (future)
+[done] Node : add a new FileBlockMetadata named SparseBlock(offset, length) 
+[done] node : ntstream make implementation reliably work with backupread
+[done] node : correct bug when first use of dedup db (new empty db)
+[done] node : implement UsnJournal IIncrementalProvider
+[done] node : CompressorStream : gather data until reaching blocksize (else unrecoverable data)
+[done] node : BUG : don't throw exception when VolumeManager can't list zfs or lvm drives (when commands are not found)
+[done] node: ntfile  :allow file to have multiple "basic"  attributes (directory && reparse point for example). Handle and store FileSecurity
+[done] node :  rewrite backup items handling : expand per-drive paths to BackupRootDevice-device, basepaths)  to handle backup unit. 
+[done] node : BackupManager calls foreach(BackupRootDevice)
+[done] Node : remove GetFilesTobackup & GetNextChunk from Backup class. Move them in the new BackupRootDriveHandler class that will be called, once per BackupRootDrive
+[done] node : bug: only call SignalFull() AFTER full backup has been done successfully.
+[done] hub/node : handle and report nbitems in STATS command
+[done] dedup : add benchmarker counter to know how often dedup finds next hash at pos+1 (hot-hit), and how often it doesn't (cold-hit)
+[done] node : implemented EncryptorStream, encryption uses client node certificate.
+[done] node : add header to each chunk, indicating if it is encrypted or compressed (for deduped restores), containing encryption metadata, and taskid.
+[done] hub/node : made backupset parallelism configurable per-backupset (store into db).
+[done] hub : when starting, update previously interrupted tasks (tasks not finished when when hub was stopped).
+[done] hub : report runningstatus in tasks history. + resolved small bugs and improved logged messages.
+[done] node : make each DataProcessorStream implement interface IDataProcessorStream
+[done] node : IDataProcessorStreams : each stream can add IFileBlockMetadata during its work (dedupedblocks,..)
+[done] node : IDataProcessorStreams : implement FlushMetadata() to send blockmetadata after each IFile has been processed.
+[done] node : corrected major bug when processing big (>maxchunksize) files
+[done] node : Rewrite backup prepare() logic. DON'T create one BackupManager per basepath!
+[done] node : BackupManager : loop calling Produce() for each defined (and computed) backup.BasePath
+[done] send current processing path(s) through STATS instead of 702
+[done] node/hub : report nb items in STATS
+[done] node : BackupRootDriveHandler : implement IFSEnumerator, uses mono.unix getfilesystementries on *nix, AlphaFS on windows
+[done] node : Session : use socket buffersize (default) for data socket. USE TCP_NODELAY for control socket, to allow FIL/205 message series to be received immediately. This should improve performance
+[done] Implemented Dataprocessor stream to compress with Gzip.
+[done] node : compress backup indexes with GZCompressorStream (size reduced by 35%)
+[done] node : compress dedup database with GZCompressorStream .
+[done] node : don't increment filepos if previous file is zero-length. More generally, double check the fileposinchunk logic to ensure we won't be getting problems.
+
+
+
+
+12/2011
+[done] node : port NTBackupFile to use alphavss
+[done] node : NTBackupFile and Linuxfile(?) : implement CreationDate
+[done] node : NTBackupFile : implement Reparsepoint (FileType.MountPoint) and handle mount location
+[done] check and correct duplicate backuprootdevices found ('/' special case)
+[done] node : incremental FileCompareProvider : if only lastmetadatachange has increased (not file lastwritetime) only backup metadata, and add a new FileBlockMetadata
+[done] node : add Benchmarker counters for file reading and network sending.
+[done] Node : ntfile : really handle all attributes (at this point we must be able to backup anything on a NTFS drive)
+[done] node : remove snapshots after backup.
+[done] implement basepath ExcludePaths to store automatic and user-defined directory/mounts to exclude froml backup
+[done] check and validate correctness of backup pseudo-fs exclusions (sysfs, dev, procfs...)
+[done] node : implement file logging.
+[done] node : verify portability on windows and freebsd.
+[done] node : prevented bug in sent chunks accounting, preventing multi-session backup to work.
+[done] node : test and validate backups with multiple storage nodes (3). Make it rock solid as it is a key feature.
+[done] node : sdend nb items with DBU (done backup message)
+[done] node : when error (reading or sending data), re-add chunk to queue and mak sure it is transmitted later to another storage session
+[done] node : implement index reading (retreive headers, chunks, files). Required for housekeeping and restore.
+[done] node : correct bug : backup hangs when reading chrooted special items (/var/lib/ntp/proc). exclude such mounts.
+[done] node : expand, split and group backup paths according to mount points
+[done] node : when parallelism >1, ensure each Consume() processes a different mountpoint (for performabce) if possible.
+[done] hub : allow first-request budget based on  budget=(size of previous backup with the same BackupType)/parallelism + 1
+[done] hub : subsequent budget/session requests will have a default value (10)
+[done] during backups/restore, update Task on scheduler list with information/errors received from the client node
+[done] node : ALLOW EMPTY IFile data if only metadata was changed, for incr/diff backups
+[done] webUI : create running Tasks view (based on bs view?)
+ctl()
+
+01/2012:
+[done] node : on *nix, backup extended attributed (acls, ...)
+[done] node : On Windows, calculate real items size (including Alternate Data Streams) when gathering items to b backuped.
+[done] WebUI : correctly display tasks log, dates and operations on Tasks history page.
+[done] node : corrected BUG with big files (getbigFile and remaining size)
+[done] node : report backup errors to Hub while processing items or sending through network.
+[done] Hub : re-implemented ALT destination when a storage session transfer fails 
+[DOING] hub&node : implement basic housekeeping (special task,
+[done] node : catch errors in ConnectToStorageNode() and call ALT
+|done] node : when receive 406 (no storage space) stop running transfers (implement cancellationtoken in backupmanager.consume) and process index (allows housekeeping of this failed backup)
+[done] hub/node: implement "cancel/stop task" which stops transfers and task, using previously implemented code (calcellationtoken, index saving...)
+[done] hub : maintain per-task transfer data : storage sessions, budgets
+[done] hub : when node asks for destination, reuse previous session (with exhausted budget) if it has enough storage space
+[done] port getdestination (ALT) to use ChooseDestinations
+[done] node+hub : track storage space (storage nodes)
+[done] node : implement include/exclude backup filters (simple filters with '?' and '*' wildcards accepted)
+[done] node : factorize backup BackupPaths
+[done] node : ported (and almost working) on Windows XP, with special XP NTFS size calculation (no findfirtstream() on this platform)
+[done] various : lots of bug fixing in almoste every area of the project, GUI improvments, small functionnalities
+
+
+02/2012
+[done] node : after incremental/diff backup, create synthetic full index merging current backup index with ref backup.
+
+03/2012 - 04/2012
+[done] ported all indexes to C#sqlite, allowing easier index management
+[done] do sqlite tuning to reduce index space usage and increase insert rate.
+[done] node : indexes : implement merge/synthetic index to always have a backup state equivalent to a full : full + incr ==> synth full
+
+
+05/2012 - 06/2012
+[done] hub : basic 'shbc' client allowing to query hub from command-line, and allow basic tasks start/stop
+[done] hub : basic authentication and authorizations (roles) for remoting (web UI and command-line) clients
+[done] hub,node : ported remoting system to WCF
+[done] all : put all common objects into Common.dll. Get rid of webui and shbcli dependancy with Hub.
+[done] webui : ported to extjs 4.1
+[done] hub : implemented certificate generator for new nodes
+[done] node : allow connection to hub without certificate. Allow certificate requests, and store received cert.
+[done] hub : allow clean and remote shutdown
+[done] node : store filetimes (creation, modification, metadatamodification) as long instead of datetime (saves space in index)
+[done] hub, node : significant code cleanup and reordering, although far from perfect.
+
+
+07/2012
+[done] Node, Hub : Make DataPipeline generic (only provides a pipeline). Processing par has been split to the new ChunkProcessor class.
+[done] Node, Hub : allow backups dataprocessing to be offloaded (totally or partly) to the storage node(s). 
+	Compression, Encryption, Chunk checksumming are the best candidates to be offloaded from client node.
+[mostly] Hub : validate DataProcessingFlags and prevent forbidden/use combinations (example : useless to have client compress+storage compress, wrong to have client encrypt and storage compress...)
+[done] Hub : keep track of backupsets changes using a Generation ID, and retain old configuration if they are referenced by not expired tasks.
+	This allows to restore a backup whose configuration has since been modified. 
+	This also provides the basis to allow to track changes (who made what, and when).
+[done] Node : Put processed chunks in queue for inserting them into index (will make parallelism >1 work again)
+[done] Hub/Node : create a Common Session class. Introduce session ID
+[done] Node : allow multiples client sessions to the same storage node (work with Session.ID instead of session ip:port)
+[done] Webui : corrected display bugs with menu.
+[done] Hub : corrected TaskMonitor bugs killing not yet started tasks. Make MonitorInterval a configurable value.
+
+
+
+08/2012
+[DOING] Node : finish implementing FileCompare Incremental provider : scan last synthetic index to detect deletes etc...
+[done] node : UsnJournal IncrementalProvider : working implementation (handle rename, delete, copy/move... events)
+[done] node : keep IncrementalProviders metadata into index (for example, Usn journal info)
+[done] node : when performing incremental, load Incrementalprovider metadata from previous backup index header.
+[done] node : correctly store BigFiles into index (don't use fileID as primary key, allowing multiple items with same id. 
+	Also, set bigfile entries parentid to itself.
+[done] Node : add field "changestatus' to index table 'items' : changestatus=1 => entry deleted, 2 =>entry renamed/metadata changed but content not changed
+[done] Node : stop serializing ID and ParentId into index, since these are already standard index db fields.
+[done] Node : Indexes : change index name according to backup type : s-xxxxx.idx for fulls or synthetics, p-xxxxx.idx for partials (incr/diff)
+	This way we don't have to try opening s-and t-.
+[done] node : index : stop storing IFSEntry ID, parentID into 'data' field : already stored as regular sql field.
+[done] node : store lastmodifiedtime, lasmetadatamodifiedtime into fields instead of 'data'.
+[done] node : filecompareprovider : compare file modifiedtime/lastmetadatamodifiedtime with ref item times.
+[done] node : process root backup path entry and store it into index, just as any regular entry. Avoid top items having a parentid=0.
+[done] Node : corrected bugs with Basepaths excluded paths.
+[done] Node : process synthetic index BEFORE DBU(backup done signal)
+[done] Node, hub : store synthetic index checksum, and send it when synth/incr backup, allowing node to check that 
+	its local synth index has not been corrupted.
+[done] Node : BUG : " Indexer : no more chunks to index" before last chunk is sent and confirmed.
+[done] Node : before opening reference index (for incrementals backups or synth indexes), verify checksum.
+[done] Node : if reference index checksum received from hub doesn't match local ref index checksum, refuse to process. 
+[done] Node : Index : define GetBaseItemsEnumerator : only return id, name, parentid, modtimes instead of deserializing whole IFSEntry (will save CPU and memory)
+[done] node : when backup fails (no storage space, cancelled...) process and send index (allows housekeeping)
+[wontfixnow] Node : storage : don't re-create a pipeline for each received chunk
+[wontfixnow] hub: taskscheduler : before allowing incr/diff, check that no basepath has been added to backup, else perform full.
+[TODO] node : incr providers : implement delegate for SubCompletion (see filecomparer bubbleUp). Usn provider : calculate subcompletion according to total usn record found.
+[done] Node : test if multiple sessions (parallelism >=2) run fine, if no "The BlockingCollection<T> has been marked as complete with regards to additions." 
+	for chunkBuilderFeed. If bugs, get rid of processingchunks, put all Consume Tasks in an array, and use WaitAll()
+[done] Node : get rid of System.collections, use System.Collections.Generic everywhere (save 1 dependancy when doing a static native build)
+[done] Hub : move 'HandledBy' property from Node to TaskSet (allows on a VM some tasks to be performed by a virt proxy (VADP...) while others are directly handled by the VM (if it has a client agent)
+[done] Hub/Common :  defined a 'Password' class, handling storage and retrieval for all password-type values : Users, Hypervisors, clientnodes Applications...
+[done] Hub : implemented a basic 'PasswordManager' which aims at storing securely all passwords that could be manager by hub and clients, into database. Use Hub's certificate pubkey to encrypt values.
+	 Goal : have all passwords stored in a central place, encrypted. Clientnodes applications backups will also benefit from that.
+[done] Hub : Ported Hypervisor, User to use the new Password infrastructure.
+[done] Hub : reorganized Node : added properties Kind (Physical/Virtual), Internalid (vm uuid). Removed 'Locked' (added to status enum)
+[done] Hub : started DbHandler reorganization : split into several files according to class handled by dbhandle.
+[done] Hub : create Libvirt and VMWare Hypervisor implementations, able to connect and retrieve a host vms list.
+[done] Node : create managed p/invoke implementation of VDDK, to mount and process VMWare vms disks on "vddk proxy" client nodes
+[done] Node/Common : rework FS handling. Implement StorageLayout, IStorageDiscoverer, to be able to gather complete data about a node's storage layout.
+	Layout here is : physical disks -->partitions --> logical volumes-->FSes --> Sub-FSes
+[done] Node : implement generic StorageLayout disk and partitions handling : read MBR, Detect partitions
+
+[done] Node : get rid of slooooow transfers on windows (VMs only?)
+[DOING] Node : perform lots of tests with VSS plugin, to ensure we can backup a complete system AND/OR components
+[done] Common/all : move storagegroup.priority to node.priority : allows priorities inside a storage group, which makes more sense
+[done] Hub : ChooseDestinations : use storage node priority as a hint to destination calculation.
+[done] Node : implement pre- and post- task commands
+[done] Node : on NT, don't try to gather real items (inclusing sec & ADS) size, since it involves costly operations. Also dn't warn if real backuped size > item size
+[done]-vmware : ignore physical RDM drives
+[done]-vmware ; test OpenDiskSet on windows
+[done]-vmware : LoopMount on Linux (ioctl() loop + option SCAN)
+[done]-vmware : use LinuxStorageDiscoveer to allow it to discover loop partitions
+[done]-vmware : linux vm : mount discovereed loop parts
+[done]-vmware : create a loop discoverer reading loopmountpoint/etc/fstab and handles part-FS matchings
+[done]- Node : provide a "GetStream" method for each Disk, to read any part of it, instaed of just 512 first bytes. Needed to parse extended partitions
+[done] Node : StorageLayout : parse extended partitions 
+[done] Node : make ExcludePolicy work
+
+
+[TODO] FS
+-backup.GetCompletionBase() : use IFSBrowser to get a portable folder enumerators and make completion work for proxied backups
+
+
+-vmware : only call Dismount() if a volume was really mounted returning VIX_OK (else crash!)
+-vmware : parse registry mountpoints for DYNAMIC discs
+-vmware : parse registry for FSes mounted as mountpoints (no drive letter)
+
+[done] node : add a StorageLayout SpecialObject plugin, to save storage layout and topology (will one day allow BMR!)
+
+[DOING] Node : NTstoragediscoverer: discover layouts when FS has multiple backing devices (dynamic disks)
+[done] Node : rework StorageLayer DiskElement with AddChild() method taking care to also update .Parents preperty.
+		Allow an item to have multiple parents
+[TODO] Node : discover LVM layouts and add them as 'logicalvolumes' (with potentially multiple backing disks/partitions) to StorageLayout
+[TODO] Node : store LVM infos into storagelayout (pv+pv+pv-->LV, OR lv<->lv raid, ect...)
+
+
+09/2012:
+[done] Node : reimplemented dedup DB to make dedub take much less memory space, also less space inside index file metadata
+[done] Node : WinNT Stream : make stream handle 100% of disk elements, no more access denied : back to custom BackupRead/Write/Seek implementation, instead of AlphaFS one.
+[done] Node : 3rd rework/version of backup indexes, cut index size by a factor 4(!). Also include dedup information to its minimum.
+[done] Node : modify parallelism to differentiate absolute, physicaldisk and filesystem parallelism (use struct Parallelism instead of only integer)
+[done] common : redefine backups Levels to Full, SynthFull, Refresh. 
+[done]-vmware : add SPOVMware to backup VM config and be able to restore it
+[done] Node : Implement own parser for USN journal, to be able to use USN work on loop-mounted NTFS drives and VSS snapshots
+[done] Node : save SPO components into index (to be able to list SPOs at restore time, especially when conf is '*' thus not explicit)
+[TODO] Node : check usn incrprov correctness upon directory rename (http://ejrh.wordpress.com/2012/07/06/using-the-ntfs-journal-for-backups/)
+[done] Node : Ensure we process index when task is stopped (manually cancelled) or stops because of error/critical.
+[DOING] Node : reimplement LZO compression and try to make it work, to definitely replace gzipstream (slow and cpu hungry)
+[done] Node : use 1 distinct dedup db per taskset (avoid loading 1 potentially huge db into memory)
+[done] allow snapshot-only "backups" 
+[done] allow snapshots to have a retention policy (and if so, don't delete them at the end of backyup)
+[done] backup : if snapshot retention is not set, delete snapshot after backup
+[done] Node : report VSS errors to Task log and set status as warning
+[done] Node : ensure we store all FileBlockMetadata (mostly dedup blocks) into index
+[TODO] Node : when configuring a new storage node, set storagefree = storagesize
+[done] Node : VSS : when Backuping components/writers, Get XML Medatada doc AND SAVE IT into index (providersmetadata) as SPoProvider.Metadata (will be needed for restore).
+
+
+10/2012
+[TODO] Node : Index : recompile Sqlite with SQLITE_POOL_MEM, see if it reduces memory usage
+[done] On Nt, read HKLM\SYSTEM\CurrentControlSet\Control\BackupRestore\FilesNotToBackup and add exclusions accordingly
+[TODO] Node/Indexing : don't store taskid for every item, instead get MaxChunkId from ref backup and use it to ensure unique chunk id (refresh backup chunks id will start at maxid+1)
+[done] Node : save synthetic index instead of partial one (except fot SnapshotOnly backups).
+[TODO] Node/Vmware : update ConnectionParams structs to use VixDiskLibSessionIdCreds, to work on VDDK 5.1
+[DOING] Node : implement SynthFull backup, generating a full, FS-ordered index
+[TODO] Node : implement IPlugin interface, to dynamically load and register providers for IDiskDiscoverer, ISpecialObject
+[TODO] NODE/hub : implement per-plugin configuration options {name, type}, per-host and per-task. Allowed types : string int, enum, bool
+[TODO] Node : allow to backup blockdevices (process them as simple files)
+[TODO] Node : Encryption : store Encryptionmetadata into index
+[TODO] Node : report currently processed level-1 path (task 700 ...)
+[TODO] Node : find what uses so much memory on NT (memory usage grows at snap time(??))
+[TODO] Node : when no storage space available, add task log entry.
+[TODO] Node : move PathExlcuder as a StorageDiscoverer method
+
+
+
+[04/05 2013]
+[done] huge port from custom crappy json WebUI + IIS/Apache to ServiceStack + own hosting
+[done] webui : port old requests to nice ServiceStack REST webservices
+[done] webui : port to new REST calls api (/api/xxxx)
+[done] node-hub : browse messages are now Json (instead of custom-generated Xml)
+[done] node-hub : reworked protocol from custom text to typed messages (Json)
+[done] node : get rid of System.Xml dependancy
+[done] huge port of custom DAO to ServiceStack OrmLite
+[done] webui : make almost all operations work : node conf, backupset viewing, adding and editing, users managementde
+[done] base API to browse backup index
+[done] reworked sessions init and authentication with 3-peers authentication using shared secret from hub
+|done] BUG node : xatttributes copied to next items inappropriately
+[done] node : dedup checksums : reduce md5 collisons by adding the size of the block (4 bytes) to the 16 bytes checksum, getting  total 20 bytes checksum
+[done] BUG node : merge partial index : old (reference) metadata is copied into new index instead of fresh metadata
+[doing] BUG node : when DS3 is received before DS1, problem (and DS2 is sent twice). => remove volatile, add a Sleep() as temp workaround. 
+[done] : reworked authentication between client and storage node : 3-peers auth with shared secred generated by hub
+[doing] rework of deduplication : perf tests, atomic refcounts updating, write new entries to file when calling MergePending()
+[done] reworked storage space accounting and sessions management.
+[TODO] on SessionEvent, check if there is a previous session space usage update left to be done
+[done] : SSL between peer nodes for control channel
+[TODO] node : when parallelism >1, maintain for each requestor an instance of dedup db currentpos
+[TODO] node : on backup start, if no dedup db, ask hub for a backup (hub replies null if no ddb backp => first backup ever)
+[TODO] node : if DontTrustMtime is set, set incr provider 'FileComparer' configuration accordingly
+[TODO] node : prevent actions unrelated to context ( ie : for a storage session, prevent 'delete' action)
+[TODO] node-hub : trigger preop,postop,windowexceeded runstatuses, in order then to be catched by BS Notifications[]
+[TODO] hub : reimplement notifications
+[done] node : when doing Refresh backup, check if there are more/new paths than in reference task
+	and detect them -> they may have lastmodtime in the past but metadatatime > last task
+		more generally, correct incr provider code to detect new files but with a 'past' mtime
+[done] node-hub : port text protocol to Json Messages with context (task id or not) and nature (async ->send and forget 
+	or sync -> send and register wait handle for reply'). Define message Id.
+
+[done] Webui : users (and password) management
+[done] Webui : hypervisors management
+[done] Webui : storage groups management)
+[done] Webui : view backupsets (for each client) summary, and allow to start or edit them
+[done] reworked nodes 3-peers authentication to work with a shared secret from gub. resue this shared secret for backuped data encryption (if required)
+[done]
+[TODO] Node : rework dedup db: 1) allow processing multiple instances. 
+			2) dispose properly (immediately re-launch bs shouldn't throw ereors)
+			3) separate 'pendingmerge' queues to avoid 1 queue with concurrent access/locking
+			4) separate 'currentPos' instances to maintain good 'hotfound' ratio
+[TODO] : hub/webui : when selecting new Bs paths, put special mark on paths already backuped by other backupsets 
+	( and offer option to automatically exclude them)
+[TODO] node : dedupindex : rework UnsafeCompare() to check 4 last checksum bytes at once, instead of byte-by-byte
+
+
+[HouseKeeping]
+[TODO] Node : when performing SynthFull, repack chunks with more than 50% unused space
+		Also move and group data into new chunks when data for 1 file is split to more than N chunks
+[TODO] node : 'repack' Session : "COPY chunkname pos length newchunkname". 
+[TODO] node : update synth index with new repacked data
+[TODO] node : update dedup db with new repacked data
+[TODO] Node : after backup, clean previous indexes older than X days on client. 
+[TODO] Node : only keep N indexes on client.
+[TODO] Node : delete expired snapshots
+[TODO] Node Define housekeeping levels Light (snaps delete, old indexes purge, whole unused chunks delete, dedup refcounts decrease), Medium (
+
+
+[todo] all : handle Restore : restore CUSTOM paths, node: get and browse index file, send XML to hub for webUI. Webui : implement backups browsing & search
+[TODO] Node :  if reference index checksum received from hub doesn't match local ref index checksum,restore backuped index.
+[TODO] pick correct paths format (without initial '/') for NT browser
+[todo] Node : implement --install and --uninstall options, to respectively install and uninstall service
+[todo] storage node : set chunk immutable (fsetflags). FreeBSD : chflags --> p/invoke io
+[todo] node : implement a flexible plugin architecture, used by VSS and by (for now) 1 other special object handler (mysql ?)
+[done] WebUI : implement a "view node backupsets" page allowing to view and search all/specific backupsets.
+[todo] node : on NT, make NTStream accumulates backupread()s until it reaches normal streamprovider block size (512k).
+	this avoid multiple random, small reads, growing dedup list, and allows better performance.
+
+
+
+[features after first release] 
+[todo] hub: BackupSet : allow soft backup window end and hard window end. soft end reached -> mark task as 'window excedeed'.
+	hard end : stop and cancels the runing tas. can be any hour value or 'next backup' special value (detects when the next same backup will run and stop the current one if needed)
+
+
+
+
+
+
+
+[RESTORE]
+[done] Node : store node #id into Bchunk header
+[TODO] storage node : when peer node requests a chunk (or part of it), check into chunk header if this node is 
+	really the onde who backuped it (or hub allowed him to request on behalf of backup node).
+	This way we have a good additional security : impossible to 'steal' data even if peer node is compromised/modified.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*deduplication:
+#client side : maintain a kind of "linked list/tree"
+the list would have a tree structure organized by hash first char :
+
+		[root]
+ /         |         \
+[A]       [B]       [C] ...
+hashs	 hashs		hashs
+
+each "hash" is a DedupedBlock(hash, chunkName, startPosition, size, refCount, nextHash[5])
+hash : the hashed data value
+chunkName : the Chunk where the data is located. chunk storage location can be found from previous backup indexes.
+startPosition : begin position of the data block inside the hash (raw position, that is : after decrypt and uncompress)
+size : length of hashed data block
+refCount : number references pointing to the data. When reached 0, block can be marked for deletion
+nextHash: array of pointers to hashes (DedupedBlocks) that were searched just after the current hash during previous backups.
+	This allows faster hashes lookup, because we assume that each backup will process data blocks in the same order than previus backups 
+	(because we do sequential file accesses).
+
+#storage node side:
+each storage group has a global distributed hashtable. Each storage node member of a group is responsible for managing/storing a subset
+	of blocks
+
+
+[done] (BUG) Node : GetFiles : handle NT reparsepoints/junctions/hardlinks/whateverlinksystemname
+[DOING] Node : Make VolumeManager a singleton and cache first run results (as it does long/costly operations)
+[todo] test restore. !!! At this point we can consider that we have a working backup tool for basic things. !!!!
+[todo] Node : automatically and silently add storage and indexes dirs to backups Exclude list
+[todo] webUI . update addbackup page, to handle redundancy for chunks and indexes.
+[todo] webUI : display clients certificate status on ClientNodes page
+[todo] allow creation of a storagegroup with type 'indexes', to allow a redundancy of r+1 for indexes (later, also use this group for faster restores)
+		make backups use this group if index red=2 (origin client + indes SG). If index red=3, origin+index SG + random storage node. If no indexes Sg, 
+		default redundacy is 2, with storage on client+random node.
+[todo] webUI : allow creating nodes conf templates, and select them in "configure node" page.
+[done] webui : add modify backupset page
+[todo] hub : implement configuration options and code needed to check nodes certificates : expiration date, cn, root cert...
+[todo] hub : when we lock a node, check if it's online. if so, check if it has running backups/restore/store tasks. if yes, delay locking until all tasks done. 
+[todo] RESTORE : before restoring, verify that we have all needed chunks (implement message "FND chunkname checksum" to check if a chunk 
+	exists on a node) in a usable state.
+
+[todo] webUI : put useful data on welcome page : last backups errors, next backups to run, biggests backups, storage pools nearly full...
+[todo] webUI : create nice HTML5/canvas graphs with jqplot to watch individualbackup size growth, storage nodes/pools usage...
+[todo] webUI : begin adding help sections for important steps : storage pool creation, backupset creation... to assist beginning users
+[todo] hub : handle housekeeping
+[done] : client : handle pre and post backup commands
+[todo] implement delegations on hub and nodes : is node allowed to add its own backups, which max frequency to allow user-defined backups, quota...
+[todo] node : allow CDP backup : monitor dir/files with FileSystemWatcher, and backup file modified within the las X (configurable) minutes.
+[todo] ROBUSTNESS bug tracking : allow brutal storage node disconnect while backuping, allow hub disconnect while backups are running.
+[todo] : STOP developping functionnalities - CORRECT all known bugs - TEST
+[todo] TAG RELEASE 0.8 (private release)
+[todo] test on windows xp
+[todo] test on vista or newer - setup a windows test lab. correct windows bugs
+[todo] start trying to build static binaries with mkbundle, try to build static and normal rpm, at least for suse
+[todo] hub and webUI : implement templates
+[todo] : node : add a client-line interface to configure backups and make restores :
+[todo] webUI : create BS view (grid with selectable grouping by lient/template/...
+
+
+
+
+
+**** [IDEAS] *****
+-on *nix, try to see if we can benefit of inode generation numbers to detect easily renames/moves/deletes. C# --> ioctl() possible??
+-additionally to storage redundancy, offer reed-solomon style checksummming and error correction : http://cct.cs.washington.edu/community/ conference xp
+
+
+
+
+$shbc
+*: cd /path
+*: ls
+  Gathering indexes and building info, please be patient...
+file1 file2 file3 dir/ dir2/
+*: ver file1
+2011/05/25@22:46 2011/05/24@20:14 2011/05/12@08:31
+*: calendar file1
+---------------------------------------
+| mon 26 | tue 27 | wed 28 |
+---------------------------------------
+|  22:46   |  20:14 | <none>|
+----------------------------------------
+*: restore file1 version 2011/05/12@08:31 to /path/to/restore 
+  Gathering chunks, please be patient...
+Restored 1 file(s), 300MB in 27s (10.1MB/s)
+*: restore dir2/subdir/* version last to origin with overwrite without permissions
+  Gathering chunks, please be patient...
+Restored 197 file(s), 150MB in 19s (8.4MB/s)
+*: restore dir2/subdir/* version last to /tmp/restore with permissions
+  Gathering chunks, please be patient...
+Restored 197 file(s), 150MB in 19s (8.4MB/s)
+*: restore dir2/subdir/* version  2011/05/24@20:14 to /tmp/restore with permissions
+  Gathering chunks, please be patient...
+Restored 197 file(s), 150MB in 19s (8.4MB/s)
+[todo] notifyer : sends errors, backup errors, storagegroups errors by mail (to user's email addresses) or syslog
+[todo] test on linux, freebsd, windows xp and vista.
+[todo] webgui : implement "setup mode" easy to understand
+[todo] implement webUi users and permissions (superadmin, viewer, allow group-level authorizations
+[todo] TAG 0.9 RELEASE : first public release as "tech preview"??
+
+
+
+
+*first really usable version 1.0:
+client: handle windows perms
+client: handle windows VSS
+client: handle LVM/BTRFS/ZFS snapshot
+client: handle client delegations, backup rates (1/h, or filewatcher...), client delegation quota
+client : tech-preview Winforms gui to manage backups by regular users : view backups, do restores, add custom backups, view quota
+client : make RPM package with all-embedded mono (mkbundle) at least for Suse 10.4, RHEL5, RHEL6, Fedora 14, fedora 15. x32 & x64 
+client : make DEB package (all  embedded) for ubuntu 10.04, 10.10, 11.04, Debian lenny and squeeze. x32 & x64
+client : make .msi package for xp, vista, seven
+client : provide FreeBSD (all-embedded using mkbundle) binary. Try to provide Solaris binary too.
+test "real-world" deployment, on at least 15 nodes (mixing linux, freebsd, windows)
+[todo] TAG 1.0-BETA RELEASE : release
+[adm] make a website dedicated to the projet. Features, advantages, comparison with other, why we are better
+
+
+
+[BUGS] :
+- node !!!!!! make ConnectToStorageNode use THREADPOOL. propagate exceptions from thread, to allow ALT
+[done] 08/06/2011 - hub : only update backupstable (dbhandle.AddIndex) when destination confirms that index is stored
+[done] node : sometime storage nodes doesn't send tranfer confirmaztion (205) to client
+[done] node & hub : implement ALTernate destination for indexes. Right now, if client fails to store index file, the index will be stored on an alternate node without updating backups table
+-node & hub : allow ALT to contain several blacklisted nodes, instead of risking unsuccessfully reconnect attemps to previously failed nodes
+-node : handle special backups cases (currently hangs with /var/lib/ntp/proc)
+[done] node : User : make Accept() async(BeginAccept) to not block everything when a peer can't connect for some reason.
+[done] hub : scheduler adds duplicate backups (still adds a backup to queue when it's already queued and running
+[done] node : when backups is finished, transfer session are incorrectly closed and freed, which disallows further backups
+-node : cross backups don't work (when a client receives chunks as storage node, while running itself a backup)
+-node : define a way (startup time, periodically, ob hub request) to clean temporarilly stored chunks
+
+
+[TODO]
+- storage nodes : chattr +i whene saved new chunk, to help preventing accidental deletion. See if equivalent exists on windows
+- hub client certs validation : offer configuration parameters to be more restrictive with clientcerts : options to
+	check root cert(validate trust chain), option to only accept node with cert CN = resolved hostname, option to only accepted certs not expired...
+- [done] data chunks : add header indicating version, to handle compatibility with future format changes. Header : node version, taskid, task owner (node id)
+- indexes : add header indicating version, to handle compatibility with future format changes
+- handle 406 : on storage connected, notify waiting clients
+- handle 507 (backup file not found on storage not when client asks for recovery) : try to find an other storage node having this file (HUB)
+- storage nodes : track chunknames and chunksizes when receiving RCV to only allow client connections that match (security)
+- hub : allow 'archive' type storagegroup, to move or store backups on archiving media (tape/DVD/targz archive...)
+- implement storage moving : backups older than X can be moved on another storage group (eg slow storage) or a "special" storage group : DVD/tape writing...
+- allow recovery on destination path different than original path
+- allow clients to auto-reconnect to hub in case of connection lost (eg try every 5s)
+- allow client delegation : a client can have its own backupsets or not (sec policy defined at hub level). in case of conflicts hub always wins
+- allow hub to completly manage storage policies (mid-term : define templates for clients-backupsets and storage policies)
+- allow at least 2 keys by client : if for some reason client change its key, we need to keep the old one on hub to allow restoresd for backups created befor key change, and before their expiry time
+- implement retention policies in terms of time
+- implement space gain : for exxemple only keep full backups if older than X
+- implement housekeeping : periodically schedule expiry checks, delete stored backuos appropriately
+- allow to recover some space on a storage node : on an administrator request, dispatch stored backups on other nodes
+- NT/VSS : allow backup/restore with REMOTE components dependancies
+
+
+
+
+[specific]
+- windows client : implement VSS
+- windows : better GUI, more intuitive. For advanced users or hub-controlled clients, option -nogui
+- windows : allow to automatically detect PST files
+- windows : allow to automatically detect registry and backup it
+
+- linux : implement and support LVM snapshot (Btrfs???), BSD : handle ZFS snapshots (maybe later UFS)
+- linux : allow backup of special files : symlinks, special medadata (sticky...)
+
+- implement auto-backup with FileSystemWatcher and delays
+
+
+*Post-1.0 milestones :
+
+[target= version 1.1, HIGH priority]
+-internationalization of client and webGui : english, spanish, french.
+-implement recovery mode for hub (in case of lost hub dataabse) : gather all indexes on all nodes, parse them, rebuild database configuration
+- implement deduplication based on:
+	root path (/my/root)
+	and chunks
+	don't dedup is redundancy > number of already existing equals blocks
+	make a working dedup with these simple principles. Handle dedup stats to show space gain on webGui.
+	later, make dedup smarter
+-implement backups automatic scheduled restore tests
+-implement optional md5/sha checksum of chunks, when built, and store checksum inside index.
+-implement storage nodes consistency checks : periodic and on-demand sanity checks : 
+	dead chunks, 
+	backups with missing chunks (accidentally deleted by user with rm...)
+	md5/sha sums of chunks
+-implement rebalancing of a missing chunk from a duplicate
+[taget= version 1.2, medium priority]
+-implement storage node migration, in case administrator requests to free {some, all} storage space on a node
+
+[target= version 2.0, HIGh priority]
+-implement hub cluster mode, allowing high availability AND load balancing. Ideally cluster=n hub nodes. If easier only implement 2 nodes setup
+
+
+[i18n]
+deutsch
+russian
+japanese
+italian
+portuguese
+chinese
+
+
+
+[Node : DEPENDENCIES]
+-Custom Mono.data.Sqlite (with CLR security disabled)
+-Protobuf.Net
+-ServiceStack.Text (json serializer)
+-LZ4
+
+

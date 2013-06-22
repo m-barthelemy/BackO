@@ -1,0 +1,43 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../SharpBackupWeb/WebServices/PlanWS.cs">
+    <Files>
+      <File FileName="DAL/Common.cs" Line="1" Column="1" />
+      <File FileName="../SharpBackupWeb/Get.aspx.cs" Line="12" Column="32" />
+      <File FileName="../SharpBackupWeb/WebServices/ServiceStackDefinitions/UserAuthenticationProvider.cs" Line="43" Column="15" />
+      <File FileName="../Node/Utilities.cs" Line="452" Column="65" />
+      <File FileName="../SharpBackupWeb/Main.cs" Line="3" Column="32" />
+      <File FileName="../SharpBackupWeb/WebServices/ClientsWS.cs" Line="1" Column="1" />
+      <File FileName="../SharpBackupWeb/WebServices/PlanWS.cs" Line="22" Column="55" />
+      <File FileName="../SharpBackupWeb/Utilities.cs" Line="13" Column="2" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Common" expanded="True" />
+          <Node name="Hub" expanded="True">
+            <Node name="DAL" expanded="True" />
+            <Node name="Notifiers" expanded="True" />
+          </Node>
+          <Node name="Node" expanded="True" />
+          <Node name="shbc" expanded="True" />
+          <Node name="VMWare" expanded="True">
+            <Node name="VDDK" expanded="True" />
+            <Node name="VMWare-WS" expanded="True" />
+          </Node>
+          <Node name="WebUI" expanded="True" selected="True">
+            <Node name="html" expanded="True" />
+            <Node name="WebServices" expanded="True" />
+            <Node name="Default.aspx" expanded="True" />
+            <Node name="Get.aspx" expanded="True" />
+            <Node name="Global.asax" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
