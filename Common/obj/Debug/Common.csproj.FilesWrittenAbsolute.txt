@@ -1,0 +1,4 @@
+/home/matt/dev/SharpBackup/Common/bin/Debug/Common.dll.mdb
+/home/matt/dev/SharpBackup/Common/bin/Debug/Common.dll
+/home/matt/dev/SharpBackup/Common/obj/Debug/Common.dll
+/home/matt/dev/SharpBackup/Common/obj/Debug/Common.dll.mdb

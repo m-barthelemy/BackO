@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7ED43F11-2934-4CE7-B8CB-B63479A927FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\P2PBackupHub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\P2PBackupHub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>..\P2PBackupHub\lib\ServiceStack.OrmLite.MySql.3.9.54\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\P2PBackupHub\lib\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BackupSet.cs" />
+    <Compile Include="BasePath.cs" />
+    <Compile Include="NodeGroup.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Task.cs" />
+    <Compile Include="StorageGroup.cs" />
+    <Compile Include="IClientNode.cs" />
+    <Compile Include="IRemoteOperations.cs" />
+    <Compile Include="TaskNotification.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="LogEntry.cs" />
+    <Compile Include="UserRole.cs" />
+    <Compile Include="ScheduleTime.cs" />
+    <Compile Include="DisplayFormatOption.cs" />
+    <Compile Include="NodeCertificate.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="PeerSession.cs" />
+    <Compile Include="SystemDrive.cs" />
+    <Compile Include="Password.cs" />
+    <Compile Include="Hypervisor.cs" />
+    <Compile Include="StorageLayout\FileSystem.cs" />
+    <Compile Include="StorageLayout\IDiskElement.cs" />
+    <Compile Include="StorageLayout\LogicalVolume.cs" />
+    <Compile Include="StorageLayout\Partition.cs" />
+    <Compile Include="StorageLayout\PhysicalDisk.cs" />
+    <Compile Include="StorageLayout\StorageLayout.cs" />
+    <Compile Include="StorageLayout\SubFileSystem.cs" />
+    <Compile Include="IVmProvider.cs" />
+    <Compile Include="ProxyTaskInfo.cs" />
+    <Compile Include="LogEventArg.cs" />
+    <Compile Include="StorageLayout\IBlockDevice.cs" />
+    <Compile Include="SPOMetadata.cs" />
+    <Compile Include="TaskLogEntry.cs" />
+    <Compile Include="MailParameters.cs" />
+    <Compile Include="NodeConfig.cs" />
+    <Compile Include="BrowseNode.cs" />
+    <Compile Include="NodeMessage.cs" />
+    <Compile Include="Plugins\ISpecialObject.cs" />
+    <Compile Include="Plugins\IStorageDiscoverer.cs" />
+    <Compile Include="Plugins\Plugin.cs" />
+    <Compile Include="Plugins\PluginsDiscoverer.cs" />
+    <Compile Include="Plugins\IPlugin.cs" />
+    <Compile Include="NetworkAsyncStates.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="StorageLayout\" />
+    <Folder Include="Plugins\" />
+  </ItemGroup>
+</Project>
