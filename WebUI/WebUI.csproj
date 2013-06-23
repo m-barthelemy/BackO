@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47DF2431-D626-4FA2-A0A2-FD926A824052}</ProjectGuid>
+    <!-- <ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+	 -->
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Backo</RootNamespace>
+    <AssemblyName>WebUI</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="ServiceStack">
+      <HintPath>libs\ServiceStack.3.9.42\lib\net35\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.ServiceInterface">
+      <HintPath>libs\ServiceStack.3.9.42\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>libs\ServiceStack.Text.3.9.42\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>libs\ServiceStack.Common.3.9.42\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor">
+      <HintPath>libs\ServiceStack.Razor.3.9.42\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.FluentValidation.Mvc3">
+      <HintPath>libs\ServiceStack.Mvc.3.9.42\lib\net40\ServiceStack.FluentValidation.Mvc3.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Razor">
+      <HintPath>libs\ServiceStack.Razor.3.9.42\lib\net40\ServiceStack.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>libs\ServiceStack.Razor.3.9.42\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>libs\ServiceStack.Razor.3.9.42\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>libs\ServiceStack.Razor.3.9.42\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc">
+      <HintPath>libs\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>libs\ServiceStack.Common.3.9.42\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="web.config" />
+    <Content Include="css\g.css" />
+    <Content Include="resources\css\xtheme-gray.css" />
+    <Content Include="js\g.js" />
+    <Content Include="js\ClientNodes4.js" />
+    <Content Include="i18n\Bundle.js" />
+    <Content Include="js\HubConf4.js" />
+    <Content Include="html\Clients4.html" />
+    <Content Include="html\Restore.html" />
+    <Content Include="html\StorageNodes4.html" />
+    <Content Include="html\TimeLine.html" />
+    <Content Include="html\Welcome.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Utilities.cs" />
+    <Compile Include="WebServices\WSHost.cs" />
+    <Compile Include="WebServices\ServiceStackDefinitions\UserAuthenticationProvider.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="WebServices\ClientsWS.cs" />
+    <Compile Include="WebServices\PlanWS.cs" />
+    <Compile Include="WebServices\TasksWS.cs" />
+    <Compile Include="WebServices\UsersWS.cs" />
+    <Compile Include="WebServices\MiscWS.cs" />
+    <Compile Include="WebServices\HubWS.cs" />
+    <Compile Include="WebServices\StorageGroupWS.cs" />
+    <Compile Include="WebServices\BackupSetWS.cs" />
+    <Compile Include="WebServices\HypervisorsWS.cs" />
+    <Compile Include="WebServices\PasswordsWS.cs" />
+    <Compile Include="WebServices\NodeGroupWS.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="js\Restore4.js" />
+    <None Include="js\StorageNodes4.js" />
+    <None Include="js\Welcome.js" />
+    <None Include="js\Users.js" />
+    <None Include="js\AddBackupSet4.js" />
+    <None Include="js\BrowseWindow.js" />
+    <None Include="js\TimeLine4.js" />
+    <None Include="js\Tasks.js" />
+    <None Include="js\HubLogs4.js" />
+    <None Include="js\BackupHistory.js" />
+    <None Include="js\GlobalStats.js" />
+    <None Include="i18n\taskmsg.properties" />
+    <None Include="i18n\taskmsg_en-US.properties" />
+    <None Include="i18n\taskmsg_es-ES.properties" />
+    <None Include="i18n\taskmsg_fr-FR.properties" />
+    <None Include="i18n\wui_en-US.properties" />
+    <None Include="i18n\wui_es-ES.properties" />
+    <None Include="i18n\wui_fr-FR.properties" />
+    <None Include="i18n\wui_xx-XX.properties" />
+    <None Include="html\AddBackupSet4.html" />
+    <None Include="html\GlobalStats.html" />
+    <None Include="html\HubConf4.html" />
+    <None Include="html\HubLogs.html" />
+    <None Include="html\Tasks.html" />
+    <None Include="html\TimeLine4.html" />
+    <None Include="html\Users.html" />
+    <None Include="html\BackupHistory.html" />
+    <None Include="Set.aspx.cs">
+      <DependentUpon>Set.aspx</DependentUpon>
+    </None>
+    <None Include="Set.aspx.designer.cs">
+      <DependentUpon>Set.aspx</DependentUpon>
+    </None>
+    <None Include="Set.aspx" />
+    <None Include="html\Auth.html" />
+    <None Include="js\Auth.js" />
+    <None Include="html\AddStorageGroup.html" />
+    <None Include="js\AddStorageGroup.js" />
+    <None Include="html\AddHypervisor.html" />
+    <None Include="js\Hypervisors.js" />
+    <None Include="js\backo\PasswordEditor.js" />
+    <None Include="js\IndexBrowser.js" />
+    <None Include="js\backo\ClearableBox.js" />
+    <None Include="js\backo\TaskCalMapping.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{7ED43F11-2934-4CE7-B8CB-B63479A927FE}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="i18n\" />
+    <Folder Include="WebServices\" />
+    <Folder Include="WebServices\ServiceStackDefinitions\" />
+    <Folder Include="html\" />
+    <Folder Include="js\backo\" />
+  </ItemGroup>
+</Project>

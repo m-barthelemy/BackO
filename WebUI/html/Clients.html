@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>SharpBackup :: Clients</title>
+	
+    <link rel="stylesheet" type="text/css" href="./ext3/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="./ext3/resources/css/xtheme-gray.css" />
+
+    <!-- Common Styles for the examples -->
+    <link rel="stylesheet" type="text/css" href="./css/examples.css" />
+    <link rel="stylesheet" type="text/css" href="./ext3/examples/ux/css/ColumnNodeUI.css" />
+    <link rel="stylesheet" type="text/css" href="css/column-tree.css" />
+    
+    <!-- GC -->
+    <!-- LIBS -->
+    <script type="text/javascript" src="./ext3/adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    
+    <script type="text/javascript" src="./ext3/ext-all-debug.js"></script>
+    <!-- old : /js/XmlTreeLoader.js -->
+	<script type="text/javascript" src="./ext3/examples/ux/XmlTreeLoader.js"></script>
+    <script type="text/javascript" src="./ext3/examples/ux/ColumnNodeUI.js"></script>
+    
+    
+    <script type="text/javascript" src="/js/ClientNodes.js"></script>
+    <!-- EXAMPLES -->
+    <script type="text/javascript" src="./shared/examples.js"></script>
+    
+    <!-- Common sharpbackup page template style -->
+	 <link rel="stylesheet" type="text/css" href="/css/g.css" />
+	 <script type="text/javascript" src="/js/g.js"></script>
+	 <script type="text/javascript" src="/js/menu.js"></script>
+	 
+    <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+	<script type="text/javascript">
+    
+
+		$(function(){
+			$(".edge").stop().fadeIn();
+		});
+	</script>
+</head>
+<body>
+	
+    <h1 class="clTitle">:: Client nodes</h1>
+
+   <!-- <footer class="clients legend">
+      <img src="/images/ro_gr.gif"/>Online
+      <img src="/images/ro_re.gif"/>Offline
+      <img src="/images/ro_di.png"/>Disabled
+
+    </footer>   -->
+   <div class="edge" id="left"></div>
+	<div class="edge" id="right"></div>
+	<div class="edge" id="top"></div>
+	<div class="edge" id="bottom"></div>
+   <div id="toolbar"></div>
+   <div id="menu" class="menu"></div>
+	<div id="panel" class="GeneralPanel"></div>
+</body>
+</html>
