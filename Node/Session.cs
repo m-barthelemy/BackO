@@ -32,7 +32,7 @@ namespace Node{
 		internal delegate void RemoveSessionHandler (Session s);
 		internal event RemoveSessionHandler SessionRemoved;
 
-		public delegate void TransfertDoneHandler (bool sent, long taskId, string chunkName, int destination, int finalSize);
+		public delegate void TransfertDoneHandler (bool sent, long taskId, string chunkName, uint destination, int finalSize);
 		public event TransfertDoneHandler TransfertDoneEvent;
 
 		public delegate void FileReceivedHandler (bool received, BChunk bFReceived);

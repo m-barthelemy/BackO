@@ -19,27 +19,18 @@ namespace Node{
 	public class Backup:Task{
 		
 		private string indexFileName = "";
-		//private static string pathTemp;
-		//private static long taskId;
-		//private BackupSet bs;
-		//internal BackupSet Bs{get{return bs;}}
-
 		private List<ISnapshot> backupSnapshots;
 		private List<BackupRootDrive> backupRootDrives;
 		private List<ISpecialObject> specialObjects;
 		private StorageLayoutManager slManager;
 		private List<ISnapshotProvider> snapshotProviders;
-		//private Dictionary<string, byte[]> driveIncrMetadata;
 
 		internal Index Index{get;private set;}
-		
-		//internal long OriginalSize{get;set;}
-		//internal long FinalSize{get; set;}
-		//internal long RefTaskId{get;private set;}
 		internal long RefStartDate;
 		internal long RefEndDate;
 		internal StorageLayout StorageLayout{get; private set;}
 		public int TotalChunks{get;set;}
+
 		//number of entries backuped (files, directories, links...)
 		//public int TotalItems{get;set;}
 		public int[] ItemsByType{get;set;}
@@ -78,18 +69,6 @@ namespace Node{
 			set{ ;}	
 		}
 
-		//public bool ReturnsOnlyChangedEntries{get;
-		
-		/*public int BsId{
-			get{return bsId;}
-			set{bsId = value;}
-		}*/
-		
-		/*internal long TaskId{
-			get{return taskId;}	
-		}*/
-		
-
 		public string IndexFileName{
 			get {return indexFileName; }
 			set {indexFileName = value; }	
@@ -102,8 +81,7 @@ namespace Node{
 		
 		public delegate void UpdateGUIHandler (string command, string param);
 		public delegate void BackupDoneHandler();
-		//public event BackupDoneHandler BackupDoneEvent;
-		
+
 		internal  Backup(){
 
 		}
@@ -128,49 +106,8 @@ namespace Node{
 		/// A <see cref="System.Int32"/>
 		/// </param>
 		public Backup(BackupSet bs, long ctaskId) : base(bs, TaskStartupType.Manual){
-			/*this.snapshotProviders = new List<ISnapshotProvider>();
-			this.bs = bs;
-			taskId = ctaskId;*/
-			/*this.MaxChunkSize = bs.MaxChunkSize;
-			this.MaxPackSize = bs.MaxPackSize;
-			this.MaxChunkFiles = bs.MaxChunkFiles;
-			this.DataFlags = bs.DataFlags;
-			this.Redundancy = bs.Redundancy;
-			this.Parallelism = bs.Parallelism;
-			this.Preop = bs.Preop;
-			this.Postop = bs.Postop;*/
-			//pathTemp = ConfigManager.GetValue("Backups.TempFolder");
-			/*TotalChunks = 0;
-			TotalItems = 0;
-			completionBase = 0;
-			SubCompletion = 0;
-			ItemsByType = new int[20];*/
-			//driveIncrMetadata
-			//Index = new BackupIndex(this);
-			
-			
-		}
-		/// <summary>
-		///Constructor for incremental or differential backup.
-		/// </summary>
-		/// <param name="bs">
-		/// A <see cref="BackupSet"/>
-		/// </param>
-		/// <param name="ctaskId">
-		/// A <see cref="System.Int32"/>
-		/// </param>
-		/// <param name="refStart">
-		/// A <see cref="DateTime"/> (UTC)
-		/// </param>
-		/// <param name="refEnd">
-		/// A <see cref="DateTime"/> (UTC)
-		/// </param>
-		/*public Backup(BackupSet bs, long ctaskId, long refTaskId, long refStart, long refEnd):this(bs, ctaskId){
 
-			//this.RefTaskId = refTaskId;
-			this.RefStartDate = refStart;
-			this.RefEndDate = refEnd;
-		}*/
+		}
 
 
 		internal void PrepareAll(){

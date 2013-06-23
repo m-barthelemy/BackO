@@ -9,7 +9,7 @@ namespace Node{
 		public string Version{get;set;}
 		public DataProcessingFlags DataFlags{get;set;}
 		public long TaskId{get;set;}
-		public int OwnerNode{get;set;}
+		public uint OwnerNode{get;set;}
 		public byte[] EncryptionMetaData{get;set;}
 
 	}

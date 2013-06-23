@@ -27,7 +27,7 @@ namespace P2PBackup.Common{
 		[DataMember]
 		[DisplayFormatOption(Size=3)]
 		[PrimaryKey]
-		public int Id {get;set;}
+		public uint Id {get;set;}
 			
 		[DataMember]
 		[DisplayFormatOption(Size=20)]
@@ -192,7 +192,7 @@ namespace P2PBackup.Common{
 		public Node (){
 			this.Locked = true;
 			this.Configuration = new NodeConfig();
-			this.Group = -2; // -2 is a hack to mean 'no group'
+			this.Group = 0; //-2; // -2 is a hack to mean 'no group'
 			//this.Plugins = new List<Plugin>();
 		}
 

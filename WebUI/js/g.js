@@ -1,3 +1,10 @@
+ i18n = Ext.create('Ext.i18n.Bundle',{
+		bundle: 'wui',
+		lang: Ext.util.Cookies.get('lang'),
+		path: '/i18n',
+		noCache: true
+	});
+	
 Ext.Loader.setConfig({
     enabled: true,
     disableCaching: false,
@@ -20,12 +27,7 @@ Ext.onReady(function () {
 	});
 
     
-    var i18n = Ext.create('Ext.i18n.Bundle',{
-		bundle: 'wui',
-		lang: Ext.util.Cookies.get('lang'),
-		path: '/i18n',
-		noCache: true
-	});
+  
 	
     /*if(lang != null){
 		var url = '/ext4/locale/ext-lang-' + lang + '.js';
@@ -262,8 +264,8 @@ Date.prototype.getMonday=function(){
         autoShow:false,
         items: [
              {
-            	id:i18n.getMsg('menu.me.prefs'),
-                text: 'Preferences',
+            	id: 'Preferences',
+                text: i18n.getMsg('menu.me.prefs'),
                 icon:'/images/prefs-i.png',
                 iconCls: 'calendar',
                 handler: onItemClick
@@ -311,7 +313,7 @@ Date.prototype.getMonday=function(){
         else if(item.id == 'Stats')
         	url = '/GlobalStats.html';
         else if(item.id == 'Logout'){
-        	url = '/html/Default.aspx?action=logout';
+        	url = '/html/Auth.html?logout=true'; 
         	window.location.href = url;
         }
         var urlParam = Ext.urlDecode(window.location.search.substring(1));

@@ -39,7 +39,7 @@ namespace Node.DataProcessing{
 
 		internal PipelineMode Mode{get;private set;}
 		internal byte[] EncryptionMetaData{get;private set;}
-		internal int StorageNode{get;set;}
+		internal uint StorageNode{get;set;}
 
 		internal string CurrentChunk{// sets the current data chunk name (needed for dedup index)
 			set{

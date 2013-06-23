@@ -21,13 +21,13 @@ namespace P2PBackupHub.DAL {
 			sessionUser = currentUser;
 		}
 
-		public List<Plugin> GetForNode(int nodeId){
+		public List<Plugin> GetForNode(uint nodeId){
 			using(dbc = DAL.Instance.GetDb()){
 				return dbc.Select<Plugin>( p => p.NodeId == nodeId);
 			}
 		}
 
-		public void AddOrUpdateForNode( int nodeId, List<Plugin> plugins){
+		public void AddOrUpdateForNode(uint nodeId, List<Plugin> plugins){
 			using(dbc = DAL.Instance.GetDb())
 			using(IDbTransaction dbt = dbc.BeginTransaction()){
 				try{

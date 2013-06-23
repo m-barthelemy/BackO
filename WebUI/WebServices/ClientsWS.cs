@@ -35,24 +35,24 @@ namespace Backo.Api.WebServices {
 
 	[Route("/api/Node/{Id}/Configuration/")]
 	public class GetNodeConf{
-		public int Id{get;set;}
+		public uint Id{get;set;}
 	}
 
 	[Route("/api/Node/{Id}/Lock/{Locked}", "PUT POST")]
 	public class NodeApproval{
-		public int Id{get;set;}
+		public uint Id{get;set;}
 		public bool Locked{get;set;}
 	}
 
 	[Route("/api/Node/{NodeId}/Browse", "GET")]
 	public class NodeBrowse{
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 	}
 
 	//[Route("/api/Node/{NodeId}/BrowseIndex/{TaskId}/{FS}/{ItemId}/", "GET")]
 	[Route("/api/Node/{NodeId}/BrowseIndex/{TaskId}/", "GET")]
 	public class NodeIdxBrowse{
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 		public long TaskId{get;set;}
 		/*public string FS{get;set;}
 		public long ItemId{get;set;}*/
@@ -60,12 +60,12 @@ namespace Backo.Api.WebServices {
 
 	[Route("/api/Node/{NodeId}/Drives", "GET")]
 	public class NodeDrives{
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 	}
 
 	[Route("/api/Node/{NodeId}/SpecialObjects", "GET")]
 	public class NodeSpecialObjects{
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 	}
 
 	/*public class FacadeNode: P2PBackup.Common.Node{
@@ -85,21 +85,21 @@ namespace Backo.Api.WebServices {
 		public Object Get(GetAllNodes dummy){
 			if(string.IsNullOrEmpty(base.Request.QueryString["node"]) 
 			   || base.Request.QueryString["node"] == "root"
-			   || base.Request.QueryString["node"] == "NaN"//){
-			   || base.Request.QueryString["node"] == "0"){
+			   || base.Request.QueryString["node"] == "NaN"){
+			   //|| base.Request.QueryString["node"] == "0"){
 
 				Logger.Append(Severity.TRIVIA, "Received request to get Node groups . Querying remote server...");
 				List<P2PBackup.Common.NodeGroup> baseGroups = RemotingManager.GetRemoteObject().GetNodeGroups();
 				var groups = new List<P2PBackup.Common.Node>();
 				foreach(NodeGroup g in baseGroups){
-					groups.Add(new P2PBackup.Common.Node{Id = g.Id,
+					groups.Add(new P2PBackup.Common.Node{Id = (uint)g.Id,
 						Name = g.Name,
 						Description = g.Description,
 						Group = -1 // trick to distinguish groups from leafs
 						/*Description = g.Description*/});
 				}
 				// add dummy group for nodes without group
-				groups.Add(new P2PBackup.Common.Node{Id = -2,
+				groups.Add(new P2PBackup.Common.Node{Id = 0,
 					Name = "Nodes without group",
 					Group = -1 // trick to distinguish groups from leafs
 					});
@@ -122,7 +122,7 @@ namespace Backo.Api.WebServices {
 				var groups = new List<P2PBackup.Common.Node>();
 				foreach(StorageGroup g in baseGroups){
 					Console.WriteLine("Get(GetAllStorageNodes dummy) : adding 1 storagegroups as node to SG list");
-					groups.Add(new P2PBackup.Common.Node{Id = g.Id,
+					groups.Add(new P2PBackup.Common.Node{Id = (uint)g.Id,
 						Name = g.Name,
 						Group = -1, // trick to distinguish groups from leafs
 						Description = g.Description});
@@ -156,14 +156,14 @@ namespace Backo.Api.WebServices {
 				List<P2PBackup.Common.NodeGroup> baseGroups = RemotingManager.GetRemoteObject().GetNodeGroups();
 				var groups = new List<P2PBackup.Common.Node>();
 				foreach(NodeGroup g in baseGroups){
-					groups.Add(new P2PBackup.Common.Node{Id = g.Id,
+					groups.Add(new P2PBackup.Common.Node{Id = (uint)g.Id,
 						Name = g.Name,
 						Description = g.Description,
 						Group = -1 // trick to distinguish groups from leafs
 							/*Description = g.Description*/});
 				}
 				// add dummy group for nodes without group
-				groups.Add(new P2PBackup.Common.Node{Id = -2,
+				groups.Add(new P2PBackup.Common.Node{Id = 0,
 					Name = "Nodes without group",
 					Group = -1 // trick to distinguish groups from leafs
 				});

@@ -53,7 +53,7 @@ namespace P2PBackupHub{
 		public event SessionHandler SessionEvent;
 
 		//public delegate void NeedStorageHandler(int nodeId, long taskId, long sessionId, int parallelism, bool isIndex, bool isAlternateRequest);
-		public delegate void NeedStorageHandler(int nodeId, PeerSession s, int parallelism, bool isIndex, bool isAlternateRequest);
+		public delegate void NeedStorageHandler(uint nodeId, PeerSession s, int parallelism, bool isIndex, bool isAlternateRequest);
 		public event NeedStorageHandler NeedStorageEvent;
 
 		internal DateTime LastReceivedPing{get; set;}
@@ -167,7 +167,7 @@ namespace P2PBackupHub{
 							Logger.Append("CLEAN", Severity.DEBUG, "Task "+decoded[2]+" asks to delete chunk "+decoded[4]+" from node "+decoded[5]);
 
 							int[] storageNodes = Array.ConvertAll(((string)decoded[5]).Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries), s=>int.Parse(s));
-							foreach(int nodeId in storageNodes){
+							foreach(uint nodeId in storageNodes){
 								PeerNode storageNode = Hub.NodesList.GetById(nodeId);
 								if(storageNode != null){
 									//ReceiveDelete(int nodeId, long taskId, string cIp, string cN, string cK, string chunkName)

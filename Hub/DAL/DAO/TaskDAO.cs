@@ -65,7 +65,7 @@ namespace P2PBackupHub.DAL {
 			}
 		}
 
-		public Task UpdateStatus(int nodeId, long taskId, TaskRunningStatus newStatus){
+		public Task UpdateStatus(uint nodeId, long taskId, TaskRunningStatus newStatus){
 			using (dbc = DAL.Instance.GetDb()){
 				var checkTaskNode = dbc.Select<Task>(t=>t.NodeId == nodeId && t.Id == taskId);
 				if(checkTaskNode.Count  == 1){

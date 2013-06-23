@@ -20,7 +20,7 @@ namespace P2PBackupHub.DAL {
 			sessionUser = currentUser;
 		}
 
-		public P2PBackup.Common.Node Get(int id){
+		public P2PBackup.Common.Node Get(uint id){
 			using(dbc = DAL.Instance.GetDb()){
 				Node n =  dbc.GetById<P2PBackup.Common.Node>( id);
 				n.Plugins = new PluginDAO(sessionUser).GetForNode(id);
@@ -28,7 +28,7 @@ namespace P2PBackupHub.DAL {
 			}
 		}
 
-		private PeerNode GetPeerNode(int id){
+		private PeerNode GetPeerNode(uint id){
 			using(dbc = DAL.Instance.GetDb()){
 				return dbc.GetById<PeerNode>(id);
 			}
@@ -80,7 +80,7 @@ namespace P2PBackupHub.DAL {
 
 		public PeerNode Save(PeerNode n){
 			using(dbc = DAL.Instance.GetDb()){
-				n.Id = IdManager.GetId();
+				n.Id = (uint)IdManager.GetId();
 				n.CreationDate = DateTime.Now;
 				//n.Generation = 0;
 				dbc.Insert(n);
@@ -159,7 +159,7 @@ namespace P2PBackupHub.DAL {
 			}
 		}
 
-		internal void Approve(int nodeId, bool locked){
+		internal void Approve(uint nodeId, bool locked){
 			using(dbc = DAL.Instance.GetDb())
 				dbc.Update<P2PBackup.Common.Node>(new { Locked = locked  }, p => p.Id == nodeId);
 				//dbc.Update(new P2PBackup.Common.Node{ Id = nodeId, Locked = locked});

@@ -72,7 +72,7 @@ i18n.onReady(function(){
             width:100,
             
         },{
-        	header: i18n.getMsg('users.grid.name'), //'Name',  
+        	header: i18n.getMsg('generic.name'), //'Name',  
         	dataIndex: 'Name', 
             editor:{
                 xtype:'textfield',

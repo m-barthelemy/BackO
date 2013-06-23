@@ -28,7 +28,7 @@ namespace Node{
 	internal class BChunk{
 
 		private List<IFSEntry> entries;
-		private List<int> storageDestinations;
+		private List<uint> storageDestinations;
 			
 		[NonSerialized] private ManualResetEventSlim sentEvent;
 		
@@ -48,13 +48,13 @@ namespace Node{
 		internal string Sum{get; set;}
 		internal bool Fetched{get; set;}
 
-		internal List<int> StorageDestinations{
+		internal List<uint> StorageDestinations{
 			get{ return storageDestinations;}
 		}
 	
 		
 		//add nodeid to the list and return destinations count (to check if redundancy level is satisfied)
-		internal void AddDestination(int nodeId){
+		internal void AddDestination(uint nodeId){
 				storageDestinations.Add(nodeId);
 			//return (storageDestinations.Count == this.Redundancy);
 		}
@@ -67,7 +67,7 @@ namespace Node{
 		internal BChunk(long taskId){
 			this.TaskId = taskId;
 			entries = new List<IFSEntry>();
-			storageDestinations = new List<int>();
+			storageDestinations = new List<uint>();
 			this.OriginalSize = 0;
 			this.Size = 0;
 			this.Order = 0;

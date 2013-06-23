@@ -136,7 +136,7 @@ namespace Node.DataProcessing{
 		}
 
 
-		internal bool Contains(byte[] checksum, string chunkname, int posInChunk, int bufSize, int storageNode, ref long dedupId){
+		internal bool Contains(byte[] checksum, string chunkname, int posInChunk, int bufSize, uint storageNode, ref long dedupId){
 #if DEBUG
 			BenchmarkStats.Instance().DedupLookups++;
 #endif

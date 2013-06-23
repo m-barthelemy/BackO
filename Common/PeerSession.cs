@@ -37,7 +37,7 @@ namespace P2PBackup.Common {
 
 		[DataMember]
 		[DisplayFormatOption(Size=3)]
-		public int FromNodeId{
+		public uint FromNodeId{
 			get{
 				if(this.FromNode != null)
 					return FromNode.Id;
@@ -49,7 +49,7 @@ namespace P2PBackup.Common {
 		
 		[DataMember]
 		[DisplayFormatOption(Size=3)]
-		public int ToNodeId{
+		public uint ToNodeId{
 			get{
 				if(this.ToNode != null)
 					return ToNode.Id;

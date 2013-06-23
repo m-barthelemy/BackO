@@ -83,7 +83,7 @@ namespace P2PBackupHub.DAL {
 			}
 		}
 
-		public List<BackupSet> GetNodeBackupSets(int nodeId){
+		public List<BackupSet> GetNodeBackupSets(uint nodeId){
 			SqlExpressionVisitor<BackupSet> ev = OrmLiteConfig.DialectProvider.ExpressionVisitor<BackupSet>();
 			ev.Where(bs => bs.NodeId == nodeId && bs.Enabled);
 			ev.OrderBy(bs => bs.Id);

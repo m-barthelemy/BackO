@@ -99,7 +99,7 @@ namespace P2PBackup.Common{
 		[DataMember]
 		[DisplayFormatOption(Size=3, DisplayAs="Node")]
 		[Index(false)]
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 
 		[DataMember]
 		[DisplayFormatOption(Size=4)]
@@ -155,7 +155,7 @@ namespace P2PBackup.Common{
 		
 		[DataMember]
 		[DisplayFormatOption(Display=false)]
-		public List<int> IndexStorageNodes {get;set;}
+		public List<uint> IndexStorageNodes {get;set;}
 
 
 		/*[DataMember]
@@ -276,7 +276,7 @@ namespace P2PBackup.Common{
 			this.Id = -1;
 			this.StorageNodes = new List<P2PBackup.Common.Node>();
 			this.Status = TaskStatus.Ok;
-			this.IndexStorageNodes = new List<int>();
+			this.IndexStorageNodes = new List<uint>();
 			this.LogEntries = new List<TaskLogEntry>(); //new List<Tuple<DateTime, int, string, string>>();
 		}
 		

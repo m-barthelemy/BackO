@@ -16,7 +16,14 @@ Ext.Loader.setConfig({
 	
   
  Ext.onReady(function () {
+ 	var params = Ext.urlDecode(window.location.search.substring(1));
+ 	if(params.logout){ // WS api call to logout
+ 		Ext.Ajax.request({
+	       	url: '/api/auth/logout',
+	       	method:'GET'
+	    });
  	
+ 	}
  	//TODO! move User model to a clean, common model file, avoiding duplicated definition here and inside menu.js
  	Ext.define('UserLogin', {
 	 	extend: 'Ext.data.Model',
@@ -105,7 +112,7 @@ Ext.Loader.setConfig({
         var user = Ext.create('UserLogin', {UserName: login, Password: password});
     	user.save({
 			success: function(record, operation) {
-				var params = Ext.urlDecode(window.location.search.substring(1));
+				
 				if(params.redir)
 					window.location = params.redir;
 				else{

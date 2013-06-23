@@ -154,6 +154,7 @@
     <None Include="js\IndexBrowser.js" />
     <None Include="js\backo\ClearableBox.js" />
     <None Include="js\backo\TaskCalMapping.js" />
+    <None Include="js\backo\NodesTree.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

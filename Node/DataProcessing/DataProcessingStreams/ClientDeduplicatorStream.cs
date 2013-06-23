@@ -17,7 +17,7 @@ namespace Node.DataProcessing{
 		private IDataProcessorStream inputStream;
 		private long length;
 		private long currentPos;
-		private int storageNodeId;
+		private uint storageNodeId;
 		private DedupIndex ddb;
  // total number of deduped blocks since stream creation
 		//private LightDedupedBlock lastDedupedBlock;
@@ -136,7 +136,7 @@ namespace Node.DataProcessing{
 			return offset;
 		}
 		
-		public ClientDeduplicatorStream(IDataProcessorStream inputStream, int storageNode, DedupIndex ddb){
+		public ClientDeduplicatorStream(IDataProcessorStream inputStream, uint storageNode, DedupIndex ddb){
 			this.inputStream = inputStream;
 			this.currentPos = 0;
 			this.length = 0;

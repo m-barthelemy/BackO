@@ -419,7 +419,7 @@ namespace Node{
 			throw task.Exception; //new Exception("Propagating unexpected exception..."); 
 		}
 
-		private void ManageChunkSent(bool sent, long taskId, string chunkName, int destinationNode, int finalSize){
+		private void ManageChunkSent(bool sent, long taskId, string chunkName, uint destinationNode, int finalSize){
 
 			if(!sent){
 				Logger.Append(Severity.ERROR, "Chunk "+chunkName+" not sent - TODO : handle that");

@@ -40,20 +40,22 @@ namespace P2PBackupHub {
 
 		private void Watch(){
 			while(!token.IsCancellationRequested){
-				foreach(PeerNode n in Hub.NodesList){
+				//foreach(PeerNode n in Hub.NodesList.GetEnumerator()){
+				for(int i = Hub.NodesList.Count - 1; i >= 0; i--){
+
 					//Exclude non-sleeping nodes from ping
-					if(n.Status != NodeStatus.Idle)
+					if(Hub.NodesList[i].Status != NodeStatus.Idle)
 						continue;
 					// No repln.LastReceivedPing.AddMinutes(2) < DateTime.Nowy from more than 5 minutes : consider node as offline
-					if(n.LastReceivedPing.AddMinutes(5) < DateTime.Now){
-						if(NodeOffline != null)NodeOffline(n);
+					if(Hub.NodesList[i].LastReceivedPing.AddMinutes(5) < DateTime.Now){
+						if(NodeOffline != null)NodeOffline(Hub.NodesList[i]);
 					}
-					else if(n.LastReceivedPing.AddMinutes(2) < DateTime.Now){
-						Logger.Append("WATCHER", Severity.TRIVIA, "Checking if node #"+n.Id+" is still reachable...");
-						SendUdpMessage("PING "+n.Id, n);
+					else if(Hub.NodesList[i].LastReceivedPing.AddMinutes(2) < DateTime.Now){
+						Logger.Append("WATCHER", Severity.TRIVIA, "Checking if node #"+Hub.NodesList[i].Id+" is still reachable...");
+						SendUdpMessage("PING "+Hub.NodesList[i].Id, Hub.NodesList[i]);
 					}
 				}
-				Thread.Sleep(5000); // TODO : find more elegant way to 'do nothing'
+				Thread.Sleep(30000); // TODO : find more elegant way to 'do nothing'
 
 			}
 			pingerSock.Dispose();
@@ -88,8 +90,8 @@ namespace P2PBackupHub {
 			string msg = System.Text.Encoding.ASCII.GetString(receiveBytes);
 			Console.WriteLine("Received UDP message "+msg);
 			if(msg.StartsWith("PING")){
-				int nodeId = 0;
-				if(int.TryParse(msg.Substring(5), out nodeId) && nodeId >0){
+				uint nodeId = 0;
+				if(uint.TryParse(msg.Substring(5), out nodeId) && nodeId >0){
 					Logger.Append("WATCHER", Severity.TRIVIA, "Received alive confirmation from node #"+nodeId);
 					Hub.NodesList.GetById(nodeId).LastReceivedPing = DateTime.Now;
 				}

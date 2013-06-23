@@ -45,7 +45,7 @@ namespace  P2PBackup.Common{
 		List<P2PBackup.Common.Node> GetNodesHavingPlugin(int? groupId, string pluginName);
 
 		[OperationContract]
-		Node GetNode (int id);
+		Node GetNode(uint id);
 
 		[OperationContract]
 		P2PBackup.Common.Node UpdateNode(P2PBackup.Common.Node node);
@@ -69,7 +69,7 @@ namespace  P2PBackup.Common{
 		List<NodeGroup> GetNodeGroups();
 		
 		[OperationContract]
-		void ApproveNode(int nodeId, bool lockStatus);
+		void ApproveNode(uint nodeId, bool lockStatus);
 		
 		[OperationContract]
 		int Ping();
@@ -82,7 +82,7 @@ namespace  P2PBackup.Common{
 
 		[OperationContract]
 		[Obsolete]
-		Dictionary<int, NodeStatus> GetOnlineClients();
+		Dictionary<uint, NodeStatus> GetOnlineClients();
 
 		[OperationContract]
 		List<Node> GetOnlineNodes();
@@ -112,7 +112,7 @@ namespace  P2PBackup.Common{
 		List<TaskLogEntry> GetArchivedTaskLogEntries(int taskId);
 			
 		[OperationContract]
-		List<BackupSet> GetNodeBackupSets(int nodeId);
+		List<BackupSet> GetNodeBackupSets(uint nodeId);
 
 		[OperationContract]
 		BackupSet GetBackupSet(int id);
@@ -124,19 +124,19 @@ namespace  P2PBackup.Common{
 		List<Task> GetBackupHistory(int bsId, DateTime startDate, DateTime endDate);
 		
 		[OperationContract]
-		BrowseNode Browse(int nodeId, string path);
+		BrowseNode Browse(uint nodeId, string path);
 
 		[OperationContract]
-		BrowseNode BrowseIndex(int nodeId, long taskId, string rootFS, long parentId, string filter);
+		BrowseNode BrowseIndex(uint nodeId, long taskId, string rootFS, long parentId, string filter);
 
 		[OperationContract]
-		string GetSpecialObjects(int nodeId);
+		string GetSpecialObjects(uint nodeId);
 			
 		[OperationContract]
-		string GetDrives(int nodeId);
+		string GetDrives(uint nodeId);
 		
 		[OperationContract]
-		string GetVMs(int nodeId);
+		string GetVMs(uint nodeId);
 
 		[OperationContract]
 		List<Hypervisor> GetHypervisors();

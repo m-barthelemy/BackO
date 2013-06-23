@@ -143,7 +143,7 @@ namespace P2PBackupHub{
 			return nodes;
 		}
 
-		public P2PBackup.Common.Node GetNode (int id){
+		public P2PBackup.Common.Node GetNode (uint id){
 			return new DAL.NodeDAO(sessionUser).Get(id);
 		}
 
@@ -231,7 +231,7 @@ namespace P2PBackupHub{
 		
 	
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]
-		public void ApproveNode(int nodeId, bool lockStatus){
+		public void ApproveNode(uint nodeId, bool lockStatus){
 			//(new DBHandle()).ApproveNode(nodeId, lockStatus);
 			new DAL.NodeDAO().Approve(nodeId, lockStatus);
 			if(lockStatus == false){
@@ -273,8 +273,8 @@ namespace P2PBackupHub{
 		/// </returns>
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]
-		public Dictionary<int, NodeStatus> GetOnlineClients(){
-			Dictionary<int, NodeStatus> cnList = new Dictionary<int, NodeStatus>();
+		public Dictionary<uint, NodeStatus> GetOnlineClients(){
+			var cnList = new Dictionary<uint, NodeStatus>();
 			foreach(PeerNode cn in Hub.NodesList)
 				cnList.Add(cn.Id, cn.Status );
 			return cnList;
@@ -317,7 +317,7 @@ namespace P2PBackupHub{
 		}
 
 
-		public List<BackupSet> GetNodeBackupSets(int nodeId){
+		public List<BackupSet> GetNodeBackupSets(uint nodeId){
 			//return (new DBHandle(sessionUser)).GetNodeBackupSets(nodeId);	
 			return new DAL.BackupSetDAO(sessionUser).GetNodeBackupSets(nodeId);	
 		}
@@ -365,7 +365,7 @@ namespace P2PBackupHub{
 
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]
-		public BrowseNode Browse(int nodeId, string path){
+		public BrowseNode Browse(uint nodeId, string path){
 			PeerNode n = Hub.NodesList.GetById(nodeId);
 			return n.Browse(path);
 
@@ -376,25 +376,25 @@ namespace P2PBackupHub{
 		// null or empty : returns everything
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]
-		public BrowseNode BrowseIndex(int nodeId, long taskId, string rootFS, long parentId, string filter){
+		public BrowseNode BrowseIndex(uint nodeId, long taskId, string rootFS, long parentId, string filter){
 			PeerNode n = Hub.NodesList.GetById(nodeId);
 			return n.BrowseIndex(taskId, rootFS, parentId, filter);
 			
 		}
 		
 		// should be relevant only for NT systems (VSS providers)
-		public string GetSpecialObjects(int nodeId){
+		public string GetSpecialObjects(uint nodeId){
 			PeerNode n = Hub.NodesList.GetById(nodeId);
 			return n.GetSpecialObjects();
 		}
 		
-		public string GetDrives(int nodeId){
+		public string GetDrives(uint nodeId){
 			PeerNode n = Hub.NodesList.GetById(nodeId);
 			return n.GetDrives();
 
 		}
 		
-		public string GetVMs(int nodeId){
+		public string GetVMs(uint nodeId){
 			/*foreach(PeerNode n in Hub.NodesList){
 				if(n.Id != nodeId)
 					continue;

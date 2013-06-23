@@ -18,7 +18,7 @@ namespace P2PBackup.Common {
 		[DataMember]
 		[Index(false)]
 		[References(typeof(Node))]
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 
 		[DataMember]
 		public string Name{get;set;}

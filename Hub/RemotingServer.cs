@@ -46,6 +46,11 @@ namespace P2PBackupHub.Remoting{
 			*/
 
 			var binding = new NetTcpBinding(SecurityMode.None, true);
+			/*var binding = new NetTcpBinding();
+			binding.Security = new NetTcpSecurity();
+			binding.Security.Mode = SecurityMode.Transport;
+			binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;*/
+
 
 
 			//binding.ReliableSession = new ReliableSession();

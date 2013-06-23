@@ -17,7 +17,7 @@ namespace P2PBackup.Common{
 
 		[DataMember]
 		[DisplayFormatOption(Size=4)]
-		public int NodeId{get; set;}
+		public uint NodeId{get; set;}
 
 		[DataMember]
 		[DisplayFormatOption(Size=25)]

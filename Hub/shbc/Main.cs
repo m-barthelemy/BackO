@@ -310,10 +310,10 @@ namespace shbc{
 				//Console.WriteLine("queryAfterItem="+queryAfterItem);
 				switch(item){
 				case "node ":
-					int nodeId = -1;
+					uint nodeId = 0;
 					int actionSeparatorPos = queryAfterItem.IndexOf(" ");
 					try{
-						nodeId = int.Parse(queryAfterItem.Substring(0, actionSeparatorPos));
+						nodeId = uint.Parse(queryAfterItem.Substring(0, actionSeparatorPos));
 					}
 					catch(Exception e){
 						Error ("Error. Syntax : UPDATE NODE #nodeid [SET <property>=<value>	] [lock|unlock]", e);
@@ -477,7 +477,7 @@ namespace shbc{
 					/*foreach(P2PBackup.Common.Node n in RemotingManager.GetRemoteObject().GetNodes()){
 						Console.Write ("id"+fvs+n.Uid+fs+"name"+fvs+n.NodeName+fs+"version"+fvs+n.Version+fs+"listen_ip"+fvs+n.ListenIp+":"+n.ListenPort+rs);
 					}*/
-					Dictionary<int, NodeStatus> onlineIds = RemotingManager.GetRemoteObject().GetOnlineClients();
+					Dictionary<uint, NodeStatus> onlineIds = RemotingManager.GetRemoteObject().GetOnlineClients();
 					List<P2PBackup.Common.Node> nodes = new List<P2PBackup.Common.Node>();
 					foreach(P2PBackup.Common.Node n in RemotingManager.GetRemoteObject().GetNodes(null)){
 						if(onlineIds.ContainsKey(n.Id)){
@@ -494,8 +494,8 @@ namespace shbc{
 					displayPropName = true;
 					writeHeader = false;
 					limitSize = false;
-					int nodeId = 0;
-					int.TryParse(query.ToLower().Substring(opSeparatorPos).Trim(), out nodeId);
+					uint nodeId = 0;
+					uint.TryParse(query.ToLower().Substring(opSeparatorPos).Trim(), out nodeId);
 					//foreach(Node n in RemotingManager.GetRemoteObject().GetNodes()){
 					//	if(n.Uid != nodeId) continue;
 						WriteObject (RemotingManager.GetRemoteObject().GetNode(nodeId), GetPropertiesAndFormatting(properties, targetPairs[item]));
@@ -508,11 +508,11 @@ namespace shbc{
 					limitSize = true;
 					break;
 				case "onlinenodes":
-					Dictionary<int, NodeStatus> online = RemotingManager.GetRemoteObject().GetOnlineClients();
+					Dictionary<uint, NodeStatus> online = RemotingManager.GetRemoteObject().GetOnlineClients();
 					List<P2PBackup.Common.Node> onlineNodes = new List<P2PBackup.Common.Node>();
 					foreach(P2PBackup.Common.Node n in RemotingManager.GetRemoteObject().GetNodes(null))
 						if(online.ContainsKey(n.Id)){
-						n.Status = online[n.Id];
+							n.Status = online[n.Id];
 						   onlineNodes.Add(n);
 						}
 					WriteObjects(onlineNodes, targetPairs[item], whereClause, obClause);
@@ -690,7 +690,7 @@ namespace shbc{
 			string[] itemsToRestore = parameters.Substring(0, endOfItems).Split(new char[]{','});
 			Console.WriteLine (itemsToRestore.Length+" items to restore");
 			parameters = parameters.Substring(endOfItems + " from node ".Length);
-			int fromNodeId = int.Parse(parameters.Substring(0, parameters.IndexOf(" ")));
+			uint fromNodeId = uint.Parse(parameters.Substring(0, parameters.IndexOf(" ")));
 			Console.WriteLine ("From Node : "+fromNodeId);
 			BackupSet restoreSet = new BackupSet();
 			restoreSet.Operation = TaskOperation.Restore;

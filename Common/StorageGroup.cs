@@ -26,7 +26,7 @@ namespace P2PBackup.Common {
 			this.Priority = priority;
 		}
 
-		[DisplayFormatOption(Size=3)]
+		[DisplayFormatOption(Size=7)]
 		public int Id{get;set;}
 
 		[DisplayFormatOption(Size=25)]

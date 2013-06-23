@@ -23,7 +23,7 @@ namespace P2PBackupHub{
 	/// </summary>
 	public class Hub {
 		
-		private static NodesList nodeList;
+		internal static NodesList NodesList;
 		private static SessionsList sessionsList;
 		private static Socket connection;
 		private static bool running;	
@@ -31,9 +31,9 @@ namespace P2PBackupHub{
 		private static X509Certificate2 cert;
 		private X509Certificate2 rootCert;
 
-		internal static NodesList NodesList{
+		/*internal static NodesList NodesList{
 			get{return nodeList;}
-		}
+		}*/
 
 		internal static List<PeerSession> SessionsList{
 			get{return sessionsList.ToList();}
@@ -82,7 +82,7 @@ namespace P2PBackupHub{
 		}*/
 		
 		public Hub(){
-			nodeList = new NodesList();
+			NodesList = new NodesList();
 			sessionsList = new SessionsList();
 		}
 
@@ -207,7 +207,7 @@ namespace P2PBackupHub{
 		}
 
 		private void PutNodeOnline(PeerNode pn){
-			if(nodeList.Contains(pn.Id) && nodeList.GetById(pn.Id).Status != NodeStatus.Idle){
+			if(NodesList.Contains(pn.Id) && NodesList.GetById(pn.Id).Status != NodeStatus.Idle){
 				Logger.Append("HUBRN", Severity.WARNING, "Node #"+pn.Id+" tried to connect but appears to already be online, rejecting.");
 				pn.Status = NodeStatus.Rejected;
 				pn.SendAuthStatus();
@@ -215,9 +215,9 @@ namespace P2PBackupHub{
 				pn.Dispose();
 			}
 			else{
-				if(nodeList.Contains(pn.Id))
-					nodeList.Remove(pn.Id);
-				nodeList.Add(pn);
+				if(NodesList.Contains(pn.Id))
+					NodesList.Remove(pn.Id);
+				NodesList.Add(pn);
 
 				if(pn.Status == NodeStatus.Idle){
 					pn.LogEvent += new P2PBackupHub.PeerNode.LogHandler(LogEvent);
@@ -227,7 +227,7 @@ namespace P2PBackupHub{
 				pn.StartListening();
 				pn.OfflineEvent += ClearNode;
 				pn.Status = NodeStatus.Online;
-				Logger.Append("HUBRN", Severity.INFO, "Node #"+pn.Id+" is online (total : "+nodeList.Count+" online nodes)");
+				Logger.Append("HUBRN", Severity.INFO, "Node #"+pn.Id+" is online (total : "+NodesList.Count+" online nodes)");
 			}
 		}
 
@@ -255,7 +255,7 @@ namespace P2PBackupHub{
 			curSess.SetUsage(s);
 			if(curSess.IsStorageUsageConfirmed()){
 				Logger.Append("HUBRN", Severity.TRIVIA, "Task #"+s.TaskId+" : session #"+s.Id +"  : Storage space usage has been double-confirmed");
-				PeerNode n = nodeList[curSess.ToNode.Id];
+				PeerNode n = NodesList[curSess.ToNode.Id];
 				lock(n){// Release reserved space and set really consumed space
 					n.ReservedSpace -= curSess.Budget*curTask.BackupSet.MaxChunkSize;
 					n.StorageUsed += curSess.RealHandledData;
@@ -389,13 +389,13 @@ namespace P2PBackupHub{
 			Console.WriteLine("AddRemoveSession1("+added+") : Node #"+s.ToNode.Id+" load="+s.ToNode.CurrentLoad);
 			if(added){
 				sessionsList.Add(s);
-				nodeList[s.ToNode.Id].CurrentLoad += 1/(s.ToNode.StoragePriority);
+				NodesList[s.ToNode.Id].CurrentLoad += 1/(s.ToNode.StoragePriority);
 			}
 			else{
 				sessionsList.Remove(s);
-				nodeList[s.ToNode.Id].CurrentLoad -= 1/(s.ToNode.StoragePriority);
+				NodesList[s.ToNode.Id].CurrentLoad -= 1/(s.ToNode.StoragePriority);
 			}
-			Console.WriteLine("AddRemoveSession2("+added+") : Node #"+s.ToNode.Id+" load="+nodeList[s.ToNode.Id].CurrentLoad);
+			Console.WriteLine("AddRemoveSession2("+added+") : Node #"+s.ToNode.Id+" load="+NodesList[s.ToNode.Id].CurrentLoad);
 		}
 
 		private void AddRemoveSession(long sid, bool added){
@@ -420,7 +420,7 @@ namespace P2PBackupHub{
 		/// been transfered and stored : this way  we can track index location(s) into database.
 		/// </param>
 		//private void  ChooseStorage(int nodeId, long taskId, long sessionId, int parallelism, bool isIndex, bool isAlternateRequest){
-		private void  ChooseStorage(int nodeId, PeerSession s, int parallelism, bool isIndex, bool isAlternateRequest){
+		private void  ChooseStorage(uint nodeId, PeerSession s, int parallelism, bool isIndex, bool isAlternateRequest){
 			Task currentTask = TaskScheduler.Instance().GetTask(s.TaskId);
 			try{
 				if(s.Id >0 && ! isAlternateRequest) {
@@ -433,7 +433,7 @@ namespace P2PBackupHub{
 				isAlternateRequest = true;
 			}
 
-			PeerNode askingNode = nodeList[nodeId];
+			PeerNode askingNode = NodesList[nodeId];
 			Console.WriteLine("choosedestinations : askingNode  = #"+askingNode.Id);
 			List<PeerNode> dests = new List<PeerNode>();
 			List<P2PBackup.Common.Node> excludedDests = new List<P2PBackup.Common.Node>();
@@ -505,7 +505,7 @@ namespace P2PBackupHub{
 
 			// All the magic to select a storage node happends here. How cool Linq is!
 			// Query itself should be self-explainatory
-			var destinationRawList = (from PeerNode node in nodeList
+			var destinationRawList = (from PeerNode node in NodesList
 	                                     where  node.StorageGroup == bs.StorageGroup && node.StoragePriority > 0
 	                                     && (node.StorageSize - node.StorageUsed - node.ReservedSpace) > bs.MaxChunkSize*perNodeBudget
 			                     && !nodesToExclude.Contains(node)
@@ -532,7 +532,7 @@ namespace P2PBackupHub{
 			PeerNode n = null;
 			PeerSession existingSession =  sessionsList.GetById(sessionId);
 			if(existingSession != null){
-				n = nodeList[existingSession.ToNodeId];
+				n = NodesList[existingSession.ToNodeId];
 				existingSession.RenewBudget(budget);
 				if( (n.StorageSize - n.StorageUsed - n.ReservedSpace) > task.BackupSet.MaxChunkSize*budget){
 					CreateStorageSession(existingSession, task, false);
@@ -584,12 +584,12 @@ namespace P2PBackupHub{
 			// Doing so helps avoiding (some) nodes identity usurpation
 
 			// 1 - we tell storage node to accept transfer from client, if shared key is verified
-			nodeList.GetById(s.ToNode.Id).SendSession(s, SessionType.Store, false);
+			NodesList.GetById(s.ToNode.Id).SendSession(s, SessionType.Store, false);
 
 			// 2 - we tell client node where to put chunk
-			nodeList.GetById(s.FromNode.Id).SendSession(s, SessionType.Backup, isIndexSession);
+			NodesList.GetById(s.FromNode.Id).SendSession(s, SessionType.Backup, isIndexSession);
 
-			nodeList.GetById(s.ToNode.Id).ReservedSpace += currentTask.BackupSet.MaxChunkSize*s.Budget;
+			NodesList.GetById(s.ToNode.Id).ReservedSpace += currentTask.BackupSet.MaxChunkSize*s.Budget;
 			if(sessionsList.GetById(s.Id) == null)
 				AddRemoveSession(s, true);
 			else
@@ -616,13 +616,13 @@ namespace P2PBackupHub{
 		private static void HandleOfflineNode(PeerNode n){
 			Logger.Append("WATCHER", Severity.INFO, "Node #"+n.Id+" is offline (didn't reply for more than 5mn)"); 
 			try{
-				nodeList[n.Id].Dispose();
+				NodesList[n.Id].Dispose();
 				Console.WriteLine("node disposed()");
 			}
 			catch{}
 			try{
 				//nodeList.Remove(
-				Console.WriteLine("Node remove : "+nodeList.Remove(n));
+				Console.WriteLine("Node remove : "+NodesList.Remove(n));
 			}
 			catch{}
 		}
@@ -687,8 +687,8 @@ namespace P2PBackupHub{
 				TaskScheduler.Instance().TaskEvent -= HandleTaskEvent;
 				TaskScheduler.Stop();
 				TasksMonitor.Stop();
-				for (int i = 0; i < nodeList.Count; i++){
-					u = (PeerNode)nodeList[i];
+				for (int i = 0; i < NodesList.Count; i++){
+					u = (PeerNode)NodesList[i];
 					u.Disconnect();
 					i = i - 1; 
 				}

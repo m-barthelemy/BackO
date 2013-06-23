@@ -86,7 +86,7 @@ namespace P2PBackup.Common{
 		[DisplayFormatOption(Size=3, DisplayAs="Node")]
 		[DataMember]
 		[Index(false)]
-		public int NodeId {get;set;}
+		public uint NodeId {get;set;}
 
 		/// <summary>
 		/// Indicated if this backupset is processed by an alternate, 'proxy' node
@@ -97,7 +97,7 @@ namespace P2PBackup.Common{
 		/// </value>
 		[DisplayFormatOption(Size=3, DisplayAs="H.By")]
 		[DataMember]
-		public int HandledBy {get;set;}
+		public uint HandledBy {get;set;}
 
 		/*[DisplayFormatOption(Size=8, DisplayAs="Stor.Grp")]
 		[DataMember]

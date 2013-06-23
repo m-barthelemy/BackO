@@ -11,7 +11,7 @@ namespace Backo.Api.WebServices {
 
 	[Route("/api/BackupSets/{NodeId}/")]
 	public class BSForNode{
-		public int NodeId{get;set;}
+		public uint NodeId{get;set;}
 	}
 
 	[Route("/api/BackupSets/Templates/")]
