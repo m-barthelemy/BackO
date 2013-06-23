@@ -33,17 +33,17 @@
     <Reference Include="System" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\Hub\lib\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
-      <HintPath>..\P2PBackupHub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\Hub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\P2PBackupHub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\Hub\lib\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\P2PBackupHub\lib\ServiceStack.OrmLite.MySql.3.9.54\lib\ServiceStack.OrmLite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\P2PBackupHub\lib\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\Hub\lib\ServiceStack.OrmLite.MySql.3.9.54\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -7,9 +7,7 @@ using ServiceStack.DataAnnotations;
 using ServiceStack.DesignPatterns.Model;
 
 namespace P2PBackup.Common{
-	/// <summary>
-	/// Holds all information about an online node
-	/// </summary>
+	
 	public enum NodeStatus{Offline, Idle, Online, Backuping, Storing,  Restoring, Duplicating, Removing, Error, Locked, New, Rejected}
 	public enum ActionType{Default, Backup, Restore}
 
@@ -23,7 +21,6 @@ namespace P2PBackup.Common{
 	public class Node : IEquatable<P2PBackup.Common.Node>{
 
 		private NodeCertificate certificate;
-		//private string pubKey;
 
 		private long storageSize; // have to define custom setter here to adjust available when storage changes
 

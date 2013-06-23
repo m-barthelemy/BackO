@@ -153,4 +153,14 @@
     <Folder Include="DAL\DAO\" />
     <Folder Include="Collections\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{7ED43F11-2934-4CE7-B8CB-B63479A927FE}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMWare\VMWare.csproj">
+      <Project>{F8B96D48-9A28-45EA-A59F-5AE130AAFD52}</Project>
+      <Name>VMWare</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

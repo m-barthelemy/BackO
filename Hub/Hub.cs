@@ -616,10 +616,14 @@ namespace P2PBackupHub{
 		private static void HandleOfflineNode(Node n){
 			Logger.Append("WATCHER", Severity.INFO, "Node #"+n.Id+" is offline (didn't reply for more than 5mn)"); 
 			try{
+				Console.WriteLine("nodeList.GetById(n.Id) is null : "+(nodeList.GetById(n.Id) == null));
 				nodeList.GetById(n.Id).Dispose();
-				nodeList.Remove(n.Id);
 			}
-			catch(NullReferenceException){} //node is null (already disposed) or has been removed 
+			catch{}
+			try{
+				Console.WriteLine("Node remove : "+nodeList.Remove(n.Id));
+			}
+			catch{}
 		}
 
 		private static void WakeUpNode(Node n){

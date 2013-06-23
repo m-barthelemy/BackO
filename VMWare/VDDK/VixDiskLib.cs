@@ -572,9 +572,6 @@ namespace VDDK{
 		public static extern VixError VixDiskLib_Unlink(IntPtr connection, [InAttribute(), MarshalAsAttribute(UnmanagedType.LPStr)] string path) ;
 
 
-
-
-
 		private VixDiskLib (){
 		}
 	}

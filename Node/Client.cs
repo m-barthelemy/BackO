@@ -103,8 +103,12 @@ namespace Node{
 					Stop(true);
 					var udpEndPoints = new System.Net.IPEndPoint[2];
 					Console.WriteLine("will use ip '"+Utilities.ConfigManager.GetValue("Hub.IP")+"' as hub udp endpoint");
-					udpEndPoints[0] = new IPEndPoint(IPAddress.Parse(Utilities.ConfigManager.GetValue("Hub.IP")), 52562);
-					//udpEndPoints[1] = new IPEndPoint(IPAddress.Any, int.Parse(Utilities.ConfigManager.GetValue("ListenPort")) );
+					udpEndPoints[0] = new IPEndPoint(
+						IPAddress.Parse(
+						Utilities.ConfigManager.GetValue("Hub.IP")), 
+						int.Parse(Utilities.ConfigManager.GetValue("Hub.Port"))
+					);
+					udpEndPoints[1] = new IPEndPoint(IPAddress.Any, user.ListenPort );
 					return udpEndPoints;
 				}
 			}

@@ -28,7 +28,6 @@ namespace P2PBackupHub{
 	[DataContract(Name = "Node", Namespace = " http://schemas.datacontract.org/")]
 	public class PeerNode : P2PBackup.Common.Node, IDisposable {
 
-		//[field: NonSerialized] private DBHandle dbhandle;	
 		[field: NonSerialized] private SslStream hubStream;
 		[field: NonSerialized] private bool verified = false;
 		[field: NonSerialized] private ActionType action = ActionType.Default;		// 0 = default	1 = backup	2 = recovery
@@ -60,8 +59,10 @@ namespace P2PBackupHub{
 		internal DateTime LastReceivedPing{get; set;}
 
 		private Dictionary<int, NodeMessage> syncMessages = new Dictionary<int, NodeMessage>() ;
+
 		// Waits for and signals sync messages (blocking wait for reply)
 		private delegate NodeMessage SyncMessageHandler(NodeMessage m);
+
 		[field: NonSerialized]
 		private event SyncMessageHandler SyncMessageReceived;
 
@@ -81,8 +82,6 @@ namespace P2PBackupHub{
 			try{
 				this.Connection = connection;
 				hubStream = hubSSlStream;
-				//MessageQueue = new Queue<string>();
-				//ThreadPool.QueueUserWorkItem(ProcessMessages);
 				if(LogEvent != null)
 					LogEvent(this.Name, false, "VER "+this.Version);
 			}
@@ -184,7 +183,6 @@ namespace P2PBackupHub{
 						}
 						else if(int.Parse(decoded[3]) == 710){ // cleaning done
 							new DAL.TaskDAO().UpdateStatus(this.Id, long.Parse(decoded[2]), TaskRunningStatus.Expired);
-							//dbhandle.UpdateTaskStatus(long.Parse(decoded[2]), TaskRunningStatus.Expired);
 							//dbhandle.DeleteTask(long.Parse(decoded[2]));
 							Logger.Append("CLEAN", Severity.INFO, "Task "+decoded[2]+" cleaned.");
 						}
@@ -200,10 +198,6 @@ namespace P2PBackupHub{
 					break;
 				
 				
-				/*case "REC":
-					if((decoded.Length == 2) && (verified))
-						GetSource(decoded[1]);
-					break;*/
 				case "RIX":
 					if((decoded.Length == 2) && (verified))
 						GetIndexSource(decoded[1]);
@@ -255,11 +249,6 @@ namespace P2PBackupHub{
 			char[] separator = {' '};
 			string[] decoded = message.Data.Split(separator);
 			switch(message.Action){
-
-				/*case  "MAKECERTIFICATE": // new node asks for certificate
-					Logger.Append("CLIENT", Severity.DEBUG, "Node asked for certificate");
-					CreateAndSendCertificate();
-					break;*/
 
 				case "CLIENTINFO": // send version and OS
 					

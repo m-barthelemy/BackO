@@ -29,6 +29,7 @@ namespace P2PBackupHub {
 			tokenSource = new CancellationTokenSource();
 			token = tokenSource.Token;
 			pingerSock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+			ListenHubWakeups();
 			var workerThread = new Thread( () => Watch() );
 			workerThread.Start();
 		}
@@ -65,14 +66,14 @@ namespace P2PBackupHub {
 		}
 
 		private void SendUdpMessage(string message, Node n){
-			IPEndPoint nep = new IPEndPoint(System.Net.IPAddress.Parse(n.IP), 52566/*n.ListenPort*/);
+			IPEndPoint nep = new IPEndPoint(System.Net.IPAddress.Parse(n.IP), n.ListenPort);
 			byte[] msg = System.Text.Encoding.ASCII.GetBytes(message);
 			pingerSock.SendTo(msg, nep);
 		}
 
 		private static void ListenHubWakeups(){
 			//Socket wakeupSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-			IPEndPoint hubEP = new IPEndPoint(IPAddress.Any, 52566);
+			IPEndPoint hubEP = new IPEndPoint(IPAddress.Any, 52561);
 			//wakeupSocket.Bind(hubEP);
 			var u = new UdpClient(hubEP);
 			UdpState s = new UdpState{U=u, E = hubEP};
