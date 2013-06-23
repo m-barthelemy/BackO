@@ -14,13 +14,15 @@ namespace P2PBackupHub {
 		}
 
 		internal PeerNode GetById(int id){
-			//if(this.Contains(id))
+			if(this.Contains(id))
 				return this[id];
-			//else
-			//	return null;
+			else
+				return null;
 		}
 
-
+		/*internal bool RemoveById(int nodeId){
+			this.R
+		}*/
 	}
 }
 

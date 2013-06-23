@@ -42,7 +42,6 @@ namespace NodeD {
 		private static void MessageReceived(IAsyncResult ar){
 			UdpClient u = (UdpClient)((UdpState)(ar.AsyncState)).U;
 			IPEndPoint e = (IPEndPoint)((UdpState)(ar.AsyncState)).E;
-			e.Port = hubPort;
 			byte[] receivedBytes = u.EndReceive(ar, ref e);
 			string msg = Encoding.ASCII.GetString(receivedBytes);
 
@@ -50,8 +49,7 @@ namespace NodeD {
 				WakeUp();
 			else if(msg.StartsWith("PING")){
 				//SendUdpMessage(msg, new System.Net.IPEndPoint(e.Address, 52566));
-				u.Send(receivedBytes, receivedBytes.Length, e);
-				//u.Send(receivedBytes, receivedBytes.Length, e.Address.ToString(), hubPort);
+				u.Send(receivedBytes, receivedBytes.Length, e.Address.ToString(), hubPort);
 				Console.WriteLine("Received PING, replying to "+e.ToString());
 			}
 			u.BeginReceive(MessageReceived, (UdpState)ar.AsyncState);
@@ -107,9 +105,7 @@ namespace NodeD {
 				c.Stop(false);
 				u.Close();
 			}
-			catch(Exception e){
-				Console.WriteLine ("Could not properly stop Node : "+e.Message);
-			}
+			catch{}
 		}
 
 		/*private static void SendUdpMessage(string message, IPEndPoint endpoint){

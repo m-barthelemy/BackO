@@ -95,6 +95,8 @@ namespace P2PBackupHub.DAL {
 			// and prevent updating storage space if new value < available
 			P2PBackup.Common.Node dbNode = Get(newN.Id);
 			P2PBackup.Common.Node liveNode = Hub.NodesList.GetById(newN.Id);
+
+			// If storage space size was chaged, ensure it was not set to less than currently used space
 			if(liveNode != null){
 				lock(liveNode){
 					if(newN.StorageSize < liveNode.StorageUsed)

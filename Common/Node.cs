@@ -56,14 +56,6 @@ namespace P2PBackup.Common{
 			}
 		}
 
-		/*[DataMember]
-		[Ignore] // don't export to Json, for security reason
-		[DisplayFormatOption(Display=false)]
-		public string PubKey{
-			get{ return pubKey;}	
-			set{pubKey = value;}
-		}*/
-
 		// not exported but serialized to json
 		[DataMember]
 		[Ignore]

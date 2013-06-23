@@ -22,7 +22,7 @@ namespace P2PBackupHub {
 
 		internal static NodesMonitor Instance{get{return _instance;}}
 
-		internal delegate void NodeOfflineHandler(Node n);
+		internal delegate void NodeOfflineHandler(PeerNode n);
 		public event NodeOfflineHandler NodeOffline;
 
 		internal void Start(){

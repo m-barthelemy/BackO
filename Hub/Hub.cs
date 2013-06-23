@@ -613,15 +613,16 @@ namespace P2PBackupHub{
 			}
 		}
 
-		private static void HandleOfflineNode(Node n){
+		private static void HandleOfflineNode(PeerNode n){
 			Logger.Append("WATCHER", Severity.INFO, "Node #"+n.Id+" is offline (didn't reply for more than 5mn)"); 
 			try{
-				Console.WriteLine("nodeList.GetById(n.Id) is null : "+(nodeList.GetById(n.Id) == null));
-				nodeList.GetById(n.Id).Dispose();
+				nodeList[n.Id].Dispose();
+				Console.WriteLine("node disposed()");
 			}
 			catch{}
 			try{
-				Console.WriteLine("Node remove : "+nodeList.Remove(n.Id));
+				//nodeList.Remove(
+				Console.WriteLine("Node remove : "+nodeList.Remove(n));
 			}
 			catch{}
 		}
