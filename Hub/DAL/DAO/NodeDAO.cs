@@ -134,6 +134,17 @@ namespace P2PBackupHub.DAL {
 
 		}
 
+		/// <summary>
+		/// Changes a node's group or parent
+		/// </summary>
+		/// <param name="n">The node with its updated group information</param>
+		/*public Node UpdateParent(Node n){
+			using(dbc = DAL.Instance.GetDb()){
+				dbc.Update<P2PBackup.Common.Node>(new {Group = n.Group}, p => p.Id == n.Id);
+			}
+			return n;
+		}*/
+
 		public void UpdateStorageSpace(P2PBackup.Common.Node n){
 			using(dbc = DAL.Instance.GetDb())
 				dbc.Update<P2PBackup.Common.Node>(

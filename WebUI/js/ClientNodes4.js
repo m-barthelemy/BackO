@@ -980,7 +980,9 @@ i18n.onReady(function(){
 	          	
 		    ]// end dockbar items
 		}],
-		itemmove:function(thisObj, oldParent, newParent, idx, eOpts){
+			
+    	listeners: {
+    		itemmove:function(thisObj, oldParent, newParent, idx, eOpts){
           		console.debug('changed node group!');
           		if(newParent.get('Group') == -1){
           			thisObj.set('Group', newParent.get('Id'));
@@ -988,7 +990,6 @@ i18n.onReady(function(){
           		}
           		//nStore.sync();
           	},
-    	listeners: {
 	   		selectionchange: function(thisObj, selected, eOpts){
 				if(selected.length >1){
 		       		Ext.getCmp('authorizeBtn').enable();
@@ -1135,10 +1136,6 @@ i18n.onReady(function(){
 		}
 	});
 	
-	tree.on('itemmove', function(thisTree, oldParent, newParent, index, options){
-		console.log('tree move!!');
-	});
-    
     var treesPanel = Ext.create('Ext.panel.Panel', {
     	id:'masterPanel',
     	border:true,

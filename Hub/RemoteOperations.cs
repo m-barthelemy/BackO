@@ -151,6 +151,10 @@ namespace P2PBackupHub{
 			return new DAL.NodeDAO(sessionUser).Update(node);
 		}
 
+		/*public Node UpdateNodeParent(Node node){
+			return new DAL.NodeDAO(sessionUser).UpdateParent(node);
+		}*/
+
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]
 		public List<NodeCertificate> GetCertificates(){

@@ -1,0 +1,4 @@
+/home/matt/dev/SharpBackup/VimApi/bin/Debug/VimService.dll.mdb
+/home/matt/dev/SharpBackup/VimApi/bin/Debug/VimService.dll
+/home/matt/dev/SharpBackup/VimApi/obj/Debug/VimService.dll
+/home/matt/dev/SharpBackup/VimApi/obj/Debug/VimService.dll.mdb

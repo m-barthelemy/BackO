@@ -205,10 +205,24 @@ namespace Backo.Api.WebServices {
 			return RemotingManager.GetRemoteObject().GetAllAvailablePlugins();
 		}
 
-
+		/// <summary>
+		/// For now POST is used to update the WHOLE node 
+		/// </summary>
+		/// <param name="req">Req.</param>
 		public P2PBackup.Common.Node Post(P2PBackup.Common.Node req){
 			return RemotingManager.GetRemoteObject().UpdateNode((P2PBackup.Common.Node)req);
 		}
+
+		public P2PBackup.Common.Node Put(P2PBackup.Common.Node req){
+			return RemotingManager.GetRemoteObject().UpdateNode((P2PBackup.Common.Node)req);
+		}
+		/// <summary>
+		/// For now PUT is used to update ONLY the node's group.
+		/// </summary>
+		/// <param name="req">Req.</param>
+		/*public P2PBackup.Common.Node Put(P2PBackup.Common.Node req){
+			return RemotingManager.GetRemoteObject().UpdateNodeParent((P2PBackup.Common.Node)req);
+		}*/
 
 		public void Post(NodeApproval req){
 			RemotingManager.GetRemoteObject().ApproveNode(req.Id, req.Locked);
