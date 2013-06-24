@@ -10,7 +10,7 @@ using System.ServiceModel;
 using System.Security;
 using System.Security.Principal;
 using P2PBackup.Common;
-
+using Irony.Parsing;
 //test
 /*using System.Data;
 using System.Xml;*/
@@ -70,6 +70,9 @@ namespace shbc{
 		static string[] properties; // properties to display, when using "GET a,b,c,d FROM" syntax
 		static string lastQuery = "";
 		static int position = 0;
+
+		// testing purposes only
+		static bool ironyParse;
 
 		public static void Main (string[] args){
 			
@@ -135,6 +138,9 @@ namespace shbc{
 					ParseQueryOp(query, false);
 					break;
 				// read commands from stdin:
+				case "--irony":
+					ironyParse = true;
+					break;
 				case "-":
 					Login ();
 					string stdInQ = "";
@@ -150,8 +156,11 @@ namespace shbc{
 			}
 			
 			if(!simpleQueryMode){
-				Login();
-				Interact();
+				if (!ironyParse) {
+					Login ();
+					Interact ();
+				} else
+					InteractIrony ();
 			}
 			
 		}
@@ -187,8 +196,48 @@ namespace shbc{
 				Environment.Exit(2);
 			}
 		}
-		
+
+
+		/* Irony Tests */
+
+
+		private static void Flatten(ParseTreeNode node, List<ParseTreeNode> nodes)
+		{
+			nodes.Add(node);
+
+			foreach (ParseTreeNode child in node.ChildNodes)
+			{
+				Flatten(child, nodes);
+			}
+		}
+
+		private static string IronyParse(string query){
+			Console.WriteLine ("Parsing : "+query);
+			LanguageData language = new LanguageData(new BackOGrammar());
+			Parser parser = new Parser(language);
+			ParseTree parseTree = parser.Parse(query);
+			ParseTreeNode root = parseTree.Root;
+			//return root != null;
+			List<ParseTreeNode> nodes = new List<ParseTreeNode>();
+			// Flatten the nodes for easier processing with LINQ
+			Flatten(root, nodes);
+
+			Console.WriteLine ("parsed : "+root != null+", root="+root.ToString());
+			Console.WriteLine("Flattened tree : "+string.Join(" # ", nodes));
+			ParseTreeNode actionKind = root.ChildNodes[0];
+			switch(actionKind.Term.Name){
+			case "selectStmt":
+				Console.WriteLine ("request type : SELECT, has "+actionKind.ChildNodes.Count+" child");
+
+				break;
+			}
+			return "parsed : "+(root != null)+", root="+root.ToString();
+		}
+
+
 		private static string ParseQueryOp(string query, bool autoComplete){
+
+
 			if(query.Length == 0) return null;
 			int opSeparatorPos = query.IndexOf(" ");
 			if(opSeparatorPos <1) opSeparatorPos = query.Length;
@@ -1007,7 +1056,68 @@ namespace shbc{
 			}
 			
 		}
-		
+		private static void InteractIrony(){
+			bool escapeRequired = false;
+			Console.WriteLine ("\t Interactive mode. Press [tab] to get autocompletion. Type 'help' to get help.");
+			Console.WriteLine ();
+			string query = "";
+			Console.Write ("# ");
+			while(!escapeRequired){
+
+				ConsoleKeyInfo cki;
+				while((cki = Console.ReadKey(true)).Key != ConsoleKey.Tab){
+					if(cki.Key == ConsoleKey.Enter || cki.Key == ConsoleKey.Execute){
+						//Console.WriteLine("# "+query);
+						Console.Write(Environment.NewLine);
+						Console.WriteLine(IronyParse (query));
+						query = "";
+						Console.WriteLine();
+						Console.Write ("# ");	
+						position = 0;
+					}
+					else if(cki.Key == ConsoleKey.Backspace){
+						if(Console.CursorLeft < 3) continue;
+						//if(position == query.Length){
+						Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+						Console.Write(" ");
+						Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);	
+						//}
+						//query = query.Substring(0, query.Length -1);
+						if(position >0){
+							query = query.Substring (0, position-1)+query.Substring (position);
+						}
+					}
+					else if(cki.Key == ConsoleKey.UpArrow){
+						Console.SetCursorPosition(1, Console.CursorTop);
+						Console.Write(lastQuery);
+					}
+					else if(cki.Key == ConsoleKey.LeftArrow){
+						Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+						if(position >0)
+							position --;
+					}
+					else if(cki.Key == ConsoleKey.RightArrow){
+						Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+						if(position < query.Length)
+							position++;
+					}
+					else if(cki.Key != ConsoleKey.Tab){
+						if(position == 0 || position == query.Length)
+							query += cki.KeyChar;
+						else{
+							query = query.Substring(0, position-1)+cki.KeyChar+query.Substring (position);
+						}
+						Console.Write(cki.KeyChar);
+						position++;
+					}
+
+				}
+				string compl = ParseQueryOp(query, true);
+				query += compl;
+				Console.Write(compl);
+			}
+
+		}
 		
 		private static string GetCompletion(string partialQ){
 			
