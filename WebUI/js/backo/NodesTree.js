@@ -66,7 +66,7 @@ Ext.define('backo.NodesTree',{
         flex		: 0,
         width		: 90,
         dataIndex	: 'IP',
-        hidden		: this.displayedColumns['IP'] 
+        //hidden		: this.displayedColumns[IP]
     },{
         text		: i18n.getMsg('nodestree.hostName'),
         flex		: 0,
@@ -154,6 +154,8 @@ Ext.define('backo.NodesTree',{
         	if(record.get('Group') == -1) return '';
         	if(record.get('Locked') == true)
         		return '<img src="/images/locked.png" height="20"/>';
+        	else
+        		return '<img src="/images/security-high.png"/>';
         	// <TODO> warning/error status when sthg is wrong with cert policy
         	/*if(value == "sec-OK")
         		return '<img src="/images/security-high.png"/>';
@@ -186,7 +188,16 @@ Ext.define('backo.NodesTree',{
     },{
         text:  i18n.getMsg('nodestree.delegations'),
         flex: 1,
-        dataIndex: '',
+        //dataIndex: '',
+         renderer:function(value, metaData, record, colIndex, store, view){
+         	//var val = '';
+         	/*for(var i in displayedColumns){
+         		value += i+'='+displayedColumns[i]+', ';
+         		
+         	}*/
+         	return value;
+         }
+        
     }
 	],
 });

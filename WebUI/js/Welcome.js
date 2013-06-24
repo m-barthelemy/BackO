@@ -1,3 +1,5 @@
+Ext.Loader.setConfig({enabled:true});
+
 Ext.require([
     'Ext.data.*',
     'Ext.grid.*',
@@ -9,13 +11,14 @@ Ext.require([
 
 
 Ext.onReady(function () {
-	Ext.Loader.setConfig({enabled:true});
 	
-	var i18n = new Ext.i18n.Bundle({
+	
+	
+	/*var i18n = new Ext.i18n.Bundle({
         bundle:'wui', 
         path:'i18n',
         lang:Ext.util.Cookies.get('lang')
-    });
+    });*/
 
 i18n.onReady(function(){
 	var colorsList = null;
