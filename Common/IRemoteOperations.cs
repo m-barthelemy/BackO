@@ -50,6 +50,9 @@ namespace  P2PBackup.Common{
 		[OperationContract]
 		P2PBackup.Common.Node UpdateNode(P2PBackup.Common.Node node);
 
+		/*[OperationContract]
+		Node UpdateNodeParent(Node node);*/
+
 		[OperationContract]
 		List<P2PBackup.Common.Node> GetStorageNodes(int? storageGroupId);
 		

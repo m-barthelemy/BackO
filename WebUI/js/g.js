@@ -490,6 +490,7 @@ Date.prototype.getMonday=function(){
         {name: 'Status', 		type: 'string'},
         {name: 'CreationDate',	type: 'date'},
         {name: 'LastConnection',type: 'date'},
+        {name: 'Configuration',	persist: true},
         // Node's Client-side configuration:
         {name: 'LogLevel',     	type: 'string', mapping: 'Configuration.LogLevel'},
         {name: 'LogFile',    	type: 'string', mapping: 'Configuration.LogFile'},
@@ -531,10 +532,10 @@ Date.prototype.getMonday=function(){
         //} 
         me.callParent(arguments); 
     } ,
-   /* proxy: {
+   	proxy: {
         type: 'rest',
         url : '/api/Node/'
-    }*/
+    }
      
  });
  
