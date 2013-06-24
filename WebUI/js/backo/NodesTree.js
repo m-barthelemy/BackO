@@ -5,17 +5,21 @@
 Ext.define('backo.NodesTree',{
 	extend: 'Ext.tree.Panel',
 	requires: ['Ext.i18n.Bundle'],
+	initComponent: function() {
+        this.callParent();
+        this.displayedColumns.IP=true;
+		/*	'IP':true,
+			'Name': true,
+			'Status':true
+		};*/
+    },
 	bundle:{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: false
 	},
-	displayedColumns: {
-		IP:true,
-		Name: true,
-		Status:true
-	},
+	
 	model: 'Node',
 	layout:'fit',
 	anchor:'100%',
@@ -66,7 +70,7 @@ Ext.define('backo.NodesTree',{
 	    flex		: 0,
 	    width		: 90,
 	    dataIndex	: 'IP',
-	    //hidden		: this.displayedColumns[IP]
+	    hidden		: this.displayedColumns.IP
 	},{
 	    text		: i18n.getMsg('nodestree.hostName'),
 	    flex		: 0,
@@ -189,14 +193,6 @@ Ext.define('backo.NodesTree',{
 	    text:  i18n.getMsg('nodestree.delegations'),
 	    flex: 1,
 	    //dataIndex: '',
-	     renderer:function(value, metaData, record, colIndex, store, view){
-	     	//var val = '';
-	     	/*for(var i in displayedColumns){
-	     		value += i+'='+displayedColumns[i]+', ';
-	     		
-	     	}*/
-	     	return value;
-	     }
 	    
 	}
 	],

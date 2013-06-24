@@ -848,6 +848,7 @@ i18n.onReady(function(){
         layout:'fit',
         anchor:'100%',
         store: nStore,
+        displayedColumns:{IP:true},
         dockedItems: [{
 		    xtype: 'toolbar',
 		    dock: 'bottom',

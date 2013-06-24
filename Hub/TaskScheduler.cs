@@ -171,7 +171,7 @@ namespace P2PBackupHub{
 			}*/
 
 			if(taskTargetNode == null){
-				throw new UnreachableNodeException("Node #"+task.NodeId+" is offline or unreachable");
+				throw new UnreachableNodeException("Node #"+taskTargetNode+" is offline or unreachable");
 			}
 			else if(taskTargetNode.Quota > 0 && taskTargetNode.UsedQuota >= taskTargetNode.Quota){
 				throw new OverQuotaException(taskTargetNode.UsedQuota, taskTargetNode.Quota);
