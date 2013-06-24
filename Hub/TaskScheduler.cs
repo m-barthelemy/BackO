@@ -161,7 +161,7 @@ namespace P2PBackupHub{
 			if(task.Operation == TaskOperation.HouseKeeping)
 				return StartHouseKeeping(task);
 
-			PeerNode taskTargetNode = GetHandlingNode(task.Id);
+			PeerNode taskTargetNode = GetHandlingNode(task);
 
 			// temp : for debugging udp wakeup
 			/*if(taskTargetNode == null){
@@ -232,8 +232,7 @@ namespace P2PBackupHub{
 				throw new Exception("Invalid Taskset id");
 		}
 		
-		private PeerNode GetHandlingNode(long taskId){
-			Task t = GetTask(taskId);
+		private PeerNode GetHandlingNode(Task t){
 			if(t.BackupSet.HandledBy >0)
 				return Hub.NodesList.GetById(t.BackupSet.HandledBy);
 			else 
@@ -259,7 +258,7 @@ namespace P2PBackupHub{
 				SetTaskRunningStatus(taskId, TaskRunningStatus.Cancelled); 
 				return;
 			}
-			PeerNode taskTargetNode = GetHandlingNode(taskId);
+			PeerNode taskTargetNode = GetHandlingNode(task);
 			Logger.Append("HUBRN", Severity.INFO, "Asking  to node #"+task.BackupSet.NodeId+" to cancel task "+task.Id);
 			if(taskTargetNode != null){
 				taskTargetNode.ManageTask(task, TaskAction.Cancel);
@@ -273,7 +272,7 @@ namespace P2PBackupHub{
 		
 		internal void PauseTask(long taskId, User u){
 			Task task = GetTask(taskId);
-			PeerNode taskTargetNode = GetHandlingNode(taskId);
+			PeerNode taskTargetNode = GetHandlingNode(task);
 			if(taskTargetNode != null){
 				Logger.Append("HUBRN", Severity.INFO, "Asking  to node #"+task.BackupSet.NodeId+" to cancel task "+task.Id);
 				taskTargetNode.ManageTask(task, TaskAction.Pause);
