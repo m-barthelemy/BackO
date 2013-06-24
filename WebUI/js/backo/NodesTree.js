@@ -38,14 +38,14 @@ Ext.define('backo.NodesTree',{
 	        ptype: 'treeviewdragdrop',
 	        containerScroll: true
 	    },
-	    itemmove:function(thisObj, oldParent, newParent, idx, eOpts){
+	   /* itemmove:function(thisObj, oldParent, newParent, idx, eOpts){
 	  		console.debug('changed node group!');
 	  		if(newParent.get('Group') == -1){
 	  			thisObj.set('Group', newParent.get('Id'));
 	  			thisObj.save();	
 	  		}
 	  		//nStore.sync();
-	  	},
+	  	},*/
 	},
 	columns: [{
 	    xtype		: 'treecolumn', //this is so we know which column will show the tree

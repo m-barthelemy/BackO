@@ -12,7 +12,7 @@ cross-platform enterprise backup system.
 
 - server web GUI and command-line tool
 
-- strong certificate authentication between clients and server, centralized certification management
+- strong certificate authentication between clients and server, with central certificates distribution and management
 
 
 **Backups support (for now)**
@@ -48,5 +48,5 @@ cross-platform enterprise backup system.
 
 - incremental-style backups seen as Full
 
-- no central catalog/index repository
+- no global catalog/index repository
 
