@@ -37,6 +37,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Irony">
+      <HintPath>..\..\..\..\Downloads\Irony_2013_03_10\Irony\bin\Debug\Irony.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -44,6 +47,8 @@
     <Compile Include="Messages.cs" />
     <Compile Include="OrderHelpers.cs" />
     <Compile Include="RemotingHelper.cs" />
+    <Compile Include="BackOGrammar.cs" />
+    <Compile Include="SqlGrammar.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
