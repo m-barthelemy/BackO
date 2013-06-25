@@ -4,7 +4,6 @@ Ext.require([
     'Ext.tree.*',
     'Ext.form.*',
     'Ext.window.*',
-    'backo.PasswordEditor'
 	]);
 	
 Ext.onReady(function(){
@@ -13,13 +12,12 @@ Ext.onReady(function(){
         disableCaching: false
     });
 	
-    
-	var i18n = Ext.create('Ext.i18n.Bundle',{
+	/*var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: true
-	});
+	});*/
 
 i18n.onReady(function(){
 
@@ -89,9 +87,7 @@ i18n.onReady(function(){
 				header: i18n.getMsg('generic.password'),
 				dataIndex: 'PasswordId',
 				width: 170,
-				editor: {
-					xtype: 'passwordeditor',
-				},
+				editor: Ext.create('backo.PasswordEditor'),
 				renderer: function() {
 					return '******'
 				}
@@ -104,7 +100,6 @@ i18n.onReady(function(){
 				}
 			}
 		],
-		//selType: 'cellmodel',
 		listeners:{
 			selectionchange: function(thisObj, selected, eOpts ){
 				if(selected.length >0){

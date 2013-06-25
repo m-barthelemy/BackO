@@ -17,18 +17,7 @@ Ext.define('Password', {
         }
     }
  });
-/*var params = Ext.urlDecode(window.location.search.substring(1)); 
-var lang = params.lang;
 
-var i18n = Ext.create('Ext.i18n.Bundle',{
-	bundle: 'wui',
-	lang: lang,
-	path: '/i18n',
-	noCache: true
-});
-
-i18n.onReady(function(){	
-	*/
 	
 Ext.define('backo.PasswordEditor', {
     extend: 'Ext.form.field.Picker',
@@ -121,7 +110,7 @@ Ext.define('backo.PasswordEditor', {
                         {
                             xtype: 'button',
                             name:'save',
-                            text: 'Ok', //i18n.getMsg('generic.ok'),
+                            text: i18n.getMsg('generic.ok'),
                             iconCls: 'okIcon',
                             handler: function( btn, e, opts ) {
                             	me.applyValues();
@@ -130,7 +119,7 @@ Ext.define('backo.PasswordEditor', {
                         {
                             xtype: 'button',
                             name:'cancel',
-                            text: 'Cancel', //i18n.getMsg('generic.cancel'),
+                            text: i18n.getMsg('generic.cancel'),
                             iconCls: 'cancelIcon',
                             handler: function( btn, e, opts ) {
                             	me.picker.getForm().reset();

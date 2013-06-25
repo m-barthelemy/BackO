@@ -23,52 +23,53 @@ Ext.onReady(function () {
 	]);
 	
 	
-    var i18n = Ext.create('Ext.i18n.Bundle',{
+   /* var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: true
-	});
+	});*/
 	
 
 i18n.onReady(function(){
- Ext.get('restoreTitle').dom.innerText = i18n.getMsg('restore.title');
- var restoreNode = null;
- var restoreDestNode = null;
- var restoreBS = '';
- function GetRestoreBS(){
- 	return restoreBS;
- }
+	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
+	Ext.get('restoreTitle').dom.innerText = i18n.getMsg('restore.title');
+	var restoreNode = null;
+	var restoreDestNode = null;
+	var restoreBS = '';
+	function GetRestoreBS(){
+	return restoreBS;
+	}
 	            	
-  var nStore = new Ext.data.TreeStore( {
-    model: 'Node',
-    storeId:'nStore',
-    proxy: {
-        type: 'ajax',
-        url: '/api/Nodes',
-        extraParams: {format: 'json'}
-    },
-    root:{expanded: false },
-    folderSort: true,
-     listeners:{
-    	load:function( thisObj, node, records, successful, eOpts ){
-    		Ext.each(records, function (rec){
-				rec.set('leaf', rec.get('Group') != -1);
-				if(rec.get('Group') != -1){
-					rec.set('checked', false );
-					// set online/offline status icon
-					if(rec.get('Status') == 'Idle' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
-						rec.set('iconCls','node-on');
-					else if(rec.get('Status') == 'Error')
-						rec.set('iconCls','node-err');
-					else
-						rec.set('iconCls','node-off');
-				}
-				
-			});
-    	}
-    }
- });
+	var nStore = new Ext.data.TreeStore( {
+		model: 'Node',
+		storeId:'nStore',
+		proxy: {
+		    type: 'ajax',
+		    url: '/api/Nodes',
+		    extraParams: {format: 'json'}
+		},
+		root:{expanded: false },
+		folderSort: true,
+		 listeners:{
+			load:function( thisObj, node, records, successful, eOpts ){
+				Ext.each(records, function (rec){
+					rec.set('leaf', rec.get('Group') != -1);
+					if(rec.get('Group') != -1){
+						rec.set('checked', false );
+						// set online/offline status icon
+						if(rec.get('Status') == 'Idle' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+							rec.set('iconCls','node-on');
+						else if(rec.get('Status') == 'Error')
+							rec.set('iconCls','node-err');
+						else
+							rec.set('iconCls','node-off');
+					}
+					
+				});
+			}
+		}
+	});
  
          	
   var dnStore = new Ext.data.TreeStore( {
@@ -96,7 +97,68 @@ i18n.onReady(function(){
   
   var tasksEvtStore = new Extensible.calendar.data.MemoryEventStore();
   
- var clientNodesTree = new Ext.tree.Panel({
+  var clientNodesTree = Ext.create('backo.NodesTree',{
+  		id:'clientNodesTree',
+  		shown: ['IP', 'Name', 'Version', 'OS'],
+        height:350,
+        width:475,
+        //scroll: 'vertical',
+        rootVisible: false,
+        store: nStore,
+        draggable:false,     
+        padding:'10px 20px 0px 10px',
+        listeners:{
+        	'checkchange': function(node, checked){        	
+		       	if (Ext.getCmp('clientNodesTree').getChecked().length == 1 && checked){
+		       		restoreNode = node.data['Id'];
+		       		var firstLevelChild = clientNodesTree.getRootNode().childNodes;
+		       		Ext.each(firstLevelChild, function(child, index){
+		       			if(child != null){
+			       			if((child.hasChildNodes() && !child.contains(node))){
+			       				child.remove(false);
+			       			}
+			       			else{
+			       				var childNodes = [].concat(child.childNodes);
+								Ext.each(childNodes, function(leafChild){
+				       				if (leafChild != null && !leafChild.isRoot() && leafChild.isLeaf() && (leafChild.get('Id') != node.get('Id'))) {
+		        							leafChild.remove(false);
+		        					}
+			       				});
+			       			}
+			       		}
+        			});
+        			destNodesTree.enable();
+        			//destNodesTree.getStore().load();
+        			var destNodes = Ext.getCmp('destNodesTree').getRootNode().childNodes;
+        			Ext.each(destNodes, function(child, index){
+		       			if(child.hasChildNodes()){
+		       				var childNodes = [].concat(child.childNodes);
+							Ext.each(childNodes, function(leafChild){
+			       				if (leafChild != null && !leafChild.isRoot() && leafChild.isLeaf() && (leafChild.data['Id'] == restoreNode)) {
+	        							//leafChild.data['checked'] = true;
+	        							//leafChild.checked = true;
+	        							leafChild.parentNode.expand();
+	        					}
+		       				});
+		       			}
+		       			else{
+		       				if (child != null && !child.isRoot() && child.isLeaf() && (child.data['Id'] == restoreNode)) {
+	        							//child.data['checked'] = true;
+	        							child.parentNode.expand();
+	        				}
+		       			}
+        			});
+        			
+        			
+        			
+		       	}
+		       	else{
+		       		clientNodesTree.getStore().load(); //setProxy(ajaxNodesProxy);
+		       	}
+		     }
+        }
+  });
+ /*var clientNodesTree = new Ext.tree.Panel({
         //title: ''+i18n.getMsg('restore.step1.title'), //Select a node',
         id:'clientNodesTree',
         height:350,
@@ -187,7 +249,7 @@ i18n.onReady(function(){
 		       	}
 		     }
         }
-  });
+  });*/
   
   var destNodesTree = new Ext.tree.Panel({
   		//title: ''+i18n.getMsg('restore.step1.title'),

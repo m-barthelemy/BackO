@@ -12,12 +12,12 @@ Ext.onReady(function () {
 	Ext.Loader.setConfig({enabled:true});
 	Ext.Loader.setPath('Ext.ux', '/js/ext4/ux');
 	
-    i18n = Ext.create('Ext.i18n.Bundle',{
+    /*i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: false
-	});
+	});*/
 	
 	i18nTask = Ext.create('Ext.i18n.Bundle',{//2nd i18n for tasks log entries
 		bundle: 'taskmsg',

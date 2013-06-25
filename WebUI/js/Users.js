@@ -1,22 +1,23 @@
+Ext.Loader.setConfig({enabled:true, disableCaching: false});
 Ext.require([
     'Ext.data.*',
     'Ext.grid.*',
     'Ext.tree.*',
     'Ext.form.*',
     'Ext.ux.*',
-    'backo.PasswordEditor'
+    //'backo.PasswordEditor'
 ]);
 
-
 Ext.onReady(function () {
-Ext.Loader.setConfig({enabled:true, disableCaching: false});
+
+
 	
-	var i18n = Ext.create('Ext.i18n.Bundle',{
+	/*var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: true
-	});
+	});*/
 	
 i18n.onReady(function(){
 
@@ -87,9 +88,10 @@ i18n.onReady(function(){
 			dataIndex: 'PasswordId',
 			width: 160,
 			flex:1,
-			editor: {
+			/*editor: {
 				xtype: 'passwordeditor',
-			},
+			},*/
+			editor: Ext.create('backo.PasswordEditor'),
 			renderer: function() {
 				return '******'
 			}

@@ -1,55 +1,44 @@
 //Represents the client groups and nodes tree used in multiple places.
-// It's just a classic treePanel with 1 custom added property : displayedColumns
-// displayedColumns is used to customize the view (ie the displayed columns) depending on the context
+// It's just a classic treePanel with 1 custom added property : shown
+// 'shown' is used to customize the view (ie the displayed columns) depending on the context
 
 Ext.define('backo.NodesTree',{
-	extend: 'Ext.tree.Panel',
+	extend	: 'Ext.tree.Panel',
 	requires: ['Ext.i18n.Bundle'],
+	config	:{
+		shown:[],
+	},
+	shown	:[],
 	initComponent: function() {
         this.callParent();
-        this.displayedColumns.IP=true;
-		/*	'IP':true,
-			'Name': true,
-			'Status':true
-		};*/
+        var me = this;
+        var shouldHideField = function(fieldName){
+	    	for(var i=0; i < me.shown.length; i++)
+	    		if(me.shown[i] == fieldName)
+	    			return false;
+	    	return true;
+	    };
+        for(var i=0; i < this.columns.length; i++){
+        	this.columns[i]['hidden'] = shouldHideField(this.columns[i]['dataIndex']);
+        }
     },
-	bundle:{
-		bundle: 'wui',
-		lang: Ext.util.Cookies.get('lang'),
-		path: '/i18n',
-		noCache: false
-	},
-	
-	model: 'Node',
-	layout:'fit',
-	anchor:'100%',
-	collapsible: false,
-	useArrows: true,
-	rootVisible: false,
-	multiSelect: true,
+	model		: 'Node',
+	layout		: 'fit',
+	anchor		: '100%',
+	collapsible	: false,
+	useArrows	: true,
+	rootVisible	: false,
+	multiSelect	: true,
 	singleExpand: false,
-	draggable:true,    
-	stateful:false,   
-	stripeRows:true,
-	// Grouping in tree is buggy (extjs 4.2) since it prevents collapsing group 
-	//after opening it, and displays hidden field mixed with regular ones (!?)
-	//plugins:[groupingFeature],
-	//features: [groupingFeature],
-	//features: [{ ftype: 'grouping' }],
-	viewConfig : {
-		enableDD : true,
-	    plugins: {
+	draggable	: false,    
+	stateful	: false,   
+	stripeRows	: true,
+	viewConfig 	: {
+		enableDD 	: true,
+	    plugins		: {
 	        ptype: 'treeviewdragdrop',
 	        containerScroll: true
-	    },
-	   /* itemmove:function(thisObj, oldParent, newParent, idx, eOpts){
-	  		console.debug('changed node group!');
-	  		if(newParent.get('Group') == -1){
-	  			thisObj.set('Group', newParent.get('Id'));
-	  			thisObj.save();	
-	  		}
-	  		//nStore.sync();
-	  	},*/
+	    }
 	},
 	columns: [{
 	    xtype		: 'treecolumn', //this is so we know which column will show the tree
@@ -63,48 +52,43 @@ Ext.define('backo.NodesTree',{
 	    	if(record.get('Group') == -1)
 	    		value = '<b>'+value+'</b>';
 	    	//value = '<img src="/images/computer.png" style="vertical-align:middle;">'+value;
-	    	return '<span data-qtip="#'+record.get('Id')+'">'+value+'</span>';
+	    	return '<span data-qtip="#'+record.get('Id')+'<br/>'+record.get('Description')+'">'+value+'</span>';
 	    }
 	},{
 	    text		: i18n.getMsg('nodestree.currentIP'),
 	    flex		: 0,
 	    width		: 90,
 	    dataIndex	: 'IP',
-	    hidden		: this.displayedColumns.IP
 	},{
 	    text		: i18n.getMsg('nodestree.hostName'),
 	    flex		: 0,
 	    width		: 100,
 	    dataIndex	: 'HostName',
-	    hidden		: true,
 	},{
 	    text		: i18n.getMsg('generic.kind'),
 	    flex		: 0,
-	    width		: 80,
+	    width		: 70,
 	    dataIndex	: 'Kind',
 	    hidden		: true,
 	    renderer	:function(value, metaData, record, colIndex, store, view){
 	    	if(record.get('Group') == -1) return '';
-	    	return  i18n.getMsg('nodestree.kind.'+value);
+	    	return  i18n.getMsg('generic.kind.'+value);
 	   	}
 	},{
 	    text		: i18n.getMsg('nodestree.hypervisor'),
 	    flex		: 0,
 	    width		: 90,
 	    dataIndex	: 'Hypervisor',
-	    hidden		: true,
 	},{
 	    text		: i18n.getMsg('generic.description'),
 	    flex		: 0,
 	    width		: 200,
 	    dataIndex	: 'Description',
-	    hidden		: true,
 	},{
 	    text		: i18n.getMsg('nodestree.createDate'),
 	    flex		: 0,
 	    width		: 110,
 	    dataIndex	: 'CreationDate',
-	    hidden		: true,
 	    renderer	: function(value, metaData, record, colIndex, store, view){
 	    	if(record.get('Group') == -1) return '';
 	    	return record.get('CreationDate').toLocaleString();
@@ -154,6 +138,7 @@ Ext.define('backo.NodesTree',{
 	    text:  i18n.getMsg('nodestree.certificate'),
 	    flex: 0,
 	    width:30,
+	    dataIndex:'Certificate',
 	    renderer:function(value, metaData, record, colIndex, store, view){
 	    	if(record.get('Group') == -1) return '';
 	    	if(record.get('Locked') == true)
