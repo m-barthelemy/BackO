@@ -38,6 +38,11 @@ namespace Backo.Api.WebServices {
 		public uint Id{get;set;}
 	}
 
+	[Route("/api/Node/{Id}/WakeUp/")]
+	public class WakeupNode{
+		public uint Id{get;set;}
+	}
+
 	[Route("/api/Node/{Id}/Lock/{Locked}", "PUT POST")]
 	public class NodeApproval{
 		public uint Id{get;set;}
@@ -203,6 +208,10 @@ namespace Backo.Api.WebServices {
 
 		public List<Plugin> Get(GetInstalledPlugins req){
 			return RemotingManager.GetRemoteObject().GetAllAvailablePlugins();
+		}
+
+		public void Get(WakeupNode req){
+			RemotingManager.GetRemoteObject().WakeupNode(req.Id);
 		}
 
 		/// <summary>
