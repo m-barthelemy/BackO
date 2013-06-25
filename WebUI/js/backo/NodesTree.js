@@ -4,7 +4,7 @@
 
 Ext.define('backo.NodesTree',{
 	extend	: 'Ext.tree.Panel',
-	requires: ['Ext.i18n.Bundle'],
+	requires: ['Ext.i18n.Bundle', 'Ext.ux.form.SearchField'],
 	config	:{
 		shown:[],
 	},
@@ -181,6 +181,23 @@ Ext.define('backo.NodesTree',{
 	    
 	}
 	],
+	dockedItems: [{
+	    dock: 'top',
+	    xtype: 'toolbar',
+	    items: [
+	    Ext.create('Ext.ux.form.SearchField', {
+	        width: 200,
+	        fieldLabel: 'Search',
+	        labelWidth: 65,
+	        //xtype: 'searchfield',
+	        store: this.store
+	    }), '->', {
+	        xtype: 'component',
+	        itemId: 'status',
+	        tpl: 'Matching threads: {count}',
+	        style: 'margin-right:5px'
+	    }]
+	}],
 });
 
 
