@@ -13,7 +13,7 @@ Ext.Loader.setConfig({ enabled: true});
     'Ext.fx.target.Sprite',
     //'backo.NodesTree'
  ]);
-	
+	 
 
   function ManageLockStatus(areLocked){
   	var checkedNodes = Ext.getCmp('clientNodesTree').getSelectionModel().getSelection();

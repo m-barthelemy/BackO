@@ -16,7 +16,7 @@ Ext.define('backo.NodesTree',{
 	    	for(var i=0; i < me.shown.length; i++)
 	    		if(me.shown[i] == fieldName)
 	    			return false;
-	    	return true;
+	    	return true; 
 	    };
         for(var i=0; i < this.columns.length; i++){
         	this.columns[i]['hidden'] = shouldHideField(this.columns[i]['dataIndex']);
@@ -181,6 +181,7 @@ Ext.define('backo.NodesTree',{
 	    
 	}
 	],
+	
 	dockedItems: [{
 	    dock: 'top',
 	    xtype: 'toolbar',
