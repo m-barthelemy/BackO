@@ -9,12 +9,12 @@ Ext.require([
 Ext.onReady(function () {
 	Ext.Loader.setConfig({enabled:true});
 	
-    var i18n = Ext.create('Ext.i18n.Bundle',{
+   /* var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: false
-	});
+	});*/
 	
 i18n.onReady(function(){
 

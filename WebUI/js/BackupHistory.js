@@ -1,13 +1,13 @@
-Ext.Loader.setConfig({
+/*Ext.Loader.setConfig({
         enabled: true,
         disableCaching: false,
         paths: {
             'Extensible': '/Extensible/src',
             //'Extensible.example': '/Extensible/examples',
             'Ext.ux':'/js/ux',
-            'Ext.i18n':'/i18n/'
+           // 'Ext.i18n':'/i18n/'
         }
- });
+ });*/
 
 Ext.example = function(){
     var msgCt;
@@ -39,7 +39,7 @@ Ext.onReady(function () {
             'Extensible': '/Extensible/src',
             'Extensible.example': '/Extensible/examples',
             'Ext.ux':'/ext4/ux',
-            'Ext.i18n':'/i18n/'
+            //'Ext.i18n':'/i18n/'
         }
      });*/
     Ext.require([
@@ -56,12 +56,12 @@ Ext.onReady(function () {
 	]);
 	var params = Ext.urlDecode(window.location.search.substring(1));
 	
-    i18n = Ext.create('Ext.i18n.Bundle',{
+    /*i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: true
-	});
+	});*/
 	
 	i18nTask = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'taskmsg',
@@ -72,7 +72,7 @@ Ext.onReady(function () {
 
 i18n.onReady(function(){
 //i18nTask.onReady(function(){
-	Ext.QuickTips.init();
+
 	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
 	
  	Ext.get('histTitle').dom.innerText = i18n.getMsg('history.title');
@@ -845,9 +845,9 @@ i18n.onReady(function(){
                     		width:50,
                     		id:'statusLabel',
                     	},
-                    	{
+                    	Ext.create('Ext.ux.form.field.BoxSelect', {
 			        		//xtype:'combo',
-			        		xtype:'boxselect',
+			        		//xtype:'boxselect',
 			        		id:'statuses',
 			        		resizable: false,
 			        		stacked:true,
@@ -884,7 +884,7 @@ i18n.onReady(function(){
 			                    ]
 			                }),
 			                
-			        	},
+			        	}),
 			        	{
                     		xtype:'label',
                     		forId:'sizeType',

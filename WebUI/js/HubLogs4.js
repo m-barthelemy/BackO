@@ -16,18 +16,25 @@ Ext.onReady(function () {
         }
     });
 	
-	var i18n = Ext.create('Ext.i18n.Bundle',{
+	/*var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: true
-	});
+	});*/
 
 
 i18n.onReady(function(){
  Ext.get('hubTitle').dom.innerText = i18n.getMsg('hublogs.title');
  
-	
+  Ext.tip.QuickTipManager.init();
+  Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {
+	showDelay: 500,      // Show 500ms after entering target
+	hideDelay: 1000,
+	dismissDelay: 30000,
+	autoHide:true,
+	closable:false,
+  });
 	
   Ext.define('HubLogEntryM', {
     extend: 'Ext.data.Model',
@@ -147,6 +154,8 @@ i18n.onReady(function(){
                     return '<div> &nbsp;<img src="/images/sq_re.gif" border="0" valign="middle"/> &nbsp;</div>';
                 else if (severity == 'WARNING')
                     return '<div> &nbsp;<img src="/images/sq_ye.gif" border="0" valign="middle"/> &nbsp;</div>';
+                else if (severity == 'NOTICE')
+                    return '<div> &nbsp;<img src="/images/sq_bl.gif" border="0" valign="middle"/> &nbsp;</div>';
                 else if (severity == 'INFO')
                     return '<div> &nbsp;<img src="/images/sq_gr.gif" border="0" valign="middle"/> &nbsp;</div>';
                 else 
@@ -160,7 +169,7 @@ i18n.onReady(function(){
             flex:1,
             //id:'message',
             renderer:function(value){
-            	return '<span data-qtip="' + value + '">'+value+'</span>';
+            	return '<div data-qtip="' + value + '">'+value+'</div>';
             }
         }
         ],

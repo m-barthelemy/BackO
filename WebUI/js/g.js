@@ -11,7 +11,8 @@ Ext.Loader.setConfig({
     paths: {
         'Extensible': '/Extensible/src',
         'Extensible.example': '/Extensible/examples',
-        'Ext.ux':'/ext4/ux',
+        //'Ext.ux':'/ext4/ux',
+        'Ext.ux':'/js/ux',
         'Ext.i18n':'/i18n/',
         'backo':'/js/backo'
     }

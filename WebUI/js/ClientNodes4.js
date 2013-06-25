@@ -1,6 +1,4 @@
-Ext.Loader.setConfig({
-    enabled: true
-});
+Ext.Loader.setConfig({ enabled: true});
  
  var nodesChecked = [];
  var pathsChecked = [];
@@ -53,43 +51,43 @@ Ext.Loader.setConfig({
 
 i18n.onReady(function(){
 
-	Ext.QuickTips.init();
 	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
- var nStore = new Ext.data.TreeStore( {
-    model: 'Node',
-    autoLoad: true,
-    //autoSync: true,
-    proxy: {
-        type: 'ajax',
-        url: '/api/Nodes',
-        extraParams: {format: 'json'},
-	    reader:{
-        	type:'json',
-        	applyDefaults: true
-        }
-    },
-    root:{expanded: false},
-    folderSort: true,
-    listeners:{
-    	load:function( thisObj, node, records, successful, eOpts ){
-    		Ext.each(records, function (rec){
-				rec.set('leaf', rec.get('Group') != -1);
-				if(rec.get('Group') != -1){
-					// set online/offline status icon
-					if(rec.get('Status') == 'Idle')
-						rec.set('iconCls','node-idle');
-					else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
-						rec.set('iconCls','node-on');
-					else if(rec.get('Status') == 'Error')
-						rec.set('iconCls','node-err');
-					else
-						rec.set('iconCls','node-off');
-				}
-				
-			});
-    	}
-    }
- });
+	
+	var nStore = new Ext.data.TreeStore( {
+		model: 'Node',
+		autoLoad: true,
+		//autoSync: true,
+		proxy: {
+		    type: 'ajax',
+		    url: '/api/Nodes',
+		    extraParams: {format: 'json'},
+		    reader:{
+		    	type:'json',
+		    	applyDefaults: true
+		    }
+		},
+		root:{expanded: false},
+		folderSort: true,
+		listeners:{
+			load:function( thisObj, node, records, successful, eOpts ){
+				Ext.each(records, function (rec){
+					rec.set('leaf', rec.get('Group') != -1);
+					if(rec.get('Group') != -1){
+						// set online/offline status icon
+						if(rec.get('Status') == 'Idle')
+							rec.set('iconCls','node-idle');
+						else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+							rec.set('iconCls','node-on');
+						else if(rec.get('Status') == 'Error')
+							rec.set('iconCls','node-err');
+						else
+							rec.set('iconCls','node-off');
+					}
+					
+				});
+			}
+		}
+	});
     //nStore.getProxy().extraParams.node = 'root';
     
   Ext.define('NG', {
@@ -842,13 +840,13 @@ i18n.onReady(function(){
   
   	var tree = Ext.create('backo.NodesTree',{
   		id:'clientNodesTree',
+  		shown: ['IP', 'Name', 'Version', 'LastConnection', 'OS', 'Certificate', 'Quota'],
         height: '100%',
         width:'60%',
         align: 'left',
         layout:'fit',
         anchor:'100%',
         store: nStore,
-        displayedColumns:{IP:true},
         dockedItems: [{
 		    xtype: 'toolbar',
 		    dock: 'bottom',

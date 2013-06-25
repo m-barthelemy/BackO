@@ -1,13 +1,5 @@
 Ext.onReady(function () {	
 
-	/*Ext.Loader.setConfig({
-        enabled: true,
-        disableCaching: false,
-        paths: {
-            'Extensible': '/Extensible/src',
-            'Ext.ux':'/js/ext4/ux'
-        }
-    });*/
     Ext.require([
 	 	'Ext.data.proxy.Rest',
 	    'Ext.data.*',
@@ -26,7 +18,6 @@ Ext.onReady(function () {
 	    'Extensible.calendar.*'
 	]);
 	
-	
 		
 	var params = Ext.urlDecode(window.location.search.substring(1));
 	var bs, paramNode;
@@ -35,24 +26,21 @@ Ext.onReady(function () {
     if(params.node)
     	paramNode = params.node;
     	
-    
-    console.debug('ready before i18n');
+    /*console.debug('ready before i18n');
 	var i18n = Ext.create('Ext.i18n.Bundle',{
 		bundle: 'wui',
 		lang: Ext.util.Cookies.get('lang'),
 		path: '/i18n',
 		noCache: false
-	});
+	});*/
 	
 i18n.onReady(function(){
 
 	var schedStore = new Extensible.calendar.data.MemoryEventStore();
     
-	console.debug('ready');
 	Ext.get('addTitle').dom.innerText = i18n.getMsg('addbs.title');
-	Ext.QuickTips.init();
 	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
-	Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {maxWidth: 450, minWidth: 150});
+	//Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {maxWidth: 450, minWidth: 150});
     Ext.form.Field.prototype.msgTarget = 'side';
     
     var nodesChecked = [], pathsChecked = [];
@@ -262,11 +250,11 @@ i18n.onReady(function(){
 				return null;
 			}
 		 });
-		
     }
     
-    var nodesTree = new Ext.tree.Panel({
-        id:'nodesTree',
+    var nodesTree = Ext.create('backo.NodesTree',{
+  		id:'nodesTree',
+  		shown: ['IP', 'Name', 'OS', 'Certificate', 'Quota', 'Kind'],
         margin:'0 15 10 10',
         padding: '0 0 10 0',
         height: 340,
@@ -281,66 +269,7 @@ i18n.onReady(function(){
         draggable:false,    
         stateful:false,   
         scroll: 'vertical',
-        columns: [{
-            xtype: 'treecolumn',
-            text: i18n.getMsg('nodestree.node'),
-            flex: 1,
-            //locked: true, // getChecked() doesn't work anymore with locked column (????)
-            dataIndex: 'Name',
-            renderer: function(value, metaData, record, colIndex, store, view){
-	            if(record.get('CertCN').length > 1)
-	            	return value+" (<i>"+record.get('CertCN')+"</i>)";
-	            else
-	            	return value;
-            }
-        },{
-            text: i18n.getMsg('nodestree.currentIP'),
-            flex: 0,
-            width:90,
-            dataIndex: 'IP'
-        },{
-            text: i18n.getMsg('nodestree.os'),
-            flex: 0,
-            dataIndex: 'OS',
-            width:40,
-            renderer:function(value){
-            	if(value.toLowerCase() == 'linux')
-            		return '<img src="/images/Linux-xs.png" title="'+value+'"/>';
-            	else if(value.substr(0,2) == 'NT')
-            		return '<img src="/images/Windows-xs.png" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'freebsd')
-            		return '<img src="/images/Freebsd-xs.jpg" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'darwin')
-            		return '<img src="/images/Apple-xs.png" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'sunos')
-            		return '<img src="/images/Sunos-xs.jpg" title="'+value+'"/>';
-            	else if(value.length > 1)
-            		return '<img src="/images/Unknown-xs.png" title="Unknown os : '+value+'"/>';
-            }
-        },{
-            text: i18n.getMsg('generic.kind'),
-            flex: 0,
-            dataIndex: 'Kind',
-            width:70,
-            renderer: function(value, metaData, record, colIndex, store, view){
-            	if(record.get('Group') != -1)
-            		return i18n.getMsg('generic.kind.'+value);
-            }
-        },{
-            text: i18n.getMsg('nodestree.quota'),
-            flex: 0,
-            dataIndex: 'Quota',
-            width:60,
-            sortable: true,
-            renderer:function(value){return FormatSize(value);}
-        },{
-            text: i18n.getMsg('nodestree.usedQuota'),
-            flex: 0,
-            width:70,
-            dataIndex: 'UsedQuota',
-            renderer:function(value){return FormatSize(value);}
-        }
-        ],
+        store: nStore,
         listeners:{
         	'checkchange': function(node, checked){        	
 		       	if (nodesTree.getChecked().length == 1 && nodesTree.getChecked()[0].get('Status') != 'Offline')
@@ -349,94 +278,30 @@ i18n.onReady(function(){
 	    			Ext.getCmp('browseBtn').disable();
           	}
         }
-    });				 
-    
-    var proxyNodesTree = new Ext.tree.Panel({
-        id:'proxyNodesTree',
+	});
+	
+	var proxyNodesTree = Ext.create('backo.NodesTree',{
+  		id:'proxyNodesTree',
+  		shown: ['IP', 'Name', 'OS', 'Certificate', 'Quota', 'Kind'],
         margin:'0 15 10 10',
         padding: '0 0 10 0',
         height: 340,
         folderSort: true,
         width:500,
-        collapsible: false,
-        collapsed: true,
         useArrows: true,
         rootVisible: false,
-        store: proxiesStore,
+        store: nStore,
         multiSelect: true,
         singleExpand: false,
-        draggable:false,    
         stateful:false,   
         scroll: 'vertical',
-        disabled: true,
-        columns: [{
-            xtype: 'treecolumn',
-            text: i18n.getMsg('nodestree.node'),
-            flex: 1,
-            dataIndex: 'Name',
-            renderer: function(value, metaData, record, colIndex, store, view){
-	            if(record.get('CertCN').length > 1)
-	            	return value+" (<i>"+record.get('CertCN')+"</i>)";
-	            else
-	            	return value;
-            }
-        },{
-            text: i18n.getMsg('nodestree.currentIP'),
-            flex: 0,
-            width:90,
-            dataIndex: 'IP'
-        },{
-            text: i18n.getMsg('nodestree.os'),
-            flex: 0,
-            dataIndex: 'OS',
-            width:40,
-            renderer:function(value){
-            	if(value.toLowerCase() == 'linux')
-            		return '<img src="/images/Linux-xs.png" title="'+value+'"/>';
-            	else if(value.substr(0,2) == 'NT')
-            		return '<img src="/images/Windows-xs.png" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'freebsd')
-            		return '<img src="/images/Freebsd-xs.jpg" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'darwin')
-            		return '<img src="/images/Apple-xs.png" title="'+value+'"/>';
-            	else if(value.toLowerCase() == 'sunos')
-            		return '<img src="/images/Sunos-xs.jpg" title="'+value+'"/>';
-            	else if(value.length > 1)
-            		return '<img src="/images/Unknown-xs.png" title="Unknown os : '+value+'"/>';
-            }
-        },{
-            text: i18n.getMsg('nodestree.kind'),
-            flex: 0,
-            dataIndex: 'Kind',
-            width:70,
-            renderer: function(value, metaData, record, colIndex, store, view){
-            	if(record.get('Group') != -1)
-            		return i18n.getMsg('nodestree.kind.'+value);
-            }
-        },{
-            text: i18n.getMsg('nodestree.quota'),
-            flex: 0,
-            dataIndex: 'Quota',
-            width:60,
-            sortable: true,
-            renderer:function(value){return FormatSize(value);}
-        },{
-            text: i18n.getMsg('nodestree.usedQuota'),
-            flex: 0,
-            width:70,
-            dataIndex: 'UsedQuota',
-            renderer:function(value){return FormatSize(value);}
-        }
-        ],
-        listeners:{
-        	'checkchange': function(node, checked){        	
-		       	if (nodesTree.getChecked().length == 1 && nodesTree.getChecked()[0].get('Status') != 'Offline')
-		       		Ext.getCmp('browseBtn').enable();
-	    		else
-	    			Ext.getCmp('browseBtn').disable();
-          	}
-        }
-    });	
+        store: proxiesStore,
+        collapsible: false,
+        collapsed: true,
+        disabled: true
+        
+	});
+   
     			 
     var targetPanel = new Ext.widget('form', { //new Ext.form.Panel({
     	id:'targetPanel',
