@@ -255,20 +255,14 @@ i18n.onReady(function(){
     var nodesTree = Ext.create('backo.NodesTree',{
   		id:'nodesTree',
   		shown: ['IP', 'Name', 'OS', 'Certificate', 'Quota', 'Kind'],
-        margin:'0 15 10 10',
-        padding: '0 0 10 0',
+        //margin:'0 15 10 10',
+        //padding: '0 0 10 0',
         height: 340,
         folderSort: true,
         width:500,
-        collapsible: false,
-        useArrows: true,
         rootVisible: false,
         store: nStore,
-        multiSelect: true,
-        singleExpand: false,
-        draggable:false,    
         stateful:false,   
-        scroll: 'vertical',
         store: nStore,
         listeners:{
         	'checkchange': function(node, checked){        	
@@ -288,18 +282,12 @@ i18n.onReady(function(){
         height: 340,
         folderSort: true,
         width:500,
-        useArrows: true,
         rootVisible: false,
         store: nStore,
-        multiSelect: true,
-        singleExpand: false,
-        stateful:false,   
-        scroll: 'vertical',
+        multiSelect: false,
         store: proxiesStore,
-        collapsible: false,
         collapsed: true,
         disabled: true
-        
 	});
    
     			 
