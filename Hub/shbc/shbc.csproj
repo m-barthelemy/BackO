@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Irony">
-      <HintPath>bin\Irony.dll</HintPath>
+      <HintPath>..\lib\Irony.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
