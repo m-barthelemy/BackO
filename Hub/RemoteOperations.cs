@@ -108,19 +108,7 @@ namespace P2PBackupHub{
 		public string WhoAmI(){
 			return "thread: "+Thread.CurrentPrincipal.Identity.Name+", session:"+sessionUser.Name;
 		}
-		/*[PrincipalPermission(SecurityAction.Demand, Role="Viewer")]
-		[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
-		[PrincipalPermission(SecurityAction.Demand, Role="Admin")]
-		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]*/
-		/*public ArrayList GetClients(){
-			ArrayList iClientNodes = new ArrayList();
-			CheckSession();
-			DBHandle db = new DBHandle();                                                     
-			foreach(Node n in db.GetClients())
-			        iClientNodes.Add((IClientNode)n);
-			return iClientNodes;
-		}*/
-		
+
 		/*[PrincipalPermission(SecurityAction.Demand, Role="SuperViewer")]
 		[PrincipalPermission(SecurityAction.Demand, Role="Admin")]
 		[PrincipalPermission(SecurityAction.Demand, Role="SuperAdmin")]*/
@@ -253,7 +241,14 @@ namespace P2PBackupHub{
 			}
 				
 		}
-		
+
+		// Wakeup an 'idle' node (sleeping and only responding to periodical udp 'pings')
+		public void WakeupNode(uint nodeId){
+			var node = Hub.NodesList.GetById(nodeId);
+			if(node != null)
+				NodesMonitor.Instance.WakeUp(node);
+		}
+
 		public int Ping(){
 			Logger.Append("HUBRN", Severity.DEBUG, "Called Ping");
 			return 1;	

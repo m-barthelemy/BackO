@@ -185,7 +185,7 @@ namespace P2PBackupHub{
 				}
 				else{
 					node.Status = NodeStatus.Locked; // pending for manual approval
-					Logger.Append("HUBRN", Severity.INFO, "Newly connected node #"+node.Id+" is locked.");
+					Logger.Append("HUBRN", Severity.NOTICE, "Newly connected node #"+node.Id+" is locked.");
 				}
 			}
 			node.SetSockets(clientSslStream, clientSocket);
