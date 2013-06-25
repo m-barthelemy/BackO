@@ -359,6 +359,7 @@ namespace P2PBackupHub{
 			Utilities.Logger.Append("START", Severity.INFO, "Starting Remoting Server...");
 			Remoting.RemotingServer.Instance.Start();
 			Utilities.Logger.Append("START", Severity.INFO,"Hub started.");
+			ReAuthenticateNodes();
 		}
 
 
@@ -712,6 +713,15 @@ namespace P2PBackupHub{
 			n.Disconnect();
 			n.Status = NodeStatus.Idle;
 			n.LastReceivedPing = DateTime.Now;
+		}
+
+		/// <summary>
+		/// After being (re)started, send udp wakeup signal to all nodes, to get sleeping ones to reauthenticate.
+		/// </summary>
+		private void ReAuthenticateNodes(){
+			Utilities.Logger.Append("HUBRN", Severity.INFO, "Re-authenticating against sleeping nodes...");
+			foreach(Node n in new DAL.NodeDAO().GetAll(null))
+				NodesMonitor.Instance.WakeUp(n);
 		}
 	}
 }
