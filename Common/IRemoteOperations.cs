@@ -73,7 +73,10 @@ namespace  P2PBackup.Common{
 		
 		[OperationContract]
 		void ApproveNode(uint nodeId, bool lockStatus);
-		
+
+		[OperationContract]
+		void WakeupNode (uint nodeId);
+
 		[OperationContract]
 		int Ping();
 		
