@@ -8,22 +8,13 @@ Ext.require([
     'Ext.fx.target.Sprite',
 ]);
 
-function GetConfigWindow(){
-
-}
-
 Ext.onReady(function () {
 	Ext.Loader.setConfig({enabled:true});
-	
-     /*var i18n = Ext.create('Ext.i18n.Bundle',{
-		bundle: 'wui',
-		lang: Ext.util.Cookies.get('lang'),
-		path: '/i18n',
-		noCache: true
-	});*/
-
+     
 i18n.onReady(function(){
 
+	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
+	
 	var groupsStore = new Ext.data.JsonStore( {
         model : 'StorageGroup',
         autoLoad:true,
@@ -39,7 +30,6 @@ i18n.onReady(function(){
     });
         
 	var toBeExpanded = true;
-    
     var fieldzWithoutDate = [];
 	var fieldz=[];
 	fieldz.push('date');
@@ -64,7 +54,9 @@ i18n.onReady(function(){
 					rec.set('leaf', rec.get('Group') != -1);
 					if(rec.get('Group') > -1){
 						//rec.set('checked', false );
-						if(rec.get('Status') == 'Idle' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+						if(rec.get('Status') == 'Idle')
+							rec.set('iconCls','node-idle');
+						else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
 							rec.set('iconCls','node-on');
 						else if(rec.get('Status') == 'Error')
 							rec.set('iconCls','node-err');
@@ -101,19 +93,13 @@ i18n.onReady(function(){
             flex:2,
             dataIndex:'Name',
             renderer: function(value, metaData, record, colIndex, store, view){
-            	if(record.get('leaf') == true){
-            		value = "(#"+record.get("Id")+")&nbsp;"+record.get('Name')
-            			+'<br/><span class="ip">'+record.get('IP')+'</span>';
-            	}
-            	else // groups appear in bold
-            		value = '<b>'+value+'</b> <i>('+record.get('Description')+')</i>';
-            	if(record.get('CertCN').length > 1)
-	            	return value+" (<i>"+record.get('CertCN')+"</i>)";
-	            else
-	            	return value;
-	         }
+            	value = (record.get('Name') == '') ? record.get('HostName') : record.get('Name');
+		    	value = (value == '') ? record.get('IP') : value;
+		    	if(record.get('Group') == -1)
+		    		value = '<b>'+value+'</b>';
+		    	return '<span data-qtip="#'+record.get('Id')+'<br/>'+record.get('Description')+'">'+value+'</span>';
+	        }
         },{
-        	xtype: 'gridcolumn',
             header:i18n.getMsg('nodestree.listenIP'), //'Hostname / IP',
             width:95,
             flex:0,
@@ -130,9 +116,26 @@ i18n.onReady(function(){
 	            	return ' '+value;
 	         }
         },{
+            header:i18n.getMsg('generic.description'), //'Hostname / IP',
+            width:170,
+            dataIndex:'Description',
+            padding:'0',
+            hidden: true,
+        },{
+            header:i18n.getMsg('nodestree.currentIP'), //'Hostname / IP',
+            width:95,
+            flex:0,
+            dataIndex:'IP',
+            padding:'0',
+            hidden: true,
+            renderer: function(value, metaData, record, colIndex, store, view){
+            	if(record.get('Group') == -1) return '';
+            	else return value;
+	         }
+        },{
             text: i18n.getMsg('nodestree.listenPort'),
             flex: 0,
-            width:55,
+            width:50,
             dataIndex: 'ListenPort',
             renderer: function(value, metaData, record, colIndex, store, view){
             	if(record.get('Group') == -1) return '';
@@ -153,8 +156,8 @@ i18n.onReady(function(){
 	            	return ' '+value;
 	         }
         },{
-        	header:i18n.getMsg('nodestree.size'), //'Storage space',
-            width:60,
+        	header:i18n.getMsg('nodestree.storageSize'), //'Storage space',
+            width:85,
             flex:0,
             dataIndex:'StorageSize',
             renderer: function(value, metaData, record, colIndex, store, view){
@@ -167,8 +170,8 @@ i18n.onReady(function(){
 	            return value;
 	         }
         },{
-        	header:i18n.getMsg('nodestree.available'), //'Available',
-            width:65,
+        	header:i18n.getMsg('nodestree.storageUsed'), //'Available',
+            width:75,
             flex:0,
             dataIndex:'StorageUsed',
             renderer: function(value, metaData, record, colIndex, store, view){
@@ -186,7 +189,7 @@ i18n.onReady(function(){
             width:70,
             flex:0,
             renderer: function(value, metaData, record, colIndex, store, view){
-            	value = record.get('StorageUsed')/record.get('StorageSize')*100;
+            	value = Math.round(record.get('StorageUsed')/record.get('StorageSize')*1000)/10;
             	var iconStyle="";
             	if(value > 90)
                 	iconStyle="sq_re.gif";
@@ -230,13 +233,14 @@ i18n.onReady(function(){
             }
         },{
         	header:i18n.getMsg('nodestree.storagePath'), //'Storage path',
-            width:200,
+            width:210,
             dataIndex:'StoragePath',
             flex:1,
         },{
         	header:i18n.getMsg('nodestree.status'), //'Status',
             width:80,
             dataIndex:'Status',
+            hidden: true,
             renderer:function(value, metaData, record, colIndex, store, view){
             	if(record.get('Group') == -1) return '';
             	return i18n.getMsg('nodestree.status.'+value);

@@ -40,7 +40,6 @@ i18n.onReady(function(){
     
 	Ext.get('addTitle').dom.innerText = i18n.getMsg('addbs.title');
 	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
-	//Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {maxWidth: 450, minWidth: 150});
     Ext.form.Field.prototype.msgTarget = 'side';
     
     var nodesChecked = [], pathsChecked = [];
@@ -62,7 +61,6 @@ i18n.onReady(function(){
 	        }
         }
     });
-       
 	
     var nStore = new Ext.data.TreeStore( {
         model: 'Node',
@@ -84,7 +82,9 @@ i18n.onReady(function(){
 					if(rec.get('Group') != -1){
 						rec.set('checked', preCheckedNode == rec.get('Id') );
 						// set online/offline status icon
-						if(rec.get('Status') == 'Idle' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+						if(rec.get('Status') == 'Idle')
+							rec.set('iconCls','node-idle');
+						else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
 							rec.set('iconCls','node-on');
 						else if(rec.get('Status') == 'Error')
 							rec.set('iconCls','node-err');

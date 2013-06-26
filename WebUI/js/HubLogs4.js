@@ -27,7 +27,7 @@ Ext.onReady(function () {
 i18n.onReady(function(){
  Ext.get('hubTitle').dom.innerText = i18n.getMsg('hublogs.title');
  
-  Ext.tip.QuickTipManager.init();
+  Ext.tip.QuickTipManager.init(true, {maxWidth: 800,minWidth: 250, width:350 });
   Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {
 	showDelay: 500,      // Show 500ms after entering target
 	hideDelay: 1000,
