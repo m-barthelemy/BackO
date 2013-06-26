@@ -58,32 +58,40 @@ Ext.define('backo.NodesTree',{
 	    text		: i18n.getMsg('nodestree.currentIP'),
 	    flex		: 0,
 	    width		: 90,
-	    dataIndex	: 'IP',
+	    dataIndex	: 'IP'
 	},{
 	    text		: i18n.getMsg('nodestree.hostName'),
 	    flex		: 0,
 	    width		: 100,
-	    dataIndex	: 'HostName',
+	    dataIndex	: 'HostName'
 	},{
 	    text		: i18n.getMsg('generic.kind'),
 	    flex		: 0,
-	    width		: 70,
+	    width		: 65,
 	    dataIndex	: 'Kind',
-	    hidden		: true,
 	    renderer	:function(value, metaData, record, colIndex, store, view){
 	    	if(record.get('Group') == -1) return '';
 	    	return  i18n.getMsg('generic.kind.'+value);
 	   	}
 	},{
+	    text		: i18n.getMsg('generic.group'),
+	    flex		: 0,
+	    width		: 50,
+	    dataIndex	: 'Group',
+	    renderer	:function(value, metaData, record, colIndex, store, view){
+	    	if(record.get('Group') == -1) return '';
+	    	return value;
+	   	}
+	},{
 	    text		: i18n.getMsg('nodestree.hypervisor'),
 	    flex		: 0,
 	    width		: 90,
-	    dataIndex	: 'Hypervisor',
+	    dataIndex	: 'Hypervisor'
 	},{
 	    text		: i18n.getMsg('generic.description'),
 	    flex		: 0,
 	    width		: 200,
-	    dataIndex	: 'Description',
+	    dataIndex	: 'Description'
 	},{
 	    text		: i18n.getMsg('nodestree.createDate'),
 	    flex		: 0,
@@ -97,7 +105,7 @@ Ext.define('backo.NodesTree',{
 	    text		: i18n.getMsg('nodestree.version'),
 	    flex		: 0,
 	    width		: 65,
-	    dataIndex	: 'Version',
+	    dataIndex	: 'Version'
 	},{
 	    text		: i18n.getMsg('nodestree.os'),
 	    flex		: 0,
@@ -132,7 +140,6 @@ Ext.define('backo.NodesTree',{
 	    flex: 0,
 	    width:70,
 	    dataIndex: 'UsedQuota',
-	    hidden: true,
 	    renderer:function(value){ return FormatSize(value);}
 	},{
 	    text:  i18n.getMsg('nodestree.certificate'),
@@ -160,11 +167,10 @@ Ext.define('backo.NodesTree',{
 	    flex: 0,
 	    width:90,
 	    dataIndex: 'Status',
-	    hidden:true,
 	    renderer:function(value, metaData, record, colIndex, store, view){
 	    	if(record.get('Group') == -1) return '';
 	    	return i18n.getMsg('nodestree.status.'+value);
-	    },
+	    }
 	},{
 		text:  i18n.getMsg('nodestree.lastconnection'),
 	    flex: 1,
@@ -181,7 +187,6 @@ Ext.define('backo.NodesTree',{
 	    
 	}
 	],
-	
 	dockedItems: [{
 	    dock: 'top',
 	    xtype: 'toolbar',

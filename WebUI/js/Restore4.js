@@ -48,10 +48,12 @@ i18n.onReady(function(){
 			load:function( thisObj, node, records, successful, eOpts ){
 				Ext.each(records, function (rec){
 					rec.set('leaf', rec.get('Group') != -1);
-					if(rec.get('Group') != -1){
+					if(rec.get('Group') > -1)
 						rec.set('checked', false );
-						// set online/offline status icon
-						if(rec.get('Status') == 'Idle' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+					if(rec.get('Group') != -1){
+						if(rec.get('Status') == 'Idle')
+							rec.set('iconCls','node-idle');
+						else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
 							rec.set('iconCls','node-on');
 						else if(rec.get('Status') == 'Error')
 							rec.set('iconCls','node-err');
@@ -81,6 +83,14 @@ i18n.onReady(function(){
 					rec.set('leaf', rec.get('Group') != -1);
 					if(rec.get('Group') > -1)
 						rec.set('checked', false );
+					if(rec.get('Status') == 'Idle')
+						rec.set('iconCls','node-idle');
+					else if(rec.get('Status') == 'Online' || rec.get('Status') == 'Backuping' || rec.get('Status') == 'Restoring')
+						rec.set('iconCls','node-on');
+					else if(rec.get('Status') == 'Error')
+						rec.set('iconCls','node-err');
+					else
+						rec.set('iconCls','node-off');
 					//if(rec.get('Group') == -1)
 					//	rec.set('Uid', 'g-'+rec.get('Uid') );
 				});
