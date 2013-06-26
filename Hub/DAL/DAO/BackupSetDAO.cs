@@ -184,7 +184,7 @@ namespace P2PBackupHub.DAL {
 				                         && y.BeginMinute < endInterval.Minute
 				                         );*/
 
-				jn.SelectAll();
+				jn.SelectAll<BackupSet>();
 				Console.WriteLine("next to schedule SQL = "+jn.ToSql());
 				return dbc.Query<BackupSet>(jn.ToSql());
 			}
@@ -253,7 +253,7 @@ namespace P2PBackupHub.DAL {
 					                         );
 				}
 				
-				jn.SelectAll();
+				jn.SelectAll<BackupSetSchedule>();
 				Console.WriteLine("next to schedule SQL = "+jn.ToSql());
 				return dbc.Query<BackupSetSchedule>(jn.ToSql());
 			}
