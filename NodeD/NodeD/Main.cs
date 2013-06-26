@@ -5,14 +5,12 @@ using System.Net;
 using System.Net.Sockets;
 using P2PBackup.Common;
 
-
 namespace NodeD {
 
 	/// <summary>
 	/// Main class. Waits for an UDP 'wakeup' message and instanciates the client node in a dedicated appdomain.
 	/// When client nodes signals it has finished its work, go back to 'idle' state by unloading the appdomain.
 	/// </summary>
-
 	class MainClass : MarshalByRefObject {
 
 		private static UdpClient u;
@@ -20,20 +18,27 @@ namespace NodeD {
 		private static string[] startArgs;
 		private static bool idle = false;
 		private static int hubPort;
+		private static System.Threading.ManualResetEvent stopEvent;
 
 		public static void Main (string[] args) {
 			startArgs = args;
+			stopEvent = new System.Threading.ManualResetEvent (false);
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveLibs;
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ResolveLibs;
 			Console.CancelKeyPress += Shutdown;
 			WakeUp();
-			while(true){
+
+			//Keep main thread/loop running forever (until ctrl-c or stop signal)
+			stopEvent.WaitOne ();
+			/*while(true){
 				System.Threading.Thread.Sleep (2000);
-			}
+			}*/
 		}
 
 		private static void ListenHubWakeups(IPEndPoint ep){
 			IPEndPoint hubEP = new IPEndPoint(IPAddress.Any, ep.Port);
+			if(u != null) // check if not already listening (if active -> sleeping -> active -> sleeping again)
+				return;
 			u = new UdpClient(hubEP);
 			UdpState s = new UdpState{U=u, E = ep};
 			u.BeginReceive(MessageReceived, s);
@@ -61,16 +66,13 @@ namespace NodeD {
 			string libsPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).Replace("bin", "lib");
 			AppDomainSetup domainSetup = new AppDomainSetup { PrivateBinPath = libsPath, ApplicationBase = libsPath };
 			var nodeDomain = AppDomain.CreateDomain("Node", null, domainSetup);
-
 			/*IClientNode*/ c = (IClientNode)nodeDomain.CreateInstanceAndUnwrap("Node", "Node.Client");
-
-			Console.WriteLine ("Node created");
 			//c.OnGoingIdle += (object sender, EventArgs e) => AppDomain.Unload(nodeDomain);
 			IPEndPoint[] hubEP = c.Login(startArgs);
-			ListenHubWakeups(hubEP[1]);
-			hubPort = hubEP[0].Port;
 
 			// If we get there, the node has decided to go idle. 
+			ListenHubWakeups(hubEP[1]);
+			hubPort = hubEP[0].Port;
 			idle = true;
 			Console.WriteLine("unloading node..."+((nodeDomain == null)? " node already null": ""));
 			if(nodeDomain != null)
@@ -95,8 +97,6 @@ namespace NodeD {
 				return System.Reflection.Assembly.LoadFile(wantedBinAssemblyPath);	
 			else
 				return null;
-
-
 		}
 
 		private static void Shutdown(object sender, ConsoleCancelEventArgs ccea){
@@ -104,18 +104,16 @@ namespace NodeD {
 			try{
 				c.Stop(false);
 				u.Close();
+				stopEvent.Set();
 			}
 			catch{}
 		}
 
 		/*private static void SendUdpMessage(string message, IPEndPoint endpoint){
-
 			Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 			string wakeup =  message;
 			byte[] msg = System.Text.Encoding.ASCII.GetBytes(wakeup);
 			sock.SendTo(msg, endpoint);
 		}*/
-		
 	}
-
 }
