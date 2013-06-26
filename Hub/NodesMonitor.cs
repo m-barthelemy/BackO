@@ -88,7 +88,6 @@ namespace P2PBackupHub {
 
 			Byte[] receiveBytes = u.EndReceive(ar, ref e);
 			string msg = System.Text.Encoding.ASCII.GetString(receiveBytes);
-			Console.WriteLine("Received UDP message "+msg);
 			if(msg.StartsWith("PING")){
 				uint nodeId = 0;
 				if(uint.TryParse(msg.Substring(5), out nodeId) && nodeId >0){

@@ -184,7 +184,7 @@ namespace P2PBackupHub.DAL {
 				                         && y.BeginMinute < endInterval.Minute
 				                         );*/
 
-
+				jn.SelectAll();
 				Console.WriteLine("next to schedule SQL = "+jn.ToSql());
 				return dbc.Query<BackupSet>(jn.ToSql());
 			}
@@ -253,12 +253,12 @@ namespace P2PBackupHub.DAL {
 					                         );
 				}
 				
-
+				jn.SelectAll();
 				Console.WriteLine("next to schedule SQL = "+jn.ToSql());
 				return dbc.Query<BackupSetSchedule>(jn.ToSql());
 			}
 		}
-		//internal BackupSet GetTaskSet(int bsId){
+
 		public List<BackupSet> GetAll(int start, int limit, string orderbyField, string sortDirection, bool templates){
 			SqlExpressionVisitor<BackupSet> ev = OrmLiteConfig.DialectProvider.ExpressionVisitor<BackupSet>();
 			//ev.OrderBy(rn=> new{ at=Sql.Desc(rn.Rate), rn.Name });

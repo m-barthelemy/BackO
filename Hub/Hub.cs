@@ -719,7 +719,7 @@ namespace P2PBackupHub{
 		/// After being (re)started, send udp wakeup signal to all nodes, to get sleeping ones to reauthenticate.
 		/// </summary>
 		private void ReAuthenticateNodes(){
-			Utilities.Logger.Append("HUBRN", Severity.INFO, "Re-authenticating against sleeping nodes...");
+			Utilities.Logger.Append("HUBRN", Severity.INFO, "Asking sleeping nodes to reauthenticate...");
 			foreach(Node n in new DAL.NodeDAO().GetAll(null))
 				NodesMonitor.Instance.WakeUp(n);
 		}
