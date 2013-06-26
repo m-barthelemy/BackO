@@ -22,23 +22,16 @@ Ext.onReady(function () {
 	    'backo.TaskCalMapping'
 	]);
 	
-	
-   /* var i18n = Ext.create('Ext.i18n.Bundle',{
-		bundle: 'wui',
-		lang: Ext.util.Cookies.get('lang'),
-		path: '/i18n',
-		noCache: true
-	});*/
-	
 
 i18n.onReady(function(){
+
 	Ext.tip.QuickTipManager.init(true, {maxWidth: 450,minWidth: 150, width:350 });
 	Ext.get('restoreTitle').dom.innerText = i18n.getMsg('restore.title');
 	var restoreNode = null;
 	var restoreDestNode = null;
 	var restoreBS = '';
 	function GetRestoreBS(){
-	return restoreBS;
+		return restoreBS;
 	}
 	            	
 	var nStore = new Ext.data.TreeStore( {
@@ -51,7 +44,7 @@ i18n.onReady(function(){
 		},
 		root:{expanded: false },
 		folderSort: true,
-		 listeners:{
+		listeners:{
 			load:function( thisObj, node, records, successful, eOpts ){
 				Ext.each(records, function (rec){
 					rec.set('leaf', rec.get('Group') != -1);
@@ -102,10 +95,7 @@ i18n.onReady(function(){
   		shown: ['IP', 'Name', 'Version', 'OS'],
         height:350,
         width:475,
-        //scroll: 'vertical',
-        rootVisible: false,
         store: nStore,
-        draggable:false,     
         padding:'10px 20px 0px 10px',
         listeners:{
         	'checkchange': function(node, checked){        	
@@ -149,8 +139,6 @@ i18n.onReady(function(){
 		       			}
         			});
         			
-        			
-        			
 		       	}
 		       	else{
 		       		clientNodesTree.getStore().load(); //setProxy(ajaxNodesProxy);
@@ -158,150 +146,15 @@ i18n.onReady(function(){
 		     }
         }
   });
- /*var clientNodesTree = new Ext.tree.Panel({
-        //title: ''+i18n.getMsg('restore.step1.title'), //Select a node',
-        id:'clientNodesTree',
+
+  var destNodesTree = Ext.create('backo.NodesTree',{
+  		id:'destNodesTree',
+  		shown: ['IP', 'Name', 'Version', 'OS'],
         height:350,
         width:475,
-        scroll: 'vertical',
-        rootVisible: false,
-        store: nStore,
-        draggable:false,     
-        padding:'10px 20px 0px 10px',  
-        columns: [
-        	{
-	            xtype: 'treecolumn', //this is so we know which column will show the tree
-	            text: i18n.getMsg('nodestree.node'), //'Node',
-	            flex: 1,
-	            dataIndex: 'Name',
-	            renderer: function(value, metaData, record, colIndex, store, view){
-		            if(record.get('Name').length > 1)
-		            	return value;
-		            else if(record.get('HostName').length > 1)
-		            	return record.get('HostName')
-		            else
-		            	return record.get('IP')
-	            }
-	        },{
-	            text: i18n.getMsg('nodestree.currentIP'), //'IP',
-	            flex: 0,
-	            width:110,
-	            dataIndex: 'IP',
-	        },{
-	            text: i18n.getMsg('nodestree.version'), //'Version',
-	            flex: 0,
-	            width:55,
-	            dataIndex: 'Version',
-	        },{
-	            text: i18n.getMsg('nodestree.backupsets'), //'Backupsets',
-	            flex: 0,
-	            dataIndex: 'BackupSets',
-	            width:70,
-	        }
-        ],
-        listeners:{
-        	'checkchange': function(node, checked){        	
-		       	if (Ext.getCmp('clientNodesTree').getChecked().length == 1 && checked){
-		       		restoreNode = node.data['Id'];
-		       		var firstLevelChild = clientNodesTree.getRootNode().childNodes;
-		       		Ext.each(firstLevelChild, function(child, index){
-		       			if(child != null){
-			       			if((child.hasChildNodes() && !child.contains(node))){
-			       				child.remove(false);
-			       			}
-			       			else{
-			       				var childNodes = [].concat(child.childNodes);
-								Ext.each(childNodes, function(leafChild){
-				       				if (leafChild != null && !leafChild.isRoot() && leafChild.isLeaf() && (leafChild.get('Id') != node.get('Id'))) {
-		        							leafChild.remove(false);
-		        					}
-			       				});
-			       			}
-			       		}
-        			});
-        			destNodesTree.enable();
-        			//destNodesTree.getStore().load();
-        			var destNodes = Ext.getCmp('destNodesTree').getRootNode().childNodes;
-        			Ext.each(destNodes, function(child, index){
-		       			if(child.hasChildNodes()){
-		       				var childNodes = [].concat(child.childNodes);
-							Ext.each(childNodes, function(leafChild){
-			       				if (leafChild != null && !leafChild.isRoot() && leafChild.isLeaf() && (leafChild.data['Id'] == restoreNode)) {
-	        							//leafChild.data['checked'] = true;
-	        							//leafChild.checked = true;
-	        							leafChild.parentNode.expand();
-	        					}
-		       				});
-		       			}
-		       			else{
-		       				if (child != null && !child.isRoot() && child.isLeaf() && (child.data['Id'] == restoreNode)) {
-	        							//child.data['checked'] = true;
-	        							child.parentNode.expand();
-	        				}
-		       			}
-        			});
-        			
-        			
-        			
-		       	}
-		       	else{
-		       		clientNodesTree.getStore().load(); //setProxy(ajaxNodesProxy);
-		       	}
-		     }
-        }
-  });*/
-  
-  var destNodesTree = new Ext.tree.Panel({
-  		//title: ''+i18n.getMsg('restore.step1.title'),
-        id:'destNodesTree',
-        height: 350,
-        width:475,
-        scroll: 'vertical',
-        useArrows: true,
-        useLines:true,
-        rootVisible: false,
         store: dnStore,
-        multiSelect: false,
-        singleExpand: false,
         disabled:true,
-        //padding:'0px 0px 0px 0px',  
-        style:'margin-top:15px;'   ,
-        //margins:{top:'100px'}, 
-        columns: [
-        	{
-	            xtype: 'treecolumn', //this is so we know which column will show the tree
-	            text: i18n.getMsg('nodestree.node'), //'Node',
-	            flex: 1,
-	            sortable: true,
-	            dataIndex: 'Name',
-	            renderer: function(value, metaData, record, colIndex, store, view){
-		            if(record.get('Name').length > 1)
-		            	return value;
-		            else if(record.get('HostName').length > 1)
-		            	return record.get('HostName')
-		            else
-		            	return record.get('IP')
-	            }
-	        },{
-	            text: i18n.getMsg('nodestree.currentIP'), //'IP',
-	            flex: 0,
-	            width:110,
-	            sortable: true,
-	            dataIndex: 'IP',
-	        },{
-	            text: i18n.getMsg('nodestree.version'), //'Version',
-	            flex: 0,
-	            width:55,
-	            dataIndex: 'Version',
-	            sortable: true
-	        },{
-	            text: i18n.getMsg('nodestree.backupsets'), //'Backupsets',
-	            flex: 0,
-	            dataIndex: 'BackupSets',
-	            width:70,
-	            sortable: true
-	        },
-        ],
+        style:'margin-top:15px;',
         listeners:{
         	'checkchange': function(node, checked){        	
 		       	if (Ext.getCmp('destNodesTree').getChecked().length == 1 && checked){
@@ -334,12 +187,13 @@ i18n.onReady(function(){
 		       	}
 		     }
         }
-  });  
-  
+    });
+        
+ 
   var nodesTreesFieldSet = new Ext.form.Panel({
         id:'nodesTreesFieldSet',
         title: '<img src="/images/1.png" class="gIcon"/>'+i18n.getMsg('restore.step1.title'), //Select a node',
-         layout: {
+        layout: {
             type: 'table',
             columns: 2
         },
