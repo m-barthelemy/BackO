@@ -1,16 +1,17 @@
 ﻿<Properties GitUserInfo="UsingMD">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\WebUI\js\backo\NodesTree.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../WebUI/i18n/wui_fr-FR.properties">
     <Files>
       <File FileName="Hub.cs" Line="1" Column="1" />
-      <File FileName="..\NodeD\NodeD\Main.cs" Line="1" Column="1" />
-      <File FileName="..\WebUI\js\ClientNodes4.js" Line="14" Column="24" />
-      <File FileName="..\WebUI\js\backo\NodesTree.js" Line="187" Column="23" />
-      <File FileName="..\WebUI\js\g.js" Line="1" Column="1" />
+      <File FileName="../WebUI/js/AddStorageGroup.js" Line="1" Column="1" />
+      <File FileName="DAL/DAO/BackupSetDAO.cs" Line="272" Column="37" />
+      <File FileName="../WebUI/i18n/wui_en-US.properties" Line="1" Column="1" />
+      <File FileName="../WebUI/i18n/wui_es-ES.properties" Line="1" Column="1" />
+      <File FileName="../WebUI/i18n/wui_fr-FR.properties" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="Solution Items" expanded="True" />
           <Node name="Common" expanded="True">
             <Node name="References" expanded="True" />
@@ -41,9 +42,7 @@
             <Node name="html" expanded="True" />
             <Node name="i18n" expanded="True" />
             <Node name="js" expanded="True">
-              <Node name="backo" expanded="True">
-                <Node name="NodesTree.js" selected="True" />
-              </Node>
+              <Node name="backo" expanded="True" />
             </Node>
             <Node name="WebServices" expanded="True">
               <Node name="ServiceStackDefinitions" expanded="True" />
