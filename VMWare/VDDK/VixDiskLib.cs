@@ -276,11 +276,6 @@ namespace VDDK{
 			public uint Port;
 	}
 
-  
-
-  
-
-
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
     public struct VixDiskLibCreds{
 		public VixDiskLibUidPasswdCreds Uid;
@@ -292,8 +287,6 @@ namespace VDDK{
 		public VixDiskLibUidPasswdCreds Uid;
 		public IntPtr ticketId;
 	}
-
-
 
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
     public struct VixDiskLibUidPasswdCreds{
@@ -307,8 +300,6 @@ namespace VDDK{
 			[MarshalAsAttribute(UnmanagedType.LPStr)] public string username; 
 			[MarshalAsAttribute(UnmanagedType.LPStr)] public string key ;
     }
-
-    
 
     //Disk info
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
@@ -365,12 +356,12 @@ namespace VDDK{
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl, SetLastError = true)]
 	public delegate void VixDiskLibGenericLogFunc(
-			//[MarshalAs(UnmanagedType.LPStr)] 
-			//string Message,
-			IntPtr Message,
-			IntPtr args // C++ style va_args
+		//[MarshalAs(UnmanagedType.LPStr)] 
+		//string Message,
+		IntPtr Message,
+		IntPtr args // C++ style va_args
 
-		);
+	);
 			
 
 	public class VixDiskLib {
@@ -428,7 +419,7 @@ namespace VDDK{
 		public static extern VixError Cleanup(ref VixDiskLibConnectParams connectParams, ref uint numCleanedUp, ref uint numRemaining);
 
 		/// <summary>
-		/// Connects to an existing snapshots
+		/// "Connects" to an existing snapshot
 		/// </summary>
 		/// <returns>
 		/// The error code.
@@ -437,13 +428,13 @@ namespace VDDK{
 		/// connection parameters structure
 		/// </param>
 		/// <param name='readOnly'>
-		/// Read only. (faster)
+		/// Requires the disk to be opened read only. 
 		/// </param>
 		/// <param name='snapshotMoRef'>
-		/// Snapshot mo reference.
+		/// Snapshot ManagedObject reference.
 		/// </param>
 		/// <param name='transportModes'>
-		/// Transport modes to use, by preference order. Exemple : "file:san:hotadd:nbd"
+		/// Transport modes to use, by preference order. eg "file:san:hotadd:nbd"
 		/// </param>
 		/// <param name='connection'>
 		/// The snapshot connection pointer, ready to be used if the return code is VIX_OK
