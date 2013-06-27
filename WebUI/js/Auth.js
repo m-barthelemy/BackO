@@ -87,7 +87,7 @@ Ext.Loader.setConfig({
             xtype: 'button',
             id:'send',
             height:30,
-            width:'10%',
+            width:'80',
             align:'right',
             fieldLabel: 'Login',
             text:'Login',
@@ -106,7 +106,8 @@ Ext.Loader.setConfig({
      });
      
      var submitLogin = function() {
-              
+ 		Ext.getCmp('send').disable();
+ 		Ext.getCmp('send').setIcon("/images/loading.gif");
         var login = Ext.getCmp('login').getValue();
         var password = Ext.getCmp('password').getValue();
         var user = Ext.create('UserLogin', {UserName: login, Password: password});

@@ -159,20 +159,7 @@ Date.prototype.getMonday=function(){
                 icon: '/images/histcal.png',
                	iconCls: 'calendar',
                	handler: onItemClick
-            },'-',{
-             	 id:'clients',
-                 text: i18n.getMsg('menu.view.clientNodes'), //'Client nodes',
-                 icon: '/images/cl-i.png',
-                 iconCls: 'calendar',
-                 handler: onItemClick
-               
-            },{
-            	id:'sn',
-                text: i18n.getMsg('menu.view.storageNodes'), //'Storage nodes',
-                icon: '/images/sg-i.png',
-                iconCls: 'calendar',
-                handler: onItemClick
-            },
+            },'-'
         ]
     });
     
@@ -202,6 +189,20 @@ Date.prototype.getMonday=function(){
         height:190,
         enableOverflow:false,
         items: [
+        	{
+             	 id:'clients',
+                 text: i18n.getMsg('menu.add.clientNodes'), //'Client nodes',
+                 icon: '/images/cl-i.png',
+                 iconCls: 'calendar',
+                 handler: onItemClick
+               
+            },{
+            	id:'sn',
+                text: i18n.getMsg('menu.add.storageNodes'), //'Storage nodes',
+                icon: '/images/sg-i.png',
+                iconCls: 'calendar',
+                handler: onItemClick
+            },'-',
              {
             	id:'addBs',
                 text: i18n.getMsg('menu.add.backupset'), //'New Backup set',
@@ -209,20 +210,7 @@ Date.prototype.getMonday=function(){
                 iconCls: 'calendar',
                 handler: onItemClick
                 
-            },{
-            	id:'addTpl',
-                text: i18n.getMsg('menu.add.bsTemplate'), //'New Backup template',
-               	iconCls: 'calendar',
-               	icon:'/images/sg-i.png',
-               	handler: onItemClick
-            
-            },{
-            	id:'addSg',
-                text: i18n.getMsg('menu.add.storageGroup'), //'new Storage group',
-               	iconCls: 'calendar',
-               	icon:'/images/sg-i.png',
-               	handler: onItemClick
-            },{
+            },'-',{
             	id:'addHv',
                 text: i18n.getMsg('menu.add.hypervisor'), //'new Storage group',
                	iconCls: 'calendar',
