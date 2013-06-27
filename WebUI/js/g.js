@@ -225,13 +225,11 @@ Date.prototype.getMonday=function(){
         height:150,
         items: [
              {
-             	// id:'Hub',
                  text: i18n.getMsg('menu.sys.hub'), //'Hub...',
                  icon:'/images/hub-i.png',
                  iconCls: 'calendar',
                  menu:hubMenu
-            }
-            ,{
+            },{
             	id:'Users',
                 text: i18n.getMsg('menu.sys.users'), //'Users...',
                 icon:'/images/users.png',
