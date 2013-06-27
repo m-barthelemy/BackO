@@ -529,11 +529,9 @@ namespace P2PBackupHub{
 		}
 
 		private void RenewStorageSession(Task task, long sessionId, int budget){
-
-			PeerNode n = null;
 			PeerSession existingSession =  sessionsList.GetById(sessionId);
 			if(existingSession != null){
-				n = NodesList[existingSession.ToNodeId];
+				PeerNode n = NodesList[existingSession.ToNodeId];
 				existingSession.RenewBudget(budget);
 				if( (n.StorageSize - n.StorageUsed - n.ReservedSpace) > task.BackupSet.MaxChunkSize*budget){
 					CreateStorageSession(existingSession, task, false);
@@ -579,14 +577,8 @@ namespace P2PBackupHub{
 		}
 
 		private void CreateStorageSession(PeerSession s, Task currentTask, bool isIndexSession){
-			// --OBSOLETE COMMENT - REMOVE --  First, generate a random key sent to the two nodes.
-			// Each node will then send this key to the other.
-			// Then received peer key is compared and checked against the one originally sent by server.
-			// Doing so helps avoiding (some) nodes identity usurpation
-
 			// 1 - we tell storage node to accept transfer from client, if shared key is verified
 			NodesList.GetById(s.ToNode.Id).SendSession(s, SessionType.Store, false);
-
 			// 2 - we tell client node where to put chunk
 			NodesList.GetById(s.FromNode.Id).SendSession(s, SessionType.Backup, isIndexSession);
 
@@ -618,7 +610,6 @@ namespace P2PBackupHub{
 			Logger.Append("WATCHER", Severity.INFO, "Node #"+n.Id+" is offline (didn't reply for more than 5mn)"); 
 			try{
 				NodesList[n.Id].Dispose();
-				Console.WriteLine("node disposed()");
 			}
 			catch{}
 			try{
